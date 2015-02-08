@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Example template for online publications with braingl-web</title>
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold|Droid+Serif:regular,bold,italic&amp;v1" />
+        <link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />	
+		<script data-main="../framework/javascripts/main" src="../framework/javascripts/require-jquery.js"></script>
+    </head>
+    <body class="">
+        <div id="wrapper">
+            <div id="content-container">
+                <nav id="nav">
+                    <ul>
+                        <li><a href="index.html">Introduction</a></li>
+                        <li><a href="toc.html">Table of Contents</a></li>
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+                <div id="content-outer">
+                    <section id="content">
+                    <!-- 
+                        <nav class="prev-next top">
+					        <a href="#previous" class="prev">previous</a>
+					        <a href="#next" class="next">next</a>
+					    </nav>
+					    <div class="section" id="page-body">
+						    <header>
+	        					<h1>Example for online publications with braingl-web</h1>
+	        				</header>
+	    					<div class="document">
+								<p>Katja Heuer</p>
+								<div class="line-block">
+								<div class="line"><br /></div>
+							</div>
+							<p><em>Max Planck Institute for Human and Cognitive Brain Sciences, Leipzig, Germany</em></p>
+							<div class="line-block">
+								<div class="line"><br /></div>
+							</div>
+							<p>
+								This is an example on how to use braingl-web for online publications with interactive 3D figures.
+							</p>
+						</div>
+						<figure> 
+				            <img src="images/QlJ44h.jpeg" width="550" height="437"> 
+				            <figcaption> 
+				                <h1>Figure 1: figure figure figure figure figure figure</h1> 
+				                <div class="document"> 
+									<p>figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure</p> 
+								</div> 
+				 
+				            </figcaption> 
+				        </figure>
+				        -->
+                    </section>
+                </div>
+            </div>
+            <div id="sidebar-container">
+                <aside id="sidebar">
+                    <nav id="viewer-nav">
+                        <ul>
+                            <li><a href="#controls">Controls</a></li>
+                            <li><a href="#reset-view">Reset view</a></li>
+                        </ul>
+                    </nav>
+                    <div id="viewer">
+                        <canvas id="viewer-canvas"></canvas>
+                        <div id="controls">
+                            <div id="controls-toggles">
+                                <div><input type="checkbox" id="showTexture" /><label for="showTexture">T1/FA_RGB</label></div>
+                                <div><input type="checkbox" id="showActivations" /><label for="showActivations">Activations</label></div>
+                            </div>
+                            <div id="controls-slices">
+                                <div><label for="sliceX">X</label><input type="range" min="14" max="145" id="sliceX" value="80" step="1" /></div>
+                                <div><label for="sliceY">Y</label><input type="range" min="11" max="189" id="sliceY" value="100" step="1" /></div>
+                                <div><label for="sliceZ">Z</label><input type="range" min="9" max="149" id="sliceZ" value="80" step="1" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="toggles">
+                        <section id="elements"></section>
+                        <section id="activations"></section>
+                    </div>
+                    <div id="status"></div>
+                </aside>
+            </div>
+		<script>window.settings = {'DATA_URL': './data/', 'CONFIG_URL': './config/'};</script>        
+    </body>
+</html>

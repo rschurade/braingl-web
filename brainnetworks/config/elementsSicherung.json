@@ -1,0 +1,880 @@
+[
+	{
+        "id": "tex1",
+        "name": "t1 anatomy",
+        "type": "texture",
+        "url": "mr188_t1_pl.nii",
+		"transparency": 1.0
+    },
+    {
+        "id": "tex2",
+        "name": "fa rgb",
+        "type": "texture",
+        "url": "mr188_fa_rgb.nii",
+		"transparency": 1.0
+    },
+	{
+        "id": "lhemi",
+        "name": "Left hemisphere",
+        "type": "mesh",
+        "url": "mesh_lhemi.json",
+        "transparency": 0.5,
+        "display": false
+    },
+    {
+        "id": "rhemi",
+        "name": "Right hemisphere",
+        "type": "mesh",
+        "url": "mesh_rhemi.json",
+		"transparency": 0.5,
+		"display": false
+    },
+	{
+        "id": "lhemi_background",
+        "name": "Left hemisphere background",
+        "type": "mesh",
+        "url": "mesh_lhemi.json",
+        "transparency": 1,
+        "display": false
+    },
+    {
+        "id": "rhemi_background",
+        "name": "Right hemisphere background",
+        "type": "mesh",
+        "url": "mesh_rhemi.json",
+		"transparency": 1,
+		"display": false
+    },
+    {
+        "id": "head",
+        "name": "Head",
+        "type": "mesh",
+        "url": "mesh_head.json",
+		"transparency": 0.4,
+		"display": false,
+		"color": {"r": 0.89, "g": 0.77, "b": 0.64}
+    },
+    {
+        "id": "motor",
+        "name": "Right homunculus",
+        "type": "mesh",
+        "url": "fcon/homunculus.json",
+		"transparency": 0.9,
+		"display": false,
+        "display2": false
+    },
+    {
+        "id": "fsaverage5",
+        "name": "Surface",
+        "type": "mesh",
+        "url": "fcon/surface_white.json",
+        "transparency": 0.5,
+        "display": false
+    },
+    {
+        "id": "fsaverage5_background",
+        "name": "Surface background",
+        "type": "mesh",
+        "url": "fcon/surface_white.json",
+		"transparency": 1,
+		"display": false
+    },
+    {
+        "id": "fconBA45",
+        "name": "rs-fMRI connectivity BA45",
+        "type": "mesh",
+        "url": "fcon/ba45.glyphset_coloured.json",
+        "transparency": 0.5,
+        "display": false
+    },
+    {
+        "id": "fconBA45_background",
+        "name": "rs-fMRI connectivity background",
+        "type": "mesh",
+        "url": "fcon/ba45.glyphset_coloured.json",
+        "transparency": 1,
+        "display": false
+    },
+    {
+        "id": "thresBA45",
+        "name": "rs-fMRI connectivity BA45 bin",
+        "type": "mesh",
+        "url": "fcon/ba45seed_redMesh.json",
+        "transparency": 0.5,
+        "display": false
+    },
+    {
+        "id": "thresBA45_background",
+        "name": "rs-fMRI connectivity BA45 bin background",
+        "type": "mesh",
+        "url": "fcon/ba45seed_redMesh.json",
+        "transparency": 1,
+        "display": false
+    },
+    {
+        "id": "threslang",
+        "name": "BA44 - pSTG ROI",
+        "type": "mesh",
+        "url": "fcon/ba44_wernicke_2blobs.json",
+        "transparency": 0.5,
+        "display": false
+    },
+ {
+        "id": "threslang_background",
+        "name": "BA44 - pSTG ROI background",
+        "type": "mesh",
+        "url": "fcon/ba44_wernicke_2blobs.json",
+        "transparency": 1,
+        "display": false,
+        "color": {"r": 1.0, "g": 1.0, "b": 1.0}
+    },
+   {
+        "id": "fib1",
+        "name": "arcuate fascicle left",
+        "type": "fibre",
+        "url": "fib_ac_left.json",
+		"display": false,
+		"display2": false,
+        "savedColor": false,
+		"allowTube": true,
+		"transparency": 1.0,
+		"color": {"r": 0.8, "g": 0.1, "b": 0.1}
+    },
+    {
+        "id": "fib2",
+        "name": "arcuate fascicle right",
+        "type": "fibre",
+        "url": "fib_ac_right.json",
+		"display": false,
+		"display2": false,
+        "savedColor": false,
+		"allowTube": true,
+		"transparency": 1.0,
+		"color": {"r": 0.8, "g": 0.1, "b": 0.1}
+    },
+    {
+        "id": "fib3",
+        "name": "arcuate fascicle - posterior segment left",
+        "type": "fibre",
+        "url": "fib_acp_left.json",
+		"display": false,
+		"display2": false,
+		"allowTube": true,
+        "savedColor": false,
+		"transparency": 1.0,
+		"color": {"r": 1.0, "g": 0.9, "b": 0.0}
+    },
+	{
+        "id": "fib4",
+        "name": "arcuate fascicle - posterior segment right",
+        "type": "fibre",
+        "url": "fib_acp_right.json",
+		"display": false,
+		"display2": false,
+		"allowTube": true,
+        "savedColor": false,
+		"transparency": 1.0,
+		"color": {"r": 1.0, "g": 0.9, "b": 0.0}
+    },
+    {
+        "id": "fib5",
+        "name": "anterior thalamic radiation left",
+        "type": "fibre",
+        "url": "fib_atr_left.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.6, "g": 1.0, "b": 0.2}
+    },
+    {
+        "id": "fib6",
+        "name": "anterior thalamic radiation right",
+        "type": "fibre",
+        "url": "fib_atr_right.json",
+        "display": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.6, "g": 1.0, "b": 0.2}
+    },
+    {
+        "id": "fib7",
+        "name": "cingulum left",
+        "type": "fibre",
+        "url": "fib_cg_left.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 1.0, "b": 1.0}
+    },
+    {
+        "id": "fib8",
+        "name": "cingulum right",
+        "type": "fibre",
+        "url": "fib_cg_right.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 1.0, "b": 1.0}
+    },
+    {
+        "id": "fib9",
+        "name": "corticospinal tract left",
+        "type": "fibre",
+        "url": "fib_cst_left.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.0, "b": 1.0}
+    },
+    {
+        "id": "fib10",
+        "name": "corticospinal tract right",
+        "type": "fibre",
+        "url": "fib_cst_right.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.0, "b": 1.0}
+    },
+	{
+        "id": "fib11",
+        "name": "extreme capsule fibre system left",
+        "type": "fibre",
+        "url": "fib_ecfs_left.json",
+		"display": false,
+		"display2": false,
+		"allowTube": true,
+        "savedColor": false,
+		"transparency": 1.0,
+		"color": {"r": 0.0, "g": 0.6, "b": 0.0}
+    },
+	{
+        "id": "fib12",
+        "name": "extreme capsule fibre system right",
+        "type": "fibre",
+        "url": "fib_ecfs_right.json",
+		"display": false,
+		"display2": false,
+		"allowTube": true,
+        "savedColor": false,
+		"transparency": 1.0,
+		"color": {"r": 0.0, "g": 0.6, "b": 0.0}
+    },
+    {
+        "id": "fib13",
+        "name": "inferior longitudinal fascicle left",
+        "type": "fibre",
+        "url": "fib_ilf_left.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.5, "g": 0.0, "b": 1.0}
+    },
+    {
+        "id": "fib14",
+        "name": "inferior longitudinal fascicle right",
+        "type": "fibre",
+        "url": "fib_ilf_right.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.5, "g": 0.0, "b": 1.0}
+    },
+    {
+        "id": "fib15",
+        "name": "superior longitudinal fascicle left",
+        "type": "fibre",
+        "url": "fib_slf3_left.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.2, "g": 0.8, "b": 0.0}
+    },
+    {
+        "id": "fib16",
+        "name": "superior longitudinal fascicle right",
+        "type": "fibre",
+        "url": "fib_slf3_right.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.2, "g": 0.8, "b": 0.0}
+    },
+    {
+        "id": "fib17",
+        "name": "superior thalamic radiation left",
+        "type": "fibre",
+        "url": "fib_str_left.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.2, "b": 0.6}
+    },
+    {
+        "id": "fib18",
+        "name": "superior thalamic radiation right",
+        "type": "fibre",
+        "url": "fib_str_right.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.2, "b": 0.6}
+    },
+	{
+        "id": "fib19",
+        "name": "uncinate fascicle left",
+        "type": "fibre",
+        "url": "fib_unc_left.json",
+		"display": false,
+		"display2": false,
+		"allowTube": true,
+        "savedColor": false,
+		"transparency": 1.0,
+		"color": {"r": 0.9, "g": 0.5, "b": 0.0}
+    },
+	{
+        "id": "fib20",
+        "name": "uncinate fascicle right",
+        "type": "fibre",
+        "url": "fib_unc_right.json",
+		"display": false,
+		"display2": false,
+		"allowTube": true,
+        "savedColor": false,
+		"transparency": 1.0,
+		"color": {"r": 0.9, "g": 0.5, "b": 0.0}
+    },
+    {
+        "id": "fib21",
+        "name": "corpus callosum body",
+        "type": "fibre",
+        "url": "fib_cc_body.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.4, "b": 0.0}
+    },
+    {
+        "id": "fib22",
+        "name": "corpus callosum genu",
+        "type": "fibre",
+        "url": "fib_cc_genu.json",
+        "display": false,
+        "display2": false,
+		"allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 0.0}
+    },
+    {
+        "id": "fib23",
+        "name": "corpus callosum splenium",
+        "type": "fibre",
+        "url": "fib_cc_splen.json",
+        "display": false,
+        "display2": false,
+        "allowTube": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.7, "b": 0.0}
+    },
+    
+   {
+        "id": "fconall",
+        "name": "whole brain rs-fMRI connectivity",
+        "type": "fibre",
+        "url": "fcon/wholeBrainBundled_transform1.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": true,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.7, "b": 0.0}
+    },
+    
+   {
+        "id": "bundBA45",
+        "name": "rs-fMRI connectivity BA45 bundle",
+        "type": "fibre",
+        "url": "fcon/ba45_0p90.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": true,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.7, "b": 0.0}
+    },
+      
+    {
+        "id": "bundlang1",
+        "name": "rs-fMRI connectivity BA44 - pSTG bundle 1",
+        "type": "fibre",
+        "url": "fcon/bundlang1.json",
+		  "display": false,
+		  "display2": false,
+        "savedColor": false,
+		  "allowTube": false,
+        "thinTubes": true,
+  		  "transparency": 1.0,
+		  "color": {"r": 1.0, "g": 0.5, "b": 0.1}
+    },
+    {
+        "id": "bundlang2",
+        "name": "rs-fMRI connectivity BA44 - pSTG bundle 2",
+        "type": "fibre",
+        "url": "fcon/bundlang2.json",
+		  "display": false,
+		  "display2": false,
+        "savedColor": false,
+		  "allowTube": false,
+        "thinTubes": true,
+  		  "transparency": 1.0,
+		  "color": {"r": 0.1, "g": 0.9, "b": 0.1}
+    },
+    {
+        "id": "bundle1",
+        "name": "motor seed 1",
+        "type": "fibre",
+        "url": "fcon/bundle1.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 0.0}
+    },
+
+    {
+        "id": "bundle2",
+        "name": "motor seed 2",
+        "type": "fibre",
+        "url": "fcon/bundle2.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.2, "b": 0.0}
+    },
+
+    {
+        "id": "bundle3",
+        "name": "motor seed 3",
+        "type": "fibre",
+        "url": "fcon/bundle3.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.37, "b": 0.0}
+    },
+
+    {
+        "id": "bundle4",
+        "name": "motor seed 4",
+        "type": "fibre",
+        "url": "fcon/bundle4.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.55, "b": 0.0}
+    },
+
+    {
+        "id": "bundle5",
+        "name": "motor seed 5",
+        "type": "fibre",
+        "url": "fcon/bundle5.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.67, "b": 0.0}
+    },
+
+    {
+        "id": "bundle6",
+        "name": "motor seed 6",
+        "type": "fibre",
+        "url": "fcon/bundle6.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.8, "b": 0.0}
+    },
+
+    {
+        "id": "bundle7",
+        "name": "motor seed 7",
+        "type": "fibre",
+        "url": "fcon/bundle7.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 1.0, "b": 0.0}
+    },
+
+    {
+        "id": "bundle8",
+        "name": "motor seed 8",
+        "type": "fibre",
+        "url": "fcon/bundle8.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.75, "g": 1.0, "b": 0.0}
+    },
+
+    {
+        "id": "bundle9",
+        "name": "motor seed 9",
+        "type": "fibre",
+        "url": "fcon/bundle9.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.55, "g": 1.0, "b": 0.0}
+    },
+
+    {
+        "id": "bundle10",
+        "name": "motor seed 10",
+        "type": "fibre",
+        "url": "fcon/bundle10.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.33, "g": 1.0, "b": 0.0}
+    },
+
+    {
+        "id": "bundle11",
+        "name": "motor seed 11",
+        "type": "fibre",
+        "url": "fcon/bundle11.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 1.0, "b": 0.59}
+    },
+
+    {
+        "id": "bundle12",
+        "name": "motor seed 12",
+        "type": "fibre",
+        "url": "fcon/bundle12.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 1.0, "b": 1.0}
+    },
+
+    {
+        "id": "bundle13",
+        "name": "motor seed 13",
+        "type": "fibre",
+        "url": "fcon/bundle13.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.67, "b": 1.0}
+    },
+
+    {
+        "id": "bundle14",
+        "name": "motor seed 14",
+        "type": "fibre",
+        "url": "fcon/bundle14.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.42, "b": 1.0}
+    },
+
+    {
+        "id": "bundle15",
+        "name": "motor seed 15",
+        "type": "fibre",
+        "url": "fcon/bundle15.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.0, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle16",
+        "name": "motor seed 16",
+        "type": "fibre",
+        "url": "fcon/bundle16.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.42, "g": 0.0, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle17",
+        "name": "motor seed 17",
+        "type": "fibre",
+        "url": "fcon/bundle17.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.67, "g": 0.0, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle18",
+        "name": "motor seed 18",
+        "type": "fibre",
+        "url": "fcon/bundle18.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle19",
+        "name": "motor seed 19",
+        "type": "fibre",
+        "url": "fcon/bundle19.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 0.33}
+    },
+	
+    {
+        "id": "bundle20",
+        "name": "motor seed 20",
+        "type": "fibre",
+        "url": "fcon/bundle20.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 0.0}
+    },
+	
+    {
+        "id": "bundle21",
+        "name": "motor seed 21",
+        "type": "fibre",
+        "url": "fcon/bundle21.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.27, "b": 0.0}
+    },
+	
+    {
+        "id": "bundle22",
+        "name": "motor seed 22",
+        "type": "fibre",
+        "url": "fcon/bundle22.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.43, "b": 0.0}
+    },
+	
+    {
+        "id": "bundle23",
+        "name": "motor seed 23",
+        "type": "fibre",
+        "url": "fcon/bundle23.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.67, "b": 0.0}
+    },
+	
+    {
+        "id": "bundle24",
+        "name": "motor seed 24",
+        "type": "fibre",
+        "url": "fcon/bundle24.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 1.0, "b": 0.0}
+    },
+	
+    {
+        "id": "bundle25",
+        "name": "motor seed 25",
+        "type": "fibre",
+        "url": "fcon/bundle25.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.33, "g": 1.0, "b": 0.0}
+    },
+	
+    {
+        "id": "bundle26",
+        "name": "motor seed 26",
+        "type": "fibre",
+        "url": "fcon/bundle26.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.92, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle27",
+        "name": "motor seed 27",
+        "type": "fibre",
+        "url": "fcon/bundle27.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.0, "g": 0.0, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle28",
+        "name": "motor seed 28",
+        "type": "fibre",
+        "url": "fcon/bundle28.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 0.67, "g": 0.0, "b": 1.0}
+    },
+	
+    {
+        "id": "bundle29",
+        "name": "motor seed 29",
+        "type": "fibre",
+        "url": "fcon/bundle29.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 0.67}
+    },
+	
+    {
+        "id": "bundle30",
+        "name": "motor seed 30",
+        "type": "fibre",
+        "url": "fcon/bundle30.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": true,
+        "savedColor": false,
+        "transparency": 1.0,
+        "color": {"r": 1.0, "g":0.0, "b": 0.0}
+    }	
+]

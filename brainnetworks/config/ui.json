@@ -1,0 +1,240 @@
+[
+	{
+        "buttonID": "fib1",
+        "mouseover" : ["fib1", "fib2"],
+        "toggles" : ["fib1", "fib2"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib3",
+        "mouseover" : ["fib3", "fib4", "fib15", "fib16"],
+        "toggles" : ["fib3", "fib4", "fib15", "fib16"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib5",
+        "mouseover" : ["fib5", "fib6", "fib17", "fib18"],
+        "toggles" : ["fib5", "fib6", "fib17", "fib18"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib7",
+        "mouseover" : ["fib7", "fib8"],
+        "toggles" : ["fib7", "fib8"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib9",
+        "mouseover" : ["fib9", "fib10"],
+        "toggles" : ["fib9", "fib10"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib11",
+        "mouseover" : ["fib11", "fib12"],
+        "toggles" : ["fib11", "fib12"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib13",
+        "mouseover" : ["fib13", "fib14"],
+        "toggles" : ["fib13", "fib14"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib19",
+        "mouseover" : ["fib19", "fib20"],
+        "toggles" : ["fib19", "fib20"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fib21",
+        "mouseover" : ["fib21", "fib22", "fib23"],
+        "toggles" : ["fib21", "fib22", "fib23"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+    	"buttonID" : "motor",
+    	"mouseover" : ["bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"],
+    	"toggles" : ["homunculus", "bundle1", "bundle2"],
+    	"enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fconall",
+        "mouseover" : ["fconall"],
+        "toggles" : ["fconall"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "fconBA45",
+        "mouseover" : ["fconBA45"],
+        "toggles" : ["fconBA45"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "thresBA45",
+        "mouseover" : ["thresBA45"],
+        "toggles" : ["thresBA45"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundBA45",
+        "mouseover" : ["bundBA45"],
+        "toggles" : ["bundBA45"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "threslang",
+        "mouseover" : ["threslang"],
+        "toggles" : ["threslang"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundlang1",
+        "mouseover" : ["bundlang1"],
+        "toggles" : ["bundlang1"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle1",
+        "mouseover" : ["bundle1", "bundle2"],
+        "toggles" : ["bundle1", "bundle2"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle3",
+        "mouseover" : ["bundle3", "bundle4"],
+        "toggles" : ["bundle3", "bundle4"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle5",
+        "mouseover" : ["bundle5", "bundle6"],
+        "toggles" : ["bundle5", "bundle6"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle7",
+        "mouseover" : ["bundle7", "bundle8"],
+        "toggles" : ["bundle7", "bundle8"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle9",
+        "mouseover" : ["bundle9", "bundle10"],
+        "toggles" : ["bundle9", "bundle10"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle11",
+        "mouseover" : ["bundle11", "bundle12"],
+        "toggles" : ["bundle11", "bundle12"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle13",
+        "mouseover" : ["bundle13", "bundle14"],
+        "toggles" : ["bundle13", "bundle14"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle15",
+        "mouseover" : ["bundle15", "bundle16"],
+        "toggles" : ["bundle15", "bundle16"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle17",
+        "mouseover" : ["bundle17", "bundle18"],
+        "toggles" : ["bundle17", "bundle18"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle19",
+        "mouseover" : ["bundle19", "bundle20"],
+        "toggles" : ["bundle19", "bundle20"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle21",
+        "mouseover" : ["bundle21", "bundle22"],
+        "toggles" : ["bundle21", "bundle22"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle23",
+        "mouseover" : ["bundle23", "bundle24"],
+        "toggles" : ["bundle23", "bundle24"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle25",
+        "mouseover" : ["bundle25", "bundle26"],
+        "toggles" : ["bundle25", "bundle26"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle27",
+        "mouseover" : ["bundle27", "bundle28"],
+        "toggles" : ["bundle27", "bundle28"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "bundle29",
+        "mouseover" : ["bundle29", "bundle30"],
+        "toggles" : ["bundle29", "bundle30"],
+        "enables" : [],
+        "disables": []
+    },
+    {
+        "buttonID": "tex1",
+        "mouseover" : ["tex1"],
+        "toggles" : ["tex1"],
+        "enables" : ["slices"],
+        "disables": ["lhemi", "rhemi"]
+    },
+    {
+        "buttonID": "tex2",
+        "mouseover" : ["tex2"],
+        "toggles" : ["tex2"],
+        "enables" : ["slices"],
+        "disables": ["lhemi", "rhemi"]
+    },
+    {
+        "buttonID": "surf",
+        "mouseover" : [],
+        "toggles" : ["fsaverage5", "fsaverage5_background"],
+        "enables" : [],
+        "disables": ["slices"]
+    }
+]
