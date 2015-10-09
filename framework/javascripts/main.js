@@ -69,6 +69,7 @@ require(['jquery', 'ui', 'io', 'gfx/viewer', 'gfx/mygl', 'gfx/scene', 'html5slid
             		imgs.eq( 1 ).hide();
             		imgs.eq( 0 ).show();
             	}
+                viewer.redraw();
             }
             
             // INIT VIEWER

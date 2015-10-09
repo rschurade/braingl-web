@@ -65,11 +65,11 @@ function redraw() {
 
 function drawScene() {
 	if ( !scene.getValue( 'loadingComplete' ) ) return;
-//	if (!variables.webgl.needsRedraw && variables.webgl.needsRedrawCount > 0 ) {
-//		variables.webgl.needsRedrawCount -= 1;
-//		return;
-//	}
-//	variables.webgl.needsRedrawCount = 10;
+	if (!variables.webgl.needsRedraw && variables.webgl.needsRedrawCount > 0 ) {
+		variables.webgl.needsRedrawCount -= 1;
+		return;
+	}
+	variables.webgl.needsRedrawCount = 10;
 	
 	
 	if (!variables.webgl.needsRedraw && !scene.needsRedraw() ) {

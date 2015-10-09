@@ -84,7 +84,7 @@
         "name": "rs-fMRI connectivity BA45",
         "type": "mesh",
         "url": "fcon/ba45.glyphset_coloured.json",
-        "transparency": 0.5,
+        "transparency": 0.7,
         "display": false
     },
     {
@@ -100,7 +100,7 @@
         "name": "rs-fMRI connectivity BA45 bin",
         "type": "mesh",
         "url": "fcon/ba45seed_redMesh.json",
-        "transparency": 0.5,
+        "transparency": 0.7,
         "display": false
     },
     {
@@ -116,7 +116,7 @@
         "name": "BA44 - pSTG ROI",
         "type": "mesh",
         "url": "fcon/ba44_wernicke_2blobs.json",
-        "transparency": 0.5,
+        "transparency": 0.7,
         "display": false
     },
  {
@@ -459,6 +459,20 @@
 		"color": {"r": 0.1, "g": 0.9, "b": 0.1}
     },
     {
+        "id": "rainbowAll",
+        "name": "fcon motor all seeds",
+        "type": "fibre",
+        "url": "fcon/alldummy.json",
+        "display": false,
+        "display2": false,
+        "allowTube": false,
+        "thinTubes": false,
+        "savedColor": false,
+        "transparency": 0.0,
+        "color": {"r": 1.0, "g": 0.0, "b": 0.0}
+    }
+    ,
+    {
         "id": "bundle1",
         "name": "motor seed 1",
         "type": "fibre",
@@ -468,7 +482,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.0, "b": 0.0}
     },
 
@@ -482,7 +496,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.2, "b": 0.0}
     },
 
@@ -496,7 +510,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.37, "b": 0.0}
     },
 
@@ -510,7 +524,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.55, "b": 0.0}
     },
 
@@ -524,7 +538,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.67, "b": 0.0}
     },
 
@@ -538,7 +552,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.8, "b": 0.0}
     },
 
@@ -552,7 +566,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 1.0, "b": 0.0}
     },
 
@@ -566,7 +580,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.75, "g": 1.0, "b": 0.0}
     },
 
@@ -580,7 +594,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.55, "g": 1.0, "b": 0.0}
     },
 
@@ -594,7 +608,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.33, "g": 1.0, "b": 0.0}
     },
 
@@ -608,7 +622,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 1.0, "b": 0.59}
     },
 
@@ -622,7 +636,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 1.0, "b": 1.0}
     },
 
@@ -636,7 +650,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 0.67, "b": 1.0}
     },
 
@@ -650,7 +664,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 0.42, "b": 1.0}
     },
 
@@ -664,7 +678,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 0.0, "b": 1.0}
     },
 	
@@ -678,7 +692,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.42, "g": 0.0, "b": 1.0}
     },
 	
@@ -692,7 +706,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.67, "g": 0.0, "b": 1.0}
     },
 	
@@ -706,7 +720,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.0, "b": 1.0}
     },
 	
@@ -720,7 +734,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.0, "b": 0.33}
     },
 	
@@ -734,7 +748,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.0, "b": 0.0}
     },
 	
@@ -748,7 +762,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.27, "b": 0.0}
     },
 	
@@ -762,7 +776,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.43, "b": 0.0}
     },
 	
@@ -776,7 +790,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.67, "b": 0.0}
     },
 	
@@ -790,7 +804,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 1.0, "b": 0.0}
     },
 	
@@ -804,7 +818,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.33, "g": 1.0, "b": 0.0}
     },
 	
@@ -818,7 +832,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 0.92, "b": 1.0}
     },
 	
@@ -832,7 +846,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.0, "g": 0.0, "b": 1.0}
     },
 	
@@ -846,7 +860,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 0.67, "g": 0.0, "b": 1.0}
     },
 	
@@ -860,7 +874,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g": 0.0, "b": 0.67}
     },
 	
@@ -874,7 +888,7 @@
         "allowTube": false,
         "thinTubes": true,
         "savedColor": false,
-        "transparency": 0.2,
+        "transparency": 1.0,
         "color": {"r": 1.0, "g":0.0, "b": 0.0}
     }	
 ]
