@@ -215,3 +215,21 @@ a {
 	max-width: 200px;
 	display: none
 }
+
+#webgl-not-supported p {
+	background: url('../images/info.png') 0 0 no-repeat;
+	padding-left: 36px
+}
+
+.no-webgl #toggles,.no-webgl #status,.no-webgl #controls {
+	display: none
+}
+
+.no-webgl #viewer-nav {
+	visibility: hidden
+}
+
+.no-webgl #webgl-not-supported {
+	display: block
+}
+

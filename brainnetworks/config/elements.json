@@ -21,6 +21,15 @@
         "transparency": 0.5,
         "display": false
     },
+	{
+        "id": "lhemi-tex",
+        "name": "Left hemisphere texturized",
+        "type": "texmesh",
+        "url": "lhemi_texturized2.json",
+        "texurl": "Shape.001.png",
+        "transparency": 1.0,
+        "display": false
+    },
     {
         "id": "rhemi",
         "name": "Right hemisphere",

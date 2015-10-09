@@ -45,7 +45,7 @@ void main(void)
 	vec3 color;
 	if ( uFibreColorMode )
 	{
-		color = abs(vNormal);
+		color = vColor.xyz; //abs(vNormal);
 	}
 	else
 	{
@@ -57,7 +57,7 @@ void main(void)
 		
 	lightWeighting = uAmbientColor + uPointLightingDiffuseColor * diffuseLightWeighting;
 
-	color = color * lightWeighting;
+	color = color * lightWeighting  * 2.0;
 	
 	if ( uMinorMode == 4 )
 	{ 
