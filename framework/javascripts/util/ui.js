@@ -189,6 +189,12 @@ $(document).bind('keypress', function(e) {
         case 102: // f
         	toogleFullScreen();
         	break;
+        case 103: // g
+        	arcball.zoomOut();
+        	break;
+        case 104: // 
+        	arcball.zoomIn();
+        	break;
 	}
 });
 

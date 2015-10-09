@@ -1,4 +1,4 @@
-define( ["jquery", './utils', './niftii', './gfx/mygl'], (function($, utils, niftii, mygl) { 
+define( ["jquery", 'utils', 'niftii', 'gfx/mygl'], (function($, utils, niftii, mygl) { 
 
 var niftiis = {};
 var textures =  {};
@@ -39,6 +39,10 @@ function loadElements( addToUI, elementLoaded, allElementsLoaded ) {
     			addToUI( {'id' : el.id, 'name' : el.name, 'type' : 'mesh'} );
     			loadMesh( el, elementLoaded );
     			break;
+    		case "texmesh" :
+    			addToUI( {'id' : el.id, 'name' : el.name, 'type' : 'texmesh'} );
+    			loadTexMesh( el, elementLoaded );
+    			break;
     		case "fibre" :
     			addToUI( {'id' : el.id, 'name' : el.name, 'type' : 'fibre'} );
     			loadFibre(el, elementLoaded);
@@ -48,6 +52,7 @@ function loadElements( addToUI, elementLoaded, allElementsLoaded ) {
     			loadTexture( el, elementLoaded );
     			break;
     			default:
+    				console.log( "********" + el.id );
     		}
     	});
      	allElementsLoaded();
@@ -101,6 +106,54 @@ function loadMesh( el, elementLoaded ) {
 			element.vertices.push( colors[ i * 4 ]);
 			element.vertices.push( colors[ i * 4 + 1 ]);
 			element.vertices.push( colors[ i * 4 + 2 ]);
+		}
+
+		element.transparency = el.transparency;
+		element.hasBuffer = false;
+
+		picking.pickColor = utils.createPickColor(picking.pickIndex);
+		picking.pickArray[picking.pickColor.join()] = el.id;
+		picking.pickIndex++;
+		pc = [];
+		pc[0] = picking.pickColor[0] / 255;
+		pc[1] = picking.pickColor[1] / 255;
+		pc[2] = picking.pickColor[2] / 255;
+		element.pickColor = pc;
+		element.display2 = false;
+		meshes[el.id] = element;
+		
+		elementLoaded( el );
+	});
+}
+
+function loadTexMesh( el, elementLoaded ) {
+	var element = el;
+	$.getJSON(settings.DATA_URL + el.url, function(data) {
+		element.indices  = data.indices;
+		
+		var vertices = data.vertices;
+		if (element.correction) {
+			for ( var m = 0; m < data.vertices.length / 3; ++m) {
+				vertices[3 * m] += data.correction[0];
+				vertices[3 * m + 1] += data.correction[1];
+				vertices[3 * m + 2] += data.correction[2];
+			}
+		}
+		
+		console.log( "vsize " + vertices.length );
+		console.log( "tsize " + data.texcoords.length );
+		
+		element.vertices = [];
+		for ( var i = 0; i < vertices.length /3; ++i ) 
+		{
+			element.vertices.push( vertices[ i * 3 ] );
+			element.vertices.push( vertices[ i * 3 + 1 ] );
+			element.vertices.push( vertices[ i * 3 + 2 ] );
+			element.vertices.push( data.normals[ i * 3 ] );
+			element.vertices.push( data.normals[ i * 3 + 1 ] );
+			element.vertices.push( data.normals[ i * 3 + 2 ] );
+			element.vertices.push( data.texcoords[ i * 2 ] );
+			element.vertices.push( data.texcoords[ i * 2 + 1 ] );
 		}
 
 		element.transparency = el.transparency;

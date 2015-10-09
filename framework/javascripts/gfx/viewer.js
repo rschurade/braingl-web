@@ -21,9 +21,6 @@ mat4.identity( variables.webgl.mvMatrix );
 variables.webgl.mvMatrixInvert = mat4.create(); // model view matrix
 mat4.identity( variables.webgl.mvMatrixInvert );
 variables.webgl.pMatrix = mat4.create(); // projection matrix
-variables.webgl.lightPos = vec3.create(); // light position
-
-
 
 
 //***************************************************************************************************
@@ -95,19 +92,9 @@ function drawScene() {
 
 	variables.webgl.mvMatrix.set( arcball.get() );
 	
-	variables.webgl.lightPos[0] = 0.0;
-	variables.webgl.lightPos[1] = 0.0;
-	variables.webgl.lightPos[2] = -1.0;
-	
-	var lightMat = mat4.create();
-	mat4.set(variables.webgl.mvMatrix, lightMat );
-	mat4.transpose( lightMat );
-	
-	mat4.multiplyVec3(lightMat, variables.webgl.lightPos);
-	
-	
 	mat4.set( variables.webgl.mvMatrix, variables.webgl.mvMatrixInvert );
 	mat4.inverse( variables.webgl.mvMatrixInvert );
+		
 
 	gl.enable(gl.DEPTH_TEST);
 	
@@ -152,10 +139,17 @@ function draw() {
 		drawSlices();
 	}
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency == 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency == 1.0 ) {
 			drawMesh(this);
 		}
 	});
+	
+	$.each(meshes, function() {
+		if ( this.type === "texmesh" && ( this.display || this.display2 ) && this.transparency == 1.0 ) {
+			drawTexMesh(this);
+		}
+	});
+	
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency == 1.0 ) {
 			drawFibers(this);
@@ -175,10 +169,11 @@ function draw() {
 	}
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency == 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency == 1.0 ) {
 			drawMeshTransp(this);
 		}
 	});
+	
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency == 1.0 ) {
 			drawFibersTransp(this);
@@ -199,10 +194,11 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMesh(this);
 		}
 	});
+
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawFibers(this);
@@ -217,7 +213,7 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMeshTransp(this);
 		}
 	});
@@ -240,10 +236,11 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMesh(this);
 		}
 	});
+
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawFibers(this);
@@ -258,7 +255,7 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMeshTransp(this);
 		}
 	});
@@ -281,7 +278,7 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMesh(this);
 		}
 	});
@@ -299,7 +296,7 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMeshTransp(this);
 		}
 	});
@@ -322,7 +319,7 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	$.each(meshes, function() {
-		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
+		if ( this.type === "mesh" && ( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawMesh(this);
 		}
 	});
@@ -529,11 +526,9 @@ function setMeshUniforms() {
 	gl.useProgram(shaders['mesh']);
 	gl.uniformMatrix4fv(shaders['mesh'].uPMatrix, false, variables.webgl.pMatrix);
 	gl.uniformMatrix4fv(shaders['mesh'].uMVMatrix, false, variables.webgl.mvMatrix);
-
+	gl.uniformMatrix4fv(shaders['mesh'].uMVMatrixInvert, false, variables.webgl.mvMatrixInvert );
 	gl.uniform1f(shaders['mesh'].uAlpha, 1.0);
-	gl.uniform3f(shaders['mesh'].uLightLocation, variables.webgl.lightPos[0], variables.webgl.lightPos[1], variables.webgl.lightPos[2]);
 }
-
 
 function drawMesh(elem) {
 	if (!elem || !elem.display || !elem.indices )
@@ -610,6 +605,82 @@ function drawMeshTransp(elem) {
 	gl.disable(gl.CULL_FACE);
 }
 
+function setTexMeshUniforms() {
+	gl.useProgram(shaders['texmesh']);
+	gl.uniformMatrix4fv(shaders['texmesh'].uPMatrix, false, variables.webgl.pMatrix);
+	gl.uniformMatrix4fv(shaders['texmesh'].uMVMatrix, false, variables.webgl.mvMatrix);
+
+	gl.uniform1f(shaders['texmesh'].uAlpha, 1.0);
+	gl.uniform3f(shaders['texmesh'].uLightLocation, variables.webgl.lightPos[0], variables.webgl.lightPos[1], variables.webgl.lightPos[2]);
+}
+
+
+function handleTextureLoaded(image, texture) {
+	gl.activeTexture(gl.TEXTURE1);
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.bindTexture(gl.TEXTURE_2D, null);
+	
+	console.log( "max tex units: " + gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS ) );
+}
+
+function drawTexMesh(elem) {
+	if (!elem || !elem.display || !elem.indices )
+		return;
+
+	setTexMeshUniforms();
+	gl.enableVertexAttribArray(shaders['texmesh'].aVertexPosition);
+	gl.enableVertexAttribArray(shaders['texmesh'].aVertexNormal);
+	gl.enableVertexAttribArray(shaders['texmesh'].aTextureCoord);
+		
+	if ( !elem.hasBuffer ) {
+		bindMeshBuffers(elem);
+	}
+	
+	if ( !elem.texture )
+	{
+		meshTexture = gl.createTexture();
+		texImage = new Image();
+		texImage.onload = function() { handleTextureLoaded(texImage, meshTexture); };
+		console.log( settings.DATA_URL + elem.texurl );
+		texImage.src = settings.DATA_URL + elem.texurl;
+		elem.texture = meshTexture;
+	}
+	else
+	{
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, elem.texture );
+		gl.uniform1i(shaders['texmesh'].uSampler1, 1);
+	}
+	
+	gl.bindBuffer(gl.ARRAY_BUFFER, elem.vertexPositionBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, elem.vertexPositionBuffer.data, gl.STATIC_DRAW);
+	
+	gl.vertexAttribPointer(shaders['texmesh'].aVertexPosition, 3, gl.FLOAT, false, 32, 0);
+	gl.vertexAttribPointer(shaders['texmesh'].aVertexNormal, 3, gl.FLOAT, false, 32, 12);
+	gl.vertexAttribPointer(shaders['texmesh'].aTextureCoord, 2, gl.FLOAT, false, 32, 24);
+	
+	setPeelUniforms( 'texmesh' );
+	gl.uniform1f(shaders['texmesh'].uAlpha, 1.0);
+	
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elem.vertexIndexBuffer);
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elem.vertexIndexBuffer.data, gl.STATIC_DRAW);
+
+	gl.enable(gl.DEPTH_TEST);
+	gl.enable(gl.CULL_FACE);
+	gl.cullFace( gl.BACK );
+	gl.frontFace( gl.CW );
+
+	gl.drawElements(gl.TRIANGLES, elem.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, null);
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+	gl.disable(gl.CULL_FACE);
+}
+
 function bindMeshBuffers(elem) {
 	var vertexPositionBuffer = gl.createBuffer();
 	vertexPositionBuffer.data = new Float32Array(elem.vertices);
@@ -630,7 +701,7 @@ function setFibreLineUniforms() {
 	gl.uniformMatrix4fv(shaders['fibre_l'].uMVMatrix, false, variables.webgl.mvMatrix);
 	gl.uniformMatrix4fv(shaders['fibre_l'].uMVMatrixInvert, false, variables.webgl.mvMatrixInvert );
 	gl.uniform1f(shaders['fibre_l'].uAlpha, 1.0);
-	gl.uniform3f(shaders['fibre_l'].uLightLocation, variables.webgl.lightPos[0], variables.webgl.lightPos[1], variables.webgl.lightPos[2]);
+	//gl.uniform3f(shaders['fibre_l'].uLightLocation, variables.webgl.lightPos[0], variables.webgl.lightPos[1], variables.webgl.lightPos[2]);
 }
 
 

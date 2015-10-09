@@ -9,6 +9,10 @@ varying vec3 vLightPos;
 varying vec3 vNormal;
 varying vec3 vColor;
 
+varying vec4 vViewDir;
+varying vec4 vLightDir;
+
+
 uniform vec2 uCanvasSize;
 // uMinorMode = 0 render, 1 pick, 2 autoscale, 4 C0, 5 D0, 6 D1, 7 D2, 8 D1b, 9 C1, 10 C2, 11 C3, 12 C4
 uniform int uMinorMode;
@@ -34,24 +38,54 @@ float decode( vec4 d )
     return ( 65536.0 * d[0] + 256.0 * d[1] + d[2] ) / 16777216.0;
 }
 
-vec3 lightAt( vec3 diffuse_color, vec3 specular_color )
+vec4 blinnPhongIllumination( vec3 ambient, vec3 diffuse, vec3 specular, float shininess,
+                             vec3 lightColor, vec3 ambientLight,
+                             vec3 normalDir, vec3 viewDir, vec3 lightDir )
 {
-	vec3 light_ambient = vec3( 0.4 );
+    normalDir *= sign( dot( normalDir, viewDir ) );
 
-	vec3 color;
-	color = light_ambient * diffuse_color;
+    vec3 H =  normalize( lightDir + viewDir );
 
-	vec3 L = vLightPos;
-	L = normalize(L);
+    // compute ambient term
+    vec3 ambientV = ambient * ambientLight;
 
-	color += specular_color * max( dot( vNormal, L ), 0.0 ) * diffuse_color;
+    // compute diffuse term
+    float diffuseLight = max( dot( lightDir, normalDir ), 0.0 );
+    vec3 diffuseV = diffuse * diffuseLight;
 
-	return color;
+    // compute specular term
+    float specularLight = pow( max( dot( H, normalDir ), 0.0 ), shininess );
+    if( diffuseLight <= 0. ) 
+    {
+        specularLight = 0.;
+    }
+    vec3 specularV = specular * specularLight;
+
+    return vec4( ambientV + ( diffuseV + specularV ) * lightColor, 1.0 );
 }
 
 void main(void) 
 {
-	vec3 color = lightAt( vColor, vec3(.6,.6,.6) );
+	vec3 diffuse = vec3( 1.0, 1.0, 1.0 );
+    vec3 ambient = vec3( 1.0, 1.0, 1.0 );
+	
+	vec3 color = blinnPhongIllumination(
+            // material properties
+            vColor.rgb * 0.5,                 // ambient color
+            vColor.rgb * 0.5,                 // diffuse color
+            vColor.rgb * 0.8,                 // specular color
+            1.0,                              // shininess
+        
+            // light color properties
+            diffuse * 0.5,         // light color
+            ambient * 0.5,         // ambient light
+        
+            // directions
+            normalize( vNormal ),               // normal
+            vViewDir.xyz,                       // viewdir
+            vLightDir.xyz ).xyz;                // light direction
+	
+	
 	if ( uMinorMode == 4 )
 	{ 
 		gl_FragColor = vec4( color, uAlpha );
