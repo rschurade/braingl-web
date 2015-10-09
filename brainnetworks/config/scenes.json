@@ -5,7 +5,7 @@
 		"isView" : true,
 		"cameraPosition": [2.0, -2.2, 0.2],
 		"elementsAvailable": [],
-		"elementsActive": [lhemi-tex],
+		"elementsActive": [],
 		"cameraTranslation": [0, 0],
 		"cameraZoom": 1.0
 	},
