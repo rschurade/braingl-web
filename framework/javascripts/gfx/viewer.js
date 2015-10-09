@@ -531,7 +531,7 @@ function setMeshUniforms() {
 }
 
 function drawMesh(elem) {
-	if (!elem || !elem.display || !elem.indices )
+	if (!elem || !elem.indices )
 		return;
 
 	setMeshUniforms();
@@ -569,7 +569,7 @@ function drawMesh(elem) {
 }
 
 function drawMeshTransp(elem) {
-	if (!elem || !elem.display || !elem.indices )
+	if (!elem || !elem.indices )
 		return;
 
 	gl.useProgram(shaders['mesh_transp']);
