@@ -65,16 +65,18 @@ function redraw() {
 
 function drawScene() {
 	if ( !scene.getValue( 'loadingComplete' ) ) return;
+	/*
 	if (!variables.webgl.needsRedraw && variables.webgl.needsRedrawCount > 0 ) {
 		variables.webgl.needsRedrawCount -= 1;
 		return;
 	}
 	variables.webgl.needsRedrawCount = 10;
-	
-	
+	*/
+	/*
 	if (!variables.webgl.needsRedraw && !scene.needsRedraw() ) {
 		return;
 	}
+	*/
 
 	variables.webgl.needsRedraw = false;
 	
@@ -174,6 +176,12 @@ function draw() {
 		}
 	});
 	
+	$.each(meshes, function() {
+		if ( this.type === "texmesh" && ( this.display || this.display2 ) && this.transparency == 1.0 ) {
+			drawTexMeshTransp(this);
+		}
+	});
+	
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency == 1.0 ) {
 			drawFibersTransp(this);
@@ -240,7 +248,7 @@ function draw() {
 			drawMesh(this);
 		}
 	});
-
+	
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawFibers(this);
@@ -282,6 +290,8 @@ function draw() {
 			drawMesh(this);
 		}
 	});
+	
+	
 	$.each(fibres, function() {
 		if (( this.display || this.display2 ) && this.transparency < 1.0 ) {
 			drawFibers(this);
@@ -530,6 +540,15 @@ function setMeshUniforms() {
 	gl.uniform1f(shaders['mesh'].uAlpha, 1.0);
 }
 
+function setTexMeshUniforms() {
+	gl.useProgram(shaders['texmesh']);
+	gl.uniformMatrix4fv(shaders['texmesh'].uPMatrix, false, variables.webgl.pMatrix);
+	gl.uniformMatrix4fv(shaders['texmesh'].uMVMatrix, false, variables.webgl.mvMatrix);
+	gl.uniformMatrix4fv(shaders['texmesh'].uMVMatrixInvert, false, variables.webgl.mvMatrixInvert );
+	gl.uniform1f(shaders['texmesh'].uAlpha, 1.0);
+}
+
+
 function drawMesh(elem) {
 	if (!elem || !elem.indices )
 		return;
@@ -605,17 +624,7 @@ function drawMeshTransp(elem) {
 	gl.disable(gl.CULL_FACE);
 }
 
-function setTexMeshUniforms() {
-	gl.useProgram(shaders['texmesh']);
-	gl.uniformMatrix4fv(shaders['texmesh'].uPMatrix, false, variables.webgl.pMatrix);
-	gl.uniformMatrix4fv(shaders['texmesh'].uMVMatrix, false, variables.webgl.mvMatrix);
-
-	gl.uniform1f(shaders['texmesh'].uAlpha, 1.0);
-	gl.uniform3f(shaders['texmesh'].uLightLocation, variables.webgl.lightPos[0], variables.webgl.lightPos[1], variables.webgl.lightPos[2]);
-}
-
-
-function handleTextureLoaded(image, texture) {
+function handleTextureLoaded(image, texture, elem ) {
 	gl.activeTexture(gl.TEXTURE1);
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
@@ -624,11 +633,13 @@ function handleTextureLoaded(image, texture) {
 	gl.generateMipmap(gl.TEXTURE_2D);
 	gl.bindTexture(gl.TEXTURE_2D, null);
 	
+	elem.texture = texture;
+	
 	console.log( "max tex units: " + gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS ) );
 }
 
 function drawTexMesh(elem) {
-	if (!elem || !elem.display || !elem.indices )
+	if ( !elem || !elem.indices )
 		return;
 
 	setTexMeshUniforms();
@@ -644,14 +655,13 @@ function drawTexMesh(elem) {
 	{
 		meshTexture = gl.createTexture();
 		texImage = new Image();
-		texImage.onload = function() { handleTextureLoaded(texImage, meshTexture); };
+		texImage.onload = function() { handleTextureLoaded(texImage, meshTexture, elem); };
 		console.log( settings.DATA_URL + elem.texurl );
 		texImage.src = settings.DATA_URL + elem.texurl;
-		elem.texture = meshTexture;
 	}
 	else
 	{
-		gl.activeTexture(gl.TEXTURE1);
+		gl.activeTexture( gl.TEXTURE1 );
 		gl.bindTexture(gl.TEXTURE_2D, elem.texture );
 		gl.uniform1i(shaders['texmesh'].uSampler1, 1);
 	}
@@ -665,6 +675,56 @@ function drawTexMesh(elem) {
 	
 	setPeelUniforms( 'texmesh' );
 	gl.uniform1f(shaders['texmesh'].uAlpha, 1.0);
+	
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elem.vertexIndexBuffer);
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elem.vertexIndexBuffer.data, gl.STATIC_DRAW);
+
+	gl.enable(gl.DEPTH_TEST);
+	gl.enable(gl.CULL_FACE);
+	gl.cullFace( gl.BACK );
+	gl.frontFace( gl.CW );
+
+	gl.drawElements(gl.TRIANGLES, elem.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, null);
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+	gl.disable(gl.CULL_FACE);
+}
+
+function drawTexMeshTransp(elem) {
+	if ( !elem || !elem.indices )
+		return;
+	
+	gl.useProgram(shaders['texmesh_transp']);
+	gl.enableVertexAttribArray(shaders['texmesh_transp'].aVertexPosition);
+	gl.uniformMatrix4fv(shaders['texmesh_transp'].uPMatrix, false, variables.webgl.pMatrix);
+	gl.uniformMatrix4fv(shaders['texmesh_transp'].uMVMatrix, false, variables.webgl.mvMatrix);
+	
+	setPeelUniforms( 'texmesh_transp' );
+	gl.uniform1f(shaders['texmesh_transp'].uAlpha, 1.0 );
+
+	gl.enableVertexAttribArray(shaders['texmesh_transp'].aVertexPosition);
+		
+	if ( !elem.hasBuffer ) {
+		bindMeshBuffers(elem);
+	}
+	
+	if ( !elem.texture )
+	{
+		return;
+	}
+	else
+	{
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, elem.texture );
+		gl.uniform1i(shaders['texmesh_transp'].uSampler1, 1);
+	}
+	
+	gl.bindBuffer(gl.ARRAY_BUFFER, elem.vertexPositionBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, elem.vertexPositionBuffer.data, gl.STATIC_DRAW);
+	
+	gl.vertexAttribPointer(shaders['texmesh_transp'].aVertexPosition, 3, gl.FLOAT, false, 32, 0);
+	
 	
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elem.vertexIndexBuffer);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elem.vertexIndexBuffer.data, gl.STATIC_DRAW);

@@ -85,6 +85,7 @@ function loadShaders() {
 	getShader('mesh');
 	getShader('mesh_transp');
 	getShader('texmesh');
+	getShader('texmesh_transp');
 	getShader('fibre_l');
 	getShader('fibre_l_transp');
 	getShader('fibre_t');

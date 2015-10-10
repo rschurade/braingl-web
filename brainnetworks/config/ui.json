@@ -77,6 +77,13 @@
         "disables": ["fconBA45", "thresBA45", "threslang", "bundBA45", "bundlang1", "bundlang2", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"]
     },
     {
+        "buttonID": "lhemi-tex",
+        "mouseover" : ["lhemi-tex"],
+        "toggles" : ["lhemi-tex"],
+        "enables" : [],
+        "disables": ["fconBA45", "thresBA45", "threslang", "bundBA45", "bundlang1", "bundlang2", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"]
+    },
+    {
         "buttonID": "fconBA45",
         "mouseover" : ["fconBA45", "fconBA45_background", "fsaverage5", "fsaverage5_background", "bundBA45"],
         "toggles" : ["fconBA45", "fconBA45_background", "fsaverage5", "fsaverage5_background", "bundBA45"],
