@@ -159,13 +159,6 @@ a {
 	margin: 4px 0
 }
 
-.texSliders input[type="range"] {
-	-webkit-appearance: none;
-	background: #aeaead;
-	width: 100%;
-	margin: 4px 0
-}
-
 .motorHomunculus {
 	float: left;
 	padding-right: 5px
@@ -178,6 +171,13 @@ a {
 .rainbowButtons2 {
 	float: left;
 	padding-left: 21px
+}
+
+.texSliders input[type="range"] {
+	-webkit-appearance: none;
+	background: #aeaead;
+	width: 100%;
+	margin: 4px 0
 }
 
 ::-webkit-slider-thumb {
