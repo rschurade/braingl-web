@@ -166,9 +166,18 @@ a {
 	margin: 4px 0
 }
 
-.test1 {
+.motorHomunculus {
 	float: left;
-	padding-right: 15px
+	padding-right: 5px
+}
+
+.rainbowButtons1 {
+	float: left;
+}
+
+.rainbowButtons2 {
+	float: left;
+	padding-left: 21px
 }
 
 ::-webkit-slider-thumb {
