@@ -502,26 +502,6 @@ function needsRedraw()
 	return ret;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 return {
 	init : init,
 	setValue : setValue,
