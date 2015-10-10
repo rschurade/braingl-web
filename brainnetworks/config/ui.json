@@ -85,10 +85,10 @@
     },
     {
         "buttonID": "thresBA45",
-        "mouseover" : ["thresBA45"],
-        "toggles" : ["thresBA45", "bundBA45"],
+        "mouseover" : ["thresBA45", "thresBA45_background"],
+        "toggles" : ["thresBA45", "thresBA45_background", "bundBA45"],
         "enables" : [],
-        "disables": ["fconall", "fconBA45", "threslang", "bundlang1", "bundlang2", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"]
+        "disables": ["fconall", "fconBA45", "fconBA45_background", "threslang", "bundlang1", "bundlang2", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"]
     },
     {
         "buttonID": "bundBA45",
@@ -99,10 +99,10 @@
     },
     {
         "buttonID": "threslang",
-        "mouseover" : ["threslang"],
+        "mouseover" : ["threslang", "threslang_background"],
         "toggles" : ["threslang", "bundlang1", "bundlang2"],
         "enables" : [],
-        "disables": ["fconall", "fconBA45", "thresBA45", "bundBA45", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"]
+        "disables": ["fconall", "fconBA45", "fconBA45_background", "thresBA45", "bundBA45", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"]
     },
     {
         "buttonID": "bundlang",
@@ -249,6 +249,13 @@
         "buttonID": "surf",
         "mouseover" : [],
         "toggles" : ["fsaverage5", "fsaverage5_background"],
+        "enables" : [],
+        "disables": ["slices"]
+    },
+    {
+        "buttonID": "texMyelo",
+        "mouseover" : [],
+        "toggles" : ["lhemi_texturized2"],
         "enables" : [],
         "disables": ["slices"]
     }
