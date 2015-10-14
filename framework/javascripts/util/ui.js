@@ -398,9 +398,9 @@ var sliderChangeHandler = function(property) {
     	scene.setValue( property, parseFloat(value) );
     };
 };
-$('#sliceX').bind('change', sliderChangeHandler('sagittal')).trigger('change');
-$('#sliceY').bind('change', sliderChangeHandler('coronal')).trigger('change');
-$('#sliceZ').bind('change', sliderChangeHandler('axial')).trigger('change');
+$('#sliceX').bind('input', sliderChangeHandler('sagittal')).trigger('input');
+$('#sliceY').bind('input', sliderChangeHandler('coronal')).trigger('input');
+$('#sliceZ').bind('input', sliderChangeHandler('axial')).trigger('input');
 
 
 $('a[href="#gray"]').click(function(e) {
