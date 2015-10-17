@@ -133,19 +133,19 @@ function get()
 
 function zoomIn() {
 	if ( m_zoom < 1.0 ) {
-		m_zoom += 0.1;
+		m_zoom += 0.05;
 	}
 	else {
-		m_zoom += 0.5;
+		m_zoom += ( m_zoom - 0.9 ) / 2;
 	}
 }
 
 function zoomOut() {
 	if ( m_zoom < 1.0 ) {
-		m_zoom -= 0.1;
+		m_zoom -= 0.05;
 	}
 	else {
-		m_zoom -= 0.5;
+		m_zoom -= ( m_zoom - 0.9 ) / 2;
 	}
 	if ( m_zoom < 0.1 ) {
 		m_zoom = 0.1;

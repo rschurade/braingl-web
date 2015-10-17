@@ -1,52 +1,152 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-	<meta charset="utf-8">
-    <title>Surfing the connectome: an interactive combined visualization of structural and functional connectivity</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/screenstart.css" />
-	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />	
-</head>
-
-<body>
-	<div class="controlTab" id="links">
-		<a href="http://www.cbs.mpg.de" style='font-weight:bold'>--><img src="images/logo3.png">  </a>
-	</div>
-	<div class="col1">
-		<p class="col-text">
-		<br>
-		INTRODUCTION <br>
-		<br>
-		brainnetworks is a new open source web platform called brainGL to interactively publish functional and structural connectivity data directly in the web browser. The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.<br>
-		<!--<br>
-		Diffusion MRI: structural connectivity
-		<br>
-		<br>
-		diffusion MRI tractography and selected the 9 major long-range fascicles (AF, SLF, IFOF, UNC, ILF, CG, CC, SCST and TR). 
-		<br>
-		<br>
-		rs-fMRI: functional connectivity <br>
-		For comparison of the functional bundles with the structural connectivity and the location of the fascicles surface connectivity maps and edge-bundled representations of thresholded functional connections between ROIs (Boettger et al. 2013). The connectivity data was exported to be visualized in the brainGL web application (http://conview.googlecode.com).  
-		</p>
-		<a href="" id="indexmain.html" >
-		<img src="static/images/fib_icons/light/fib1.png" title="arcuate fascicle">
-		</a>-->
-		</p>
-    </div>
-	
-	<div class="col2">
-		<p class="col-text">
-		<br>
+    <head>
+        <meta charset="utf-8">
+        <title>Surf the Connectome: 3D Functional and Structural Human Brain Networks</title>
+        <link rel="stylesheet" type="text/css" href="stylesheets/screen.css" />
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />	
+		<script data-main="../framework/javascripts/main" src="../framework/javascripts/require-jquery.js"></script>    
+    </head>
+    <body>
+    	<div class="controlTab" id="links">
+    		<!-- <a href="http://www.cbs.mpg.de" style='font-weight:bold'>--><img src="images/logo3.png"><!--  </a> -->
+    	</div>
 		
-		brainnetworks is a new open source web platform called brainGL to interactively publish functional and structural connectivity data directly in the web browser. The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.<br>
-		</p>
-	</div>
-	
-	<div class="col3">
-		<p class="col-text">
-		<br>
-		INTRODUCTION <br>
-		</p>
-	</div>
-</body>
+		<div class="controlTab" id="status">
+			Loading...Please wait.
+		</div>
+
+		<div class="controlTab">
+            <section id="viewButtons">
+				<p>Diffusion MRI: structural connectivity</p>
+                <br>
+                <a href="" id="fib1" >
+               		<img src="images/fib_icons/light/fib1.png" title="arcuate fascicle">
+               		<img src="images/fib_icons/dark/fib1.png" style="display:none" title="arcuate fascicle"></a>
+                <a href="" id="fib3" >
+					<img src="images/fib_icons/light/fib3.png" title="superior longitudinal fascicle, arcuate fascicle">
+					<img src="images/fib_icons/dark/fib3.png" style="display:none" title="superior longitudinal fascicle, arcuate fascicle"></a>
+                <a href="" id="fib11">
+					<img src="images/fib_icons/light/fib11.png" title="extreme capsule fiber system">
+					<img src="images/fib_icons/dark/fib11.png" style="display:none" title="extreme capsule fiber system"></a>
+                <br>
+                <a href="" id="fib19">
+					<img src="images/fib_icons/light/fib19.png" title="uncinate fascicle">
+					<img src="images/fib_icons/dark/fib19.png" style="display:none" title="uncinate fascicle"></a>
+                <a href="" id="fib13">
+					<img src="images/fib_icons/light/fib13.png" title="inferior longitudinal fascicle">
+					<img src="images/fib_icons/dark/fib13.png" style="display:none" title="inferior longitudinal fascicle"></a>
+                <a href="" id="fib7">
+					<img src="images/fib_icons/light/fib7.png" title="cingulum">
+					<img src="images/fib_icons/dark/fib7.png" style="display:none" title="cingulum"></a>
+                <br>
+                <a href="" id="fib9">
+					<img src="images/fib_icons/light/fib9.png" title="corticospinal tract">
+					<img src="images/fib_icons/dark/fib9.png" style="display:none" title="corticospinal tract"></a>
+                <a href="" id="fib5">
+					<img src="images/fib_icons/light/fib5.png" title="thalamic radiation">
+					<img src="images/fib_icons/dark/fib5.png" style="display:none" title="thalamic radiation"></a>
+                <a href="" id="fib21">
+					<img src="images/fib_icons/light/fib21.png" title="corpus callosum">
+					<img src="images/fib_icons/dark/fib21.png" style="display:none" title="corpus callosum"></a>
+            </section>
+        
+            <section id="viewButtons">
+				<p>rs-fMRI: functional connectivity</p>
+                <br>
+                <!-- 
+                <a href="" id="motor">    
+					<img src="images/fib_icons/light/motor.png" title="rsf-conn seeded in right motor cortex">
+					<img src="images/fib_icons/dark/motor.png" style="display:none" title="rsf-conn seeded in right motor cortex"></a>
+				-->
+				<!--
+				<a href="" id="black">    
+					<img src="images/fib_icons/light/black.png">
+					<img src="images/fib_icons/dark/black.png" style="display:none"></a>
+                -->
+                <a href="" id="fconBA45"> 
+					<img src="images/fib_icons/light/fconBA45.png" title="rsf-conn seeded in BA 45">
+					<img src="images/fib_icons/dark/fconBA45.png" style="display:none" title="rsf-conn seeded in BA 45"></a>
+				<a href="" id="thresBA45">
+					<img src="images/fib_icons/light/thresBA45.png" title="thresholded rsf-conn seeded in BA 45">
+					<img src="images/fib_icons/dark/thresBA45.png" style="display:none" title="thresholded rsf-conn seeded in BA 45"></a>
+				<a href="" id="threslang">
+					<img src="images/fib_icons/light/threslang.png" title="thresholded rsf-conn seeded in BA 45 and BA44">
+					<img src="images/fib_icons/dark/threslang.png" style="display:none" title="thresholded rsf-conn seeded in BA 45 and BA44"></a>	
+                <br>
+              	<a href="" id="fconall">  
+					<img src="images/fib_icons/light/fconall.png" title="whole brain rsf-connectivity">
+					<img src="images/fib_icons/dark/fconall.png" style="display:none" title="whole brain rsf-connectivity"></a>
+                <a href="" id="bundBA45"> 
+					<img src="images/fib_icons/light/bundBA45.png" title="rsf-conn bundles seeded in BA 45">
+					<img src="images/fib_icons/dark/bundBA45.png" style="display:none" title="rsf-conn bundles seeded in BA 45"></a>
+                <a href="" id="bundlang">
+					<img src="images/fib_icons/light/bundlang.png" title="rsf-conn bundles seeded in BA 45 and BA44">
+					<img src="images/fib_icons/dark/bundlang.png" style="display:none" title="rsf-conn bundles seeded in BA 45 and BA44"></a>
+            </section>
+
+            <section id="viewButtons">
+        	<div class="motorHomunculus">
+        		<a href="" id="homunculus">    
+					<img src="images/fib_icons/light/motor.png" title="rsf-conn seeded in right motor cortex">
+					<img src="images/fib_icons/dark/motor.png" style="display:none" title="rsf-conn seeded in right motor cortex"></a>
+        	</div>
+    	    <div class="rainbowButtons1">
+    	    	<a href="" id="rainbowNone"> <img src="images/fib_icons/light/rainbowNone.png"><img src="images/fib_icons/dark/rainbowNone.png" style="display:none"></a>
+			    <a href="" id="rainbowAll"> <img src="images/fib_icons/light/rainbowAll.png"><img src="images/fib_icons/dark/rainbowAll.png" style="display:none"></a>
+	 	        <a href="" id="bundle1"> <img src="images/fib_icons/light/bundle1.png"><img src="images/fib_icons/dark/bundle1.png" style="display:none"></a>
+	 	        <a href="" id="bundle3"> <img src="images/fib_icons/light/bundle3.png"><img src="images/fib_icons/dark/bundle3.png" style="display:none"></a>
+	 	        <a href="" id="bundle5"> <img src="images/fib_icons/light/bundle5.png"><img src="images/fib_icons/dark/bundle5.png" style="display:none"></a>
+	 	        <a href="" id="bundle7"> <img src="images/fib_icons/light/bundle7.png"><img src="images/fib_icons/dark/bundle7.png" style="display:none"></a>
+	 	        <a href="" id="bundle9"> <img src="images/fib_icons/light/bundle9.png"><img src="images/fib_icons/dark/bundle9.png" style="display:none"></a>
+	 	        <a href="" id="bundle11"> <img src="images/fib_icons/light/bundle11.png"><img src="images/fib_icons/dark/bundle11.png" style="display:none"></a>
+	 	        <a href="" id="bundle13"> <img src="images/fib_icons/light/bundle13.png"><img src="images/fib_icons/dark/bundle13.png" style="display:none"></a>
+	 	        <br>
+	 	    </div>
+	 	    <div class="rainbowButtons2">
+	 	        <a href="" id="bundle15"> <img src="images/fib_icons/light/bundle15.png"><img src="images/fib_icons/dark/bundle15.png" style="display:none"></a>
+	 	        <a href="" id="bundle17"> <img src="images/fib_icons/light/bundle17.png"><img src="images/fib_icons/dark/bundle17.png" style="display:none"></a>
+	 	        <a href="" id="bundle19"><img src="images/fib_icons/light/bundle19.png"><img src="images/fib_icons/dark/bundle19.png" style="display:none"></a>
+	 	        <a href="" id="bundle21"><img src="images/fib_icons/light/bundle21.png"><img src="images/fib_icons/dark/bundle21.png" style="display:none"></a>
+	 	        <a href="" id="bundle23"><img src="images/fib_icons/light/bundle23.png"><img src="images/fib_icons/dark/bundle23.png" style="display:none"></a>
+	 	        <a href="" id="bundle25"><img src="images/fib_icons/light/bundle25.png"><img src="images/fib_icons/dark/bundle25.png" style="display:none"></a>
+	 	        <a href="" id="bundle27"><img src="images/fib_icons/light/bundle27.png"><img src="images/fib_icons/dark/bundle27.png" style="display:none"></a>
+	 	        <a href="" id="bundle29"><img src="images/fib_icons/light/bundle29.png"><img src="images/fib_icons/dark/bundle29.png" style="display:none"></a>
+ 	        </div>
+     	    </section>
+    	
+    	    <section id="viewButtons">
+    	    	<!--
+    	    	<a href="" id="lhemi-tex"><img src="images/texMyelo.png" title="myelin map"><img src="images/texMyelo.png" style="display:none"></a>
+    	    	<br>
+    	    	-->
+    	        <a href="" id="tex1"><img src="images/gray.png" title="anatomy"></a>
+    	        <a href="" id="tex2"><img src="images/fa_rgb.png" title="direction FA"></a>
+    	        <a href="" id="surf"><img src="images/surface.png" title="surface"></a>
+    	    </section>
+    	
+            <section id="textures">
+                <div id="controls-slices">
+                    <div><label for="sliceX">X </label><input type="range" min="0" max="160" id="sliceX" value="80" step="1" /> <span class="value"></span></div>
+                    <div><label for="sliceY">Y </label><input type="range" min="0" max="200" id="sliceY" value="100" step="1" /> <span class="value"></span></div>
+                    <div><label for="sliceZ">Z </label><input type="range" min="0" max="160" id="sliceZ" value="80" step="1" /> <span class="value"></span></div>
+                </div>
+            </section>
+            Copyright &copy 2014 <a style="color:#a0a0a0" href="http://www.cbs.mpg.de/~heuer">K. Heuer</a>, <a style="color:#a0a0a0" href="http://www.cbs.mpg.de/~schurade">R. Schurade</a>, <a style="color:#a0a0a0" href="http://www.cbs.mpg.de/~anwander">A. Anwander</a>
+        </div>
+    	
+        <!--
+	    <div class="controlTab">
+    	<section id="sceneButtons"></section>
+    	</div>  
+    	-->
+		
+		<div id="viewer-div">
+			<canvas id="viewer-canvas"></canvas>
+		</div>
+
+		<div id="status"></div>
+
+		<script>window.settings = {'DATA_URL': './data/', 'CONFIG_URL': './config/'};</script>
+    </body>
 </html>

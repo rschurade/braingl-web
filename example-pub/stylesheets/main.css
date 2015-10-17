@@ -1,5 +1,5 @@
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video
-	{
+{
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -40,8 +40,7 @@ a img {
 	border: none
 }
 
-article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
-	{
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
 	display: block
 }
 
@@ -49,19 +48,22 @@ body {
 	font-family: sans-serif;
 	padding: 24px 0;
 	overflow-y: scroll;
-	background-color: #f7f6ed;
-	color: #61595c;
-	font-family: "Droid Serif", serif;
+	/*background-color: #f7f6ed;*/					/*background-color of web page: beige*/
+	background-color: #eeeeee;						/*background-color of web page: light grey*/
+	/*color: #61595c;*/								/*font color dark warm grey*/
+	color: #000000;									/*font color of texts: black*/
+	/*font-family: "Droid Serif", serif;*/ 
+	font-family: "Droid Sans", sans-serif;
 	font-size: 15px
 }
 
 a {
-	color: #a21226;
+	color: #a21226; 								/*font color dark red*/
 	text-decoration: none
 }
 
 #wrapper,#sidebar-container {
-	width: 966px;
+	width: 1536px;
 	margin: 0 auto
 }
 
@@ -81,13 +83,14 @@ a {
 }
 
 #content-outer {
-	background: #fefefd;
+	/*background: #fefefd;*/  						/*background color of figures: light beige*/
+	background: #ffffff;							/*background color of figures: white*/
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	padding: 40px 24px;
-	width: 502px;
+	width: 912px;
 	padding-bottom: 60px;
 	overflow: hidden;
 	position: relative
@@ -110,7 +113,6 @@ a {
 }
 
 #viewer {
-	background: #fefefd;
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -121,7 +123,8 @@ a {
 }
 
 #toggles,#webgl-not-supported {
-	background: #fefefd;
+	/*background: #fefefd;*/
+	background: #ffffff;
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -170,7 +173,7 @@ a {
 }
 
 a.flash {
-	color: #cc8489;
+	color: #cc8489; /*muddy red*/
 	outline: 2px solid #cc8489;
 	outline-offset: 2px
 }
@@ -245,7 +248,8 @@ p+p,.line-block+p {
 }
 
 h1,h2,h3,h4,h5,h6 {
-	color: #61595c;
+	/*color: #61595c;*/ 						/*font color of headings and captions*/
+	color: #000000;
 	font-family: "Droid Sans", sans-serif;
 	font-weight: bold;
 	margin: 1em 0 0.5em;
@@ -287,18 +291,20 @@ strong {
 }
 
 #content a.source:hover {
-	color: #a21226
+	color: #a21226;  							
+	/*dark red*/ 
 }
 
 #content a.glossary {
 	cursor: help;
 	color: inherit;
-	border-bottom: 1px dotted #61595c
+	/*border-bottom: 1px dotted #61595c;*/ 		/*dark grey*/
+	border-bottom: 1px dotted #000000
 }
 
 #content a.scene,#content a.highlight {
 	color: inherit;
-	background-color: #eae9e1;
+	background-color: #eeeeee; 					/*#eae9e1; for leight beige*/ 
 	padding: 0 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -309,13 +315,13 @@ strong {
 }
 
 #content a.scene:hover {
-	color: #a21226
+	color: #a21226; 							/*dark red*/
 }
 
 .prev-next {
 	position: absolute;
-	left: -8px;
-	right: -8px
+	left: -9px;
+	right: -9px
 }
 
 .prev-next.top {
@@ -328,29 +334,21 @@ strong {
 
 .prev-next a {
 	position: absolute;
-	color: #61595c;
+	color: #61595c;							/*dark grey*/
 	font-family: "Droid Sans", sans-serif;
 	font-size: 12px
 }
 
 .prev-next a:after,.prev-next a:before {
-	color: #a21226
+	color: #a21226;							/*dark red*/
 }
 
 .prev-next a.prev {
 	left: 0
 }
 
-.prev-next a.prev:before {
-	content: "« "
-}
-
 .prev-next a.next {
 	right: 0
-}
-
-.prev-next a.next:after {
-	content: " »"
 }
 
 .prev-next a.edit {
@@ -365,8 +363,8 @@ a.edit {
 	text-transform: uppercase;
 	font-size: 80%;
 	font-weight: bold;
-	background-color: #b0acad;
-	color: #f7f6ed;
+	background-color: #eeeeee;				/* background-color: #b0acad; */	/*light grey shadowy*/
+	color: #ffffff;							/* color: #f7f6ed; */				/*beige*/
 	padding: 1px 2px 0 2px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -377,7 +375,7 @@ a.edit {
 }
 
 a.edit:hover {
-	background-color: #61595c
+	background-color: #000000;				/* dark grey #61595c*/
 }
 
 figure {
@@ -399,15 +397,16 @@ figure img {
 
 figure h1 {
 	font-size: inherit;
-	font-family: "Droid Serif", serif;
+	/*font-family: "Droid Serif", serif;*/ 
+	font-family: "Droid Sans", sans-serif;
 	line-height: 1.5
 }
 
 #tooltip {
 	position: absolute;
 	z-index: 100;
-	background: #fefefd;
-	border: 1px solid #61595c;
+	background: #ffffff; 							/* for leight beigish #fefefd;*/
+	border: 1px solid #000000;						/* for dark grey #61595c;*/
 	padding: 3px 4px;
 	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -476,7 +475,7 @@ figure h1 {
 }
 
 #toggles .toggle.disabled,#controls-toggles .toggle.disabled {
-	color: #b0acad
+	color: #eeeeee;										/* for greyish #b0acad*/
 }
 
 #toggles .toggle.active:hover,#controls-toggles .toggle.active:hover {
@@ -485,12 +484,12 @@ figure h1 {
 
 #toggles .toggle label,#controls-toggles .toggle label {
 	display: block;
-	padding-left: 18px;
+	padding-left: 18px; 								/*labels of the boxes below viewer*/
 	height: 2em;
 	overflow: hidden
 }
 
-#toggles .toggle span,#controls-toggles .toggle span {
+#toggles .toggle span,#controls-toggles .toggle span {	/*click boxes below viewer*/
 	display: block;
 	width: 8px;
 	height: 8px;
@@ -501,8 +500,8 @@ figure h1 {
 	margin-bottom: 2px;
 	margin-right: 8px;
 	background-color: transparent;
-	border: 1px solid #fefefd;
-	outline: 1px solid #61595c
+	border: 1px solid #ffffff; /*#fefefd;*/
+	outline: 1px solid #000000; /*#61595c*/
 }
 
 #toggles .toggle.active span,#controls-toggles .toggle.active span {
@@ -516,10 +515,10 @@ figure h1 {
 	left: 0;
 	right: 0;
 	z-index: 3;
-	background: #807a7c;
+	background: #000000; /*#807a7c;*/
 	opacity: 0.5;
 	padding: 0 12px 12px 12px;
-	color: #fefefd;
+	color: #ffffff; /*#fefefd;*/
 	font-family: "Droid Sans", sans-serif;
 	overflow: hidden;
 	*zoom: 1
@@ -544,8 +543,8 @@ figure h1 {
 }
 
 #controls-toggles .toggle span {
-	outline-color: #fefefd;
-	border-color: #807a7c
+	outline-color: #ffffff; /*#fefefd;*/
+	border-color: #000000; /*#807a7c*/
 }
 
 #controls-slices {
@@ -555,7 +554,7 @@ figure h1 {
 
 #controls-slices input[type="range"] {
 	-webkit-appearance: none;
-	background: #fefefd;
+	background: #ffffff; /*#fefefd;*/
 	width: 80%;
 	margin: 4px 0
 }
@@ -577,8 +576,8 @@ figure h1 {
 
 ::-webkit-slider-thumb {
 	-webkit-appearance: none;
-	background: #807a7c;
-	border: 1px solid #fefefd;
+	background: #000000; /*#807a7c;*/
+	border: 1px solid #ffffff; /*#fefefd;*/
 	width: 10px;
 	height: 10px;
 	cursor: move
@@ -704,12 +703,19 @@ ol.sources li {
 	color: #ff3232
 }
 
-@media screen and (min-width: 1260px) {
+@media screen and (min-width: 1260px) and (max-width: 1579px)  {
 	#wrapper,#sidebar-container {
 		width: 1216px
 	}
+	body {
+	background-color: #ff0000;
+	}
 	#content-outer {
 		width: 592px
+	}
+	.contentImage {
+	width: 512px;
+	height: 440px
 	}
 	#sidebar {
 		width: 560px
@@ -731,6 +737,9 @@ ol.sources li {
 	#wrapper,#sidebar-container {
 		width: 1536px
 	}
+	body {
+	background-color: #000000;
+	}	
 	#content-outer {
 		width: 912px
 	}
@@ -754,6 +763,9 @@ ol.sources li {
 	#wrapper,#sidebar-container {
 		width: 736px
 	}
+	body {
+	background-color: #00ff00;
+	}
 	#content-outer {
 		width: 392px
 	}
@@ -776,6 +788,9 @@ ol.sources li {
 @media screen and (max-width: 767px) {
 	#wrapper,#sidebar-container {
 		width: 616px
+	}
+	body {
+	background-color: #0000ff;
 	}
 	#content-outer {
 		width: 252px

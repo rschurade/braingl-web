@@ -290,7 +290,7 @@ function displayPage( id ) {
 		var $li = $('<a />');
 		$li.addClass('prev');
 		$li.attr( 'href', '#' + co.previous );
-		$li.append( 'previous' );
+		$li.append( String.fromCharCode(171) + ' previous' );
 		$li.click(function(e) {
             e.preventDefault();
             displayPage( co.previous );
@@ -304,7 +304,7 @@ function displayPage( id ) {
 		var $li = $('<a />');
 		$li.addClass('next');
 		$li.attr( 'href', '#' + co.next );
-		$li.append( 'next' );
+		$li.append( 'next ' + String.fromCharCode(187) );
 		$li.click(function(e) {
             e.preventDefault();
             displayPage( co.next );
@@ -332,8 +332,9 @@ function displayPage( id ) {
 	var $fig = $('<figure />');
 	var $img = $('<img />');
 	$img.attr('src', co.image_url);
-	$img.attr('width', 550);
-	$img.attr('height', 437);
+	$img.addClass('contentImage');
+	//$img.attr('width', 550);
+	//$img.attr('height', 437);
 	
 	$fig.append( $img );
 	

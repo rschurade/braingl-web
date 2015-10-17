@@ -2,8 +2,8 @@
 	{
 		"id": "page1",
 		"title": "Example for online publications with braingl-web",
-		"text" : "<br>Katja Heuer<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an example on how to use braingl-web for online publications with interactive 3D figures.",
-		"image_url": "images/QlJ44h.jpeg",
+		"text" : "<br>Katja Heuer, Ralph Schurade, Angela D Friederici & Alfred Anwander<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an example on how to use braingl-web for online publications with interactive 3D figures.",
+		"image_url": "images/brainnetworks1.png",
 		"image_title": "Figure 1: figure figure figure figure figure figure",
 		"image_text": "figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure",
 		"scene": "scene1",
