@@ -708,14 +708,13 @@ ol.sources li {
 		width: 1216px
 	}
 	body {
-	background-color: #ff0000;
+	background-color: #eeeeee;
 	}
 	#content-outer {
 		width: 592px
 	}
 	.contentImage {
-	width: 512px;
-	height: 440px
+		width: 592px;
 	}
 	#sidebar {
 		width: 560px
@@ -738,10 +737,13 @@ ol.sources li {
 		width: 1536px
 	}
 	body {
-	background-color: #000000;
+	background-color: #eeeeee;
 	}	
 	#content-outer {
 		width: 912px
+	}
+	.contentImage {
+		width: 912px;
 	}
 	#sidebar {
 		width: 560px
@@ -764,10 +766,13 @@ ol.sources li {
 		width: 736px
 	}
 	body {
-	background-color: #00ff00;
+	background-color: #eeeeee;
 	}
 	#content-outer {
 		width: 392px
+	}
+	.contentImage {
+		width: 392px;
 	}
 	#sidebar {
 		width: 280px
@@ -790,10 +795,13 @@ ol.sources li {
 		width: 616px
 	}
 	body {
-	background-color: #0000ff;
+	background-color: #eeeeee;
 	}
 	#content-outer {
 		width: 252px
+	}
+	.contentImage {
+		width: 252px;
 	}
 	#sidebar {
 		width: 300px
