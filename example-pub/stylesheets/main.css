@@ -417,7 +417,9 @@ figure h1 {
 }
 
 #viewer {
-	position: relative
+	position: fixed;   
+	top: 60px;  
+	margin-left: 2px;
 }
 
 #viewer .loading {
