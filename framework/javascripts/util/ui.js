@@ -211,7 +211,7 @@ $(document).bind('keypress', function(e) {
 // callbacks for element loading, create controls
 //
 //***************************************************************************************************/
-function addElementToUI ( el ) {
+function addElementToUI( el ) {
 	if ( el.type == 'tex' ) {
 		$('#textureSelect').append($('<option></option>').val(el.id).html(el.name));
 		$('#textureSelect2').append($('<option></option>').val(el.id).html(el.name));
@@ -244,6 +244,7 @@ function toggleCallback (id, active) {
 var elementsLoading = 0;
 var allStarted = false;
 var pageToDisplay;
+var currentScene;
 function loadElementStart( el ) {
 	//console.log( 'start loading ' + el.id );
 	addElementToUI( el );
@@ -360,9 +361,41 @@ function displayPage( id ) {
 	$fig.append( $caption );
 	
 	$page.append( $fig );
-	
+		
 	$('#content').append($page);
+
+	var $nav2 = $('<nav />');
+	$nav2.addClass('prev-next bottom');
 	
+	if ( co.previous != "" ) {
+		var $li = $('<a />');
+		$li.addClass('prev');
+		$li.attr( 'href', '#' + co.previous );
+		$li.append( String.fromCharCode(171) + ' previous' );
+		$li.click(function(e) {
+            e.preventDefault();
+            displayPage( co.previous );
+            return false;
+        });
+		$nav2.append( $li );
+	}
+	
+	if ( co.next != "" ) {
+		var $li = $('<a />');
+		$li.addClass('next');
+		$li.attr( 'href', '#' + co.next );
+		$li.append( 'next ' + String.fromCharCode(187) );
+		$li.click(function(e) {
+            e.preventDefault();
+            displayPage( co.next );
+            return false;
+        });
+		$nav2.append( $li );
+			
+	}
+	$('#content').append($nav2);
+	
+	currentScene = co.scene;
 	scene.activateScene( co.scene );
 	var sc = io.scenes()[co.scene];
 	$('#elements').empty();
@@ -370,14 +403,16 @@ function displayPage( id ) {
 		if (id in io.meshes() ) {
 			addElementToUI( io.meshes()[id] );	
 			$('#toggle-' + id).removeClass('disabled');
-		    $('#toggle-' + id).toggleClass('active', io.meshes()[id].display);
 		}
 		else if (id in io.fibres() ) {
 			addElementToUI( io.fibres()[id] );
 			$('#toggle-' + id).removeClass('disabled');
-		    $('#toggle-' + id).toggleClass('active', io.fibres()[id].display);
 		}
 	});
+	$.each(sc.elementsActive, function(i, id) {
+		$('#toggle-' + id).toggleClass('active', true);
+	});
+
 }
 
 
@@ -386,6 +421,21 @@ function displayPage( id ) {
 // bind controls
 //
 //***************************************************************************************************/
+$('#controlsLink').click(function(e) {
+    e.preventDefault();
+    $('#controls').slideToggle();
+    return false;
+});
+
+$('#resetLink').click(function(e) {
+    e.preventDefault();
+    scene.activateScene( currentScene );
+    var sc = io.scenes()[currentScene];
+    $.each(sc.elementsActive, function(i, id) {
+		$('#toggle-' + id).toggleClass('active', true);
+	});
+    return false;
+});
 
 
 //**********************************************************************************************************
