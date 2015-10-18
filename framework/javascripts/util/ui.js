@@ -243,6 +243,7 @@ function toggleCallback (id, active) {
 
 var elementsLoading = 0;
 var allStarted = false;
+var pageToDisplay;
 function loadElementStart( el ) {
 	//console.log( 'start loading ' + el.id );
 	addElementToUI( el );
@@ -267,7 +268,14 @@ function elementLoaded( el ) {
 		
 		scene.init();
 		scene.setValue('loadingComplete', true );
-		scene.activateScene( "scene1" );
+		if ( pageToDisplay )
+		{
+			displayPage( pageToDisplay );
+		}
+		else
+		{
+			scene.activateScene( "scene1" );
+		}
     }
 }
 function allElementsLoaded() {
@@ -275,7 +283,14 @@ function allElementsLoaded() {
 } 
 
 function contentLoaded() {
-	displayPage( 'page1' );
+	if( elementsLoading > 0 )
+	{
+		pageToDisplay = 'page1';
+	}
+	else
+	{
+		displayPage( 'page1' );
+	}
 }
 
 function displayPage( id ) {
