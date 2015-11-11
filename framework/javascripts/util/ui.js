@@ -68,6 +68,7 @@ function toogleFullScreen () {
 //***************************************************************************************************/
 var leftDown = false;
 var middleDown = false;
+var rightDown = false;
     
 function fixupMouse(event) {
 	event = event || window.event;
@@ -128,6 +129,9 @@ $('#viewer-canvas').mousedown( function (event) {
 		middleDown = true;
 		arcball.midClick(e.fixedX, e.fixedY);
 	}
+	else if (e.which == 3) {
+		rightDown = true;
+	}
 	event.preventDefault();
 	viewer.redraw();
 	return false;
@@ -139,6 +143,9 @@ $('#viewer-canvas').mouseup( function (event) {
 		leftDown = false;
 	} else if (e.which == 2) {
 		middleDown = false;
+	}
+	else if (e.which == 3) {
+		rightDown = false;
 	}
 	event.preventDefault();
 	viewer.redraw();
@@ -246,13 +253,13 @@ var allStarted = false;
 var pageToDisplay;
 var currentScene;
 function loadElementStart( el ) {
-	//console.log( 'start loading ' + el.id );
+	console.log( 'start loading ' + el.id );
 	addElementToUI( el );
 	++elementsLoading;
 }
 
 function elementLoaded( el ) {
-	//console.log( 'finished loading ' + el.id );
+	console.log( 'finished loading ' + el.id + " " +  elementsLoading );
 	$('#toggle-' + el.id).removeClass('disabled');
     $('#toggle-' + el.id).toggleClass('active', el.display);
     --elementsLoading;
@@ -280,6 +287,7 @@ function elementLoaded( el ) {
     }
 }
 function allElementsLoaded() {
+	console.log( "ui: all elements loaded" );
 	allStarted = true;
 } 
 

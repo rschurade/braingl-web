@@ -34,6 +34,9 @@ require(['jquery', 'ui', 'io', 'gfx/viewer', 'gfx/mygl', 'gfx/scene', 'html5slid
                 $('html').addClass('no-webgl');
             }
             
+            
+            $('body').on('contextmenu', 'img', function(e){ return false; });
+            
             $.getJSON( settings.CONFIG_URL + "ui.json", 
             	function( data ) {
 	            	$.each( data, function( i, el ) {
