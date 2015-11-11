@@ -35,7 +35,7 @@ require(['jquery', 'ui', 'io', 'gfx/viewer', 'gfx/mygl', 'gfx/scene', 'html5slid
             }
             
             
-            $('body').on('contextmenu', 'img', function(e){ return false; });
+            $('body').on('contextmenu', 'canvas', function(e){ return false; });
             
             $.getJSON( settings.CONFIG_URL + "ui.json", 
             	function( data ) {
