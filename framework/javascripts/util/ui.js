@@ -373,6 +373,18 @@ function displayPage( id ) {
 	}
 	$('#content').append($page);
 
+	$('.a2page').each(function(i, obj) {
+		console.log( obj );
+		$(obj).click(function(e) {
+	        e.preventDefault();
+	        displayPage( $(obj).attr('href') );
+	        return false;
+	    });
+	});
+	
+	
+	
+	
 	var $nav2 = $('<nav />');
 	$nav2.addClass('prev-next bottom');
 	
