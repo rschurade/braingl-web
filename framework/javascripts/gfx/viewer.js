@@ -44,8 +44,7 @@ function init(opts, callback) {
 	resetView();
 
 	callback();
-	
-	redraw();
+
 	tick();
 }
 
@@ -59,26 +58,8 @@ function tick() {
 // main functions that actually draw the entire scene
 //
 //***************************************************************************************************/
-function redraw() {
-	variables.webgl.needsRedraw = true;
-}
-
 function drawScene() {
 	if ( !scene.getValue( 'loadingComplete' ) ) return;
-	/*
-	if (!variables.webgl.needsRedraw && variables.webgl.needsRedrawCount > 0 ) {
-		variables.webgl.needsRedrawCount -= 1;
-		return;
-	}
-	variables.webgl.needsRedrawCount = 10;
-	*/
-	/*
-	if (!variables.webgl.needsRedraw && !scene.needsRedraw() ) {
-		return;
-	}
-	*/
-
-	variables.webgl.needsRedraw = false;
 	
 	gl.viewport(0, 0, mygl.viewportWidth(), mygl.viewportHeight());
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -930,8 +911,6 @@ function resetView() {
 	arcball.reset();
 	arcball.setViewportDims( mygl.viewportWidth(), mygl.viewportHeight() );
 	arcball.setZoom( 1.0 );
-	
-	redraw();
 }
 
 
@@ -942,7 +921,6 @@ function resetView() {
 //***************************************************************************************************/
 return {
 	'init' : init,
-	'redraw' : redraw,
 	'resetView' : resetView
 };
 }));

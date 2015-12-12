@@ -34,6 +34,9 @@ require(['jquery', 'ui', 'io', 'gfx/viewer', 'gfx/mygl', 'gfx/scene', 'html5slid
                 $('html').addClass('no-webgl');
             }
             
+            
+            $('body').on('contextmenu', 'canvas', function(e){ return false; });
+            
             $.getJSON( settings.CONFIG_URL + "ui.json", 
             	function( data ) {
 	            	$.each( data, function( i, el ) {
@@ -69,33 +72,45 @@ require(['jquery', 'ui', 'io', 'gfx/viewer', 'gfx/mygl', 'gfx/scene', 'html5slid
             		imgs.eq( 1 ).hide();
             		imgs.eq( 0 ).show();
             	}
-                viewer.redraw();
             }
             
+            
+            
             // INIT VIEWER
-            window.setTimeout(function() {
-                var $vc = $('#viewer-canvas');
-                $vc.attr({
-                    'width': $vc.width(),
-                    'height': $vc.height()
-                });
-                
-                if (!$('#viewer-div').is('.deactivated')) {
-                	// hier wird der eigentliche WebGL-Viewer initialisiert 
-                	try {
-                		mygl.initGL( $vc.get(0) );
-                		mygl.initPeel();
-                	} catch (e) {
-                		console.error('webglNotSupported', e);
-                		return;
+            $.getJSON(settings.CONFIG_URL + "config.json", function(config) {
+                window.setTimeout(function() {
+                	
+                	if ( !config.viewer )
+                	{
+                		console.log( config );
+	                	$('#viewer').css( "display", "none" );
+	                	$('#viewer-div').css( "display", "none" );
+	                	$('#viewer-nav').css( "display", "none" );
+	                	$('#toggles').css( "display", "none" );
                 	}
-                	                	
-                	viewer.init({
-                	    'backgroundColor': [0.0,0.0,0.0,0]
-                	}, loadElements);
-                	$(window).trigger('resize');
-                };
-            }, 200);
+                	
+                	var $vc = $('#viewer-canvas');
+	                
+	                $vc.attr({
+	                    'width': $vc.width(),
+	                    'height': $vc.height()
+	                });
+	                
+	                if (!$('#viewer-div').is('.deactivated')) {
+	                	// hier wird der eigentliche WebGL-Viewer initialisiert 
+	                	try {
+	                		mygl.initGL( $vc.get(0) );
+	                		mygl.initPeel();
+	                	} catch (e) {
+	                		console.error('webglNotSupported', e);
+	                		return;
+	                	}
+	                	      
+	                	viewer.init( config, loadElements);
+	                	$(window).trigger('resize');
+	                };
+	            }, 200);
+            });
         });
         
         function loadElements() {

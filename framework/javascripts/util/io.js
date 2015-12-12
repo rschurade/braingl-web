@@ -35,6 +35,7 @@ function loadElements( addToUI, elementLoaded, allElementsLoaded ) {
 //    		});
 
     		switch( el.type ) {
+
     		case "mesh" :
     			addToUI( {'id' : el.id, 'name' : el.name, 'type' : 'mesh'} );
     			loadMesh( el, elementLoaded );
@@ -124,6 +125,27 @@ function loadMesh( el, elementLoaded ) {
 		
 		elementLoaded( el );
 	});
+/*
+	var worker = new Worker( '../framework/javascripts/util/loadmesh.js' );
+	worker.addEventListener('message', function(e) {
+	    console.log( "main thread:" + e.data.e1.id );
+	    
+	    picking.pickColor = utils.createPickColor(picking.pickIndex);
+		picking.pickArray[picking.pickColor.join()] = el.id;
+		picking.pickIndex++;
+		pc = [];
+		pc[0] = picking.pickColor[0] / 255;
+		pc[1] = picking.pickColor[1] / 255;
+		pc[2] = picking.pickColor[2] / 255;
+		e.data.e2.pickColor = pc;
+		e.data.e2.display2 = false;
+		meshes[e.data.e1.id] = e.data.e2;
+	    
+		elementLoaded( e.data.e1 );
+	}, false);
+	
+	worker.postMessage( { 'url' : settings.DATA_URL, 'elem' : el } );
+	*/
 }
 
 function loadTexMesh( el, elementLoaded ) {
@@ -175,6 +197,7 @@ function loadTexMesh( el, elementLoaded ) {
 }
 
 function loadFibre(el, elementLoaded) {
+
 	var element = el;
 	$.getJSON(settings.DATA_URL + el.url, function(data) {
 		element.indices = data.indices;
@@ -443,10 +466,11 @@ function loadContent( contentLoaded )
 		$.each(data, function(i, co) {
 			content[co.id] = {};
 			content[co.id].title = co.title;
-			content[co.id].text = co.text;
-			content[co.id].image_url = co.image_url;
-			content[co.id].image_title = co.image_title;
-			content[co.id].image_text = co.image_text;
+			content[co.id].paragraphs = co.paragraphs;
+//			content[co.id].text = co.text;
+//			content[co.id].image_url = co.image_url;
+//			content[co.id].image_title = co.image_title;
+//			content[co.id].image_text = co.image_text;
 			content[co.id].scene = co.scene;
 			content[co.id].next = co.next;
 			content[co.id].previous = co.previous;

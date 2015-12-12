@@ -27,7 +27,6 @@ $(window).bind('resize', function() {
     
     mygl.resizeGL( $vc );
     arcball.setViewportDims(mygl.viewportWidth(), mygl.viewportHeight() );
-    viewer.redraw();
 });	
 	
 var tabStatus = {};	
@@ -68,6 +67,7 @@ function toogleFullScreen () {
 //***************************************************************************************************/
 var leftDown = false;
 var middleDown = false;
+var rightDown = false;
     
 function fixupMouse(event) {
 	event = event || window.event;
@@ -128,8 +128,11 @@ $('#viewer-canvas').mousedown( function (event) {
 		middleDown = true;
 		arcball.midClick(e.fixedX, e.fixedY);
 	}
+	else if (e.which == 3) {
+		rightDown = true;
+	}
 	event.preventDefault();
-	viewer.redraw();
+
 	return false;
 });
 
@@ -140,8 +143,11 @@ $('#viewer-canvas').mouseup( function (event) {
 	} else if (e.which == 2) {
 		middleDown = false;
 	}
+	else if (e.which == 3) {
+		rightDown = false;
+	}
 	event.preventDefault();
-	viewer.redraw();
+
 	return false;
 });
 
@@ -154,7 +160,6 @@ $('#viewer-canvas').mousemove( function (event) {
 		arcball.midDrag(e.fixedX, e.fixedY);
 	}
 	event.preventDefault();
-	viewer.redraw();
 });
 
 $('#viewer-canvas').on("mousewheel", function(event, delta, deltaX, deltaY) {
@@ -171,8 +176,6 @@ $('#viewer-canvas').on("mousewheel", function(event, delta, deltaX, deltaY) {
 	else {
 		arcball.zoomIn();
 	}
-
-	viewer.redraw();
 });
 
 //***************************************************************************************************
@@ -246,13 +249,13 @@ var allStarted = false;
 var pageToDisplay;
 var currentScene;
 function loadElementStart( el ) {
-	//console.log( 'start loading ' + el.id );
+	console.log( 'start loading ' + el.id );
 	addElementToUI( el );
 	++elementsLoading;
 }
 
 function elementLoaded( el ) {
-	//console.log( 'finished loading ' + el.id );
+	console.log( 'finished loading ' + el.id + " " +  elementsLoading );
 	$('#toggle-' + el.id).removeClass('disabled');
     $('#toggle-' + el.id).toggleClass('active', el.display);
     --elementsLoading;
@@ -280,6 +283,7 @@ function elementLoaded( el ) {
     }
 }
 function allElementsLoaded() {
+	console.log( "ui: all elements loaded" );
 	allStarted = true;
 } 
 
@@ -339,29 +343,34 @@ function displayPage( id ) {
 	$page.append('<h1>'+co.title+'</h1>');
 	$page.append('</header>');
 	
-	var $text = $('<div />');
-	$text.addClass('document');
-	
-	$text.append('<p>'+co.text+'</p>');
-	$page.append($text);
-	
-	var $fig = $('<figure />');
-	var $img = $('<img />');
-	$img.attr('src', co.image_url);
-	$img.addClass('contentImage');
-	//$img.attr('width', 550);
-	//$img.attr('height', 437);
-	
-	$fig.append( $img );
-	
-	var $caption = $('<figcaption />');
-	$caption.append( '<h1>'+co.image_title+'</h1>');
-	$caption.append( '<div class="document"><p>'+co.image_text+'</p></div>');
-	
-	$fig.append( $caption );
-	
-	$page.append( $fig );
+	for( var i = 0; i < co.paragraphs.length; ++i )
+	{
+		var $text = $('<div />');
+		$text.addClass('document');
+		$text.append('<p>'+co.paragraphs[i].text+'</p>');
+		$page.append($text);
 		
+		var $fig = $('<figure />');
+		var $img = $('<img />');
+		$img.attr('src', co.paragraphs[i].image_url);
+		$img.addClass('contentImage');
+		//$img.attr('width', 550);
+		//$img.attr('height', 437);
+		
+		$fig.append( $img );
+		
+		var $caption = $('<figcaption />');
+		$caption.append( '<h1>'+co.paragraphs[i].image_title+'</h1>');
+		$caption.append( '<div class="document"><p>'+co.paragraphs[i].image_text+'</p></div>');
+	
+		$fig.append( $caption );
+		
+		$page.append( $fig );
+		$page.append( $('<br />') );
+		$page.append( $('<br />') );
+		$page.append( $('<br />') );
+		
+	}
 	$('#content').append($page);
 
 	var $nav2 = $('<nav />');
