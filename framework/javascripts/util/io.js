@@ -466,10 +466,11 @@ function loadContent( contentLoaded )
 		$.each(data, function(i, co) {
 			content[co.id] = {};
 			content[co.id].title = co.title;
-			content[co.id].text = co.text;
-			content[co.id].image_url = co.image_url;
-			content[co.id].image_title = co.image_title;
-			content[co.id].image_text = co.image_text;
+			content[co.id].paragraphs = co.paragraphs;
+//			content[co.id].text = co.text;
+//			content[co.id].image_url = co.image_url;
+//			content[co.id].image_title = co.image_title;
+//			content[co.id].image_text = co.image_text;
 			content[co.id].scene = co.scene;
 			content[co.id].next = co.next;
 			content[co.id].previous = co.previous;
