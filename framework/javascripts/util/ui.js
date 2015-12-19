@@ -347,7 +347,13 @@ function displayPage( id ) {
 	{
 		var $text = $('<div />');
 		$text.addClass('document');
-		$text.append('<p>'+co.paragraphs[i].text+'</p>');
+		var ts = "";
+		for ( var k = 0; k < co.paragraphs[i].text.length; ++k  )
+		{
+			ts += co.paragraphs[i].text[k];
+		}
+		
+		$text.append('<p>'+ts+'</p>');
 		$page.append($text);
 		
 		var $fig = $('<figure />');
