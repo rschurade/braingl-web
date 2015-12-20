@@ -347,7 +347,13 @@ function displayPage( id ) {
 	{
 		var $text = $('<div />');
 		$text.addClass('document');
-		$text.append('<p>'+co.paragraphs[i].text+'</p>');
+		var ts = "";
+		for ( var k = 0; k < co.paragraphs[i].text.length; ++k  )
+		{
+			ts += co.paragraphs[i].text[k];
+		}
+		$text.append('<a id="para'+i+'" name="para'+i+'"></a>' );
+		$text.append('<p>'+ts+'</p>');
 		$page.append($text);
 		
 		var $fig = $('<figure />');
@@ -373,11 +379,21 @@ function displayPage( id ) {
 	}
 	$('#content').append($page);
 
+	function scrollToElement (selector) {
+		console.log( $('#'+selector) );
+  	  $('html, body').animate({
+  	    scrollTop: $('#'+selector).offset().top
+  	  }, 2000);    
+  	};
+	
 	$('.a2page').each(function(i, obj) {
 		console.log( obj );
 		$(obj).click(function(e) {
 	        e.preventDefault();
 	        displayPage( $(obj).attr('href') );
+	        console.log($(obj).attr('para') );
+	        scrollToElement($(obj).attr('para'));
+	        
 	        return false;
 	    });
 	});
