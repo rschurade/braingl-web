@@ -5,6 +5,7 @@
 		"paragraphs" : [
 		{
 			"text" : [
+						"<a class='a2page' href='page1' para='para2'>para 2</a><br />",
 						"<br>Katja Heuer, Ralph Schurade, Angela D Friederici & Alfred Anwander<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an", 
 						"example on how to use braingl-web for online publications with interactive 3D figures. The code of the template can be found as example-pub at github.com/rschurade/braingl-web.<br>In ",
 						"addition to such an online article template, braingl-web also provides a framework to create an interactive 3D website for your data which you can easily link with your journal ",
@@ -44,7 +45,11 @@
 		"title": "Page 2",
 		"paragraphs" : [
 		{
-			"text" : "",
+			"text" : [
+						"<a class='a2page' href='page1' para='para0'>para 0</a><br />",
+						"<a class='a2page' href='page1' para='para1'>para 1</a><br />",
+						"<a class='a2page' href='page1' para='para2'>para 2</a><br />"
+					 ],
 			"image_url": "images/QlJ44h.jpeg",
 			"image_title": "Figure 1: figure figure figure figure figure figure",
 			"image_text": "figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure"

@@ -352,7 +352,7 @@ function displayPage( id ) {
 		{
 			ts += co.paragraphs[i].text[k];
 		}
-		
+		$text.append('<a id="para'+i+'" name="para'+i+'"></a>' );
 		$text.append('<p>'+ts+'</p>');
 		$page.append($text);
 		
@@ -379,11 +379,21 @@ function displayPage( id ) {
 	}
 	$('#content').append($page);
 
+	function scrollToElement (selector) {
+		console.log( $('#'+selector) );
+  	  $('html, body').animate({
+  	    scrollTop: $('#'+selector).offset().top
+  	  }, 2000);    
+  	};
+	
 	$('.a2page').each(function(i, obj) {
 		console.log( obj );
 		$(obj).click(function(e) {
 	        e.preventDefault();
 	        displayPage( $(obj).attr('href') );
+	        console.log($(obj).attr('para') );
+	        scrollToElement($(obj).attr('para'));
+	        
 	        return false;
 	    });
 	});
