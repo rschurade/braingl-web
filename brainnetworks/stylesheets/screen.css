@@ -39,6 +39,9 @@ q:before,q:after,blockquote:before,blockquote:after {
 a img {
 	border: none
 }
+#minerva {
+	max-width: 20%;
+}
 
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
 	{
