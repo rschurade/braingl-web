@@ -80,15 +80,6 @@ require(['jquery', 'ui', 'io', 'gfx/viewer', 'gfx/mygl', 'gfx/scene', 'html5slid
             $.getJSON(settings.CONFIG_URL + "config.json", function(config) {
                 window.setTimeout(function() {
                 	
-                	if ( !config.viewer )
-                	{
-                		console.log( config );
-	                	$('#viewer').css( "display", "none" );
-	                	$('#viewer-div').css( "display", "none" );
-	                	$('#viewer-nav').css( "display", "none" );
-	                	$('#toggles').css( "display", "none" );
-                	}
-                	
                 	var $vc = $('#viewer-canvas');
 	                
 	                $vc.attr({

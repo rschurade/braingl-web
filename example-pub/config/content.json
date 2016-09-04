@@ -37,6 +37,7 @@
 			"image_text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 		}],
 		"scene": "scene1",
+		"viewer": true,
 		"next": "page2",
 		"previous": ""
 	},
@@ -55,6 +56,7 @@
 			"image_text": "figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure"
 		}],
 		"scene": "scene1",
+		"viewer": false,
 		"next": "page3",
 		"previous": "page1"
 		
@@ -70,6 +72,7 @@
 			"image_text": "figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure"
 		}],
 		"scene": "scene1",
+		"viewer": true,
 		"next": "",
 		"previous": "page2"
 	}

@@ -306,6 +306,24 @@ function displayPage( id ) {
 	var $nav = $('<nav />');
 	$nav.addClass('prev-next top');
 	
+
+	// viewer flag for a page in the content.json 	
+	if ( !co.viewer )
+	{
+    	$('#viewer').css( "display", "none" );
+    	$('#viewer-div').css( "display", "none" );
+    	$('#viewer-nav').css( "display", "none" );
+    	$('#toggles').css( "display", "none" );
+	}
+	else
+	{
+    	$('#viewer').css( "display", "block" );
+    	$('#viewer-div').css( "display", "block" );
+    	$('#viewer-nav').css( "display", "block" );
+    	$('#toggles').css( "display", "block" );
+	}
+
+
 	if ( co.previous != "" ) {
 		var $li = $('<a />');
 		$li.addClass('prev');

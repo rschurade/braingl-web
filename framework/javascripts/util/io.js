@@ -472,6 +472,7 @@ function loadContent( contentLoaded )
 //			content[co.id].image_title = co.image_title;
 //			content[co.id].image_text = co.image_text;
 			content[co.id].scene = co.scene;
+			content[co.id].viewer = co.viewer;
 			content[co.id].next = co.next;
 			content[co.id].previous = co.previous;
 		});
