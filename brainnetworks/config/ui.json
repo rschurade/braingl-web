@@ -65,7 +65,8 @@
     {
         "buttonID": "fibs_All",
         "mouseover" : ["fibs_All", "fib1", "fib2", "fib3", "fib4", "fib5", "fib6", "fib7", "fib8", "fib9", "fib10", "fib11", "fib12", "fib13", "fib14", "fib15", "fib16", "fib17", "fib18", "fib19", "fib20", "fib21", "fib22", "fib23"],
-        "toggles" : ["fibs_All", "fib1", "fib2", "fib3", "fib4", "fib5", "fib6", "fib7", "fib8", "fib9", "fib10", "fib11", "fib12", "fib13", "fib14", "fib15", "fib16", "fib17", "fib18", "fib19", "fib20", "fib21", "fib22", "fib23"],        "enables" : [],
+        "toggles" : ["fibs_All", "fib1", "fib2", "fib3", "fib4", "fib5", "fib6", "fib7", "fib8", "fib9", "fib10", "fib11", "fib12", "fib13", "fib14", "fib15", "fib16", "fib17", "fib18", "fib19", "fib20", "fib21", "fib22", "fib23"],        
+        "enables" : [],
         "disables": []
     },
     {
@@ -136,7 +137,7 @@
         "mouseover" : ["rainbowAll", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"],
         "toggles" : [],
         "enables" : ["rainbowAll", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30"],
-        "disables": ["fconall", "fconBA45", "thresBA45", "threslang", "bundBA45", "bundlang1", "bundlang2"]
+        "disables": ["fconall", "fconBA45", "fconBA45_background", "thresBA45", "thresBA45_background", "threslang", "threslang_background", "bundBA45", "bundlang1", "bundlang2"]
     },
     
     {
@@ -244,6 +245,14 @@
         "enables" : [],
         "disables": []
     },
+    {
+        "buttonID" : "funcCon_None",
+        "mouseover" : [],
+        "toggles" : [],
+        "enables" : ["fsaverage5", "fsaverage5_background"],
+        "disables": ["tex1", "homunculus", "bundle1", "bundle2", "bundle3", "bundle4", "bundle5", "bundle6", "bundle7", "bundle8", "bundle9", "bundle10", "bundle11", "bundle12", "bundle13", "bundle14", "bundle15", "bundle16", "bundle17", "bundle18", "bundle19", "bundle20", "bundle21", "bundle22", "bundle23", "bundle24", "bundle25", "bundle26", "bundle27", "bundle28", "bundle29", "bundle30", "fconall", "fconBA45", "fconBA45_background", "thresBA45", "thresBA45_background", "threslang", "threslang_background", "bundBA45", "bundlang1", "bundlang2"]
+    },
+
     {
         "buttonID": "tex1",
         "mouseover" : ["tex1"],
