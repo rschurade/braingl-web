@@ -165,15 +165,19 @@ a {
 
 .DiffusionMRI {
 	float: left;
-	padding-right: 5px
+	padding-right: 5px;
 }
-
 .allFibers {
 	text-align: center;
 }
 
-
-
+.rs-fMRI {
+	float: left;
+	padding-right: 5px;
+}
+.allFuncCons {
+	text-align: center;
+}
 
 .motorHomunculus {
 	float: left;
@@ -257,4 +261,3 @@ a {
 .no-webgl #webgl-not-supported {
 	display: block
 }
-
