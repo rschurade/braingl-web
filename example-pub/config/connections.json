@@ -1,3 +1,4 @@
+//simulates dynamic aspect on the connections in form of little moving white lights 
 [
 { 
 	"id": "con1",

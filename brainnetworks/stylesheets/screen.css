@@ -39,6 +39,9 @@ q:before,q:after,blockquote:before,blockquote:after {
 a img {
 	border: none
 }
+#minerva {
+	max-width: 20%;
+}
 
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
 	{
@@ -104,6 +107,7 @@ a {
 	margin-top: 1em;
 	margin-bottom: 5px;
 	font-size: 14px;
+	line-height: 20px;
 	color: #FFFFFF;
 }
 
@@ -157,6 +161,22 @@ a {
 	background: #aeaead;
 	width: 80%;
 	margin: 4px 0
+}
+
+.DiffusionMRI {
+	float: left;
+	padding-right: 5px;
+}
+.allFibers {
+	text-align: center;
+}
+
+.rs-fMRI {
+	float: left;
+	padding-right: 5px;
+}
+.allFuncCons {
+	text-align: center;
 }
 
 .motorHomunculus {
@@ -241,4 +261,3 @@ a {
 .no-webgl #webgl-not-supported {
 	display: block
 }
-

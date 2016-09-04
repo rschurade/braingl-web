@@ -7,18 +7,37 @@
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />	
 		<script data-main="../framework/javascripts/main" src="../framework/javascripts/require-jquery.js"></script>    
     </head>
+
     <body>
     	<div class="controlTab" id="links">
-    		<!-- <a href="http://www.cbs.mpg.de" style='font-weight:bold'>--><img src="images/logo3.png"><!--  </a> -->
+    		<a target="_blank" href="http://www.cbs.mpg.de" style='font-weight:bold'>
+    			<img id="minerva" src="images/minerva_white.svg">
+    			<img src="images/logo.svg">
+    		</a>
     	</div>
 		
-		<div class="controlTab" id="status">
+		<div class="controlTab" id="status2">
 			Loading...Please wait.
 		</div>
 
+		
+		<div class="controlTab">
+    		<a style="color:#FFFFFF" style="font-weight:bold" target="_blank" href="http://www.cbs.mpg.de/~anwander">Author's Name:</a> 
+    		<a style="color:#FFFFFF" target="_blank" href="http://www.cbs.mpg.de">Paper's Title</a>
+    	</div>
+		
+
 		<div class="controlTab">
             <section id="viewButtons">
-				<p>Diffusion MRI: structural connectivity</p>
+            	<div class="DiffusionMRI">
+					<p>Diffusion MRI: <br>structural connectivity</p> 
+				</div>
+				<div class="allFibers">
+					<a href="" id="fibs_All">
+						<img src="images/fib_icons/light/fibs_All.png" title="all fiber bundles">
+						<img src="images/fib_icons/dark/fibs_All.png" style="display:none" title="no fiber bundles">
+					</a>
+				</div>
                 <br>
                 <a href="" id="fib1" >
                		<img src="images/fib_icons/light/fib1.png" title="arcuate fascicle">
@@ -52,7 +71,16 @@
             </section>
         
             <section id="viewButtons">
-				<p>rs-fMRI: functional connectivity</p>
+            	<div class="rs-fMRI">
+					<p>rs-fMRI: <br>functional connectivity</p>
+				</div>
+				<div class="allFuncCons">
+					<a href="" id="funcCon_None">
+						<img src="images/fib_icons/light/funcCon_None.png" title="funcional data off">
+						<img src="images/fib_icons/dark/funcCon_None.png" style="display:none" title="functional data off">
+					</a>
+				</div>
+
                 <br>
                 <!-- 
                 <a href="" id="motor">    
@@ -132,7 +160,7 @@
                     <div><label for="sliceZ">Z </label><input type="range" min="0" max="160" id="sliceZ" value="80" step="1" /> <span class="value"></span></div>
                 </div>
             </section>
-            Copyright &copy 2014 <a style="color:#a0a0a0" href="http://www.cbs.mpg.de/~heuer">K. Heuer</a>, <a style="color:#a0a0a0" href="http://www.cbs.mpg.de/~schurade">R. Schurade</a>, <a style="color:#a0a0a0" href="http://www.cbs.mpg.de/~anwander">A. Anwander</a>
+            Copyright &copy 2014 <a style="color:#a0a0a0" target="_blank" href="https://github.com/katjaq/">K. Heuer</a>, <a style="color:#a0a0a0" target="_blank" href="https://github.com/rschurade">R. Schurade</a>, <a style="color:#a0a0a0" target="_blank" href="http://www.cbs.mpg.de/~anwander">A. Anwander</a>
         </div>
     	
         <!--
@@ -140,6 +168,8 @@
     	<section id="sceneButtons"></section>
     	</div>  
     	-->
+
+
 		
 		<div id="viewer-div">
 			<canvas id="viewer-canvas"></canvas>
