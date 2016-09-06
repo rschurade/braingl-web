@@ -317,10 +317,10 @@ function displayPage( id ) {
 	}
 	else
 	{
-    	$('#viewer').css( "display", "block" );
-    	$('#viewer-div').css( "display", "block" );
-    	$('#viewer-nav').css( "display", "block" );
-    	$('#toggles').css( "display", "block" );
+    	$('#viewer').css( "display", "flex" );
+    	$('#viewer-div').css( "display", "flex" );
+    	$('#viewer-nav').css( "display", "flex" );
+    	$('#toggles').css( "display", "flex" );
 	}
 
 
@@ -384,7 +384,7 @@ function displayPage( id ) {
 		$fig.append( $img );
 		
 		var $caption = $('<figcaption />');
-		$caption.append( '<h1>'+co.paragraphs[i].image_title+'</h1>');
+		$caption.append( '<h2>'+co.paragraphs[i].image_title+'</h2>');
 		$caption.append( '<div class="document"><p>'+co.paragraphs[i].image_text+'</p></div>');
 	
 		$fig.append( $caption );
@@ -479,6 +479,7 @@ function displayPage( id ) {
 $('#controlsLink').click(function(e) {
     e.preventDefault();
     $('#controls').slideToggle();
+    //$('#controls').css( "display", "flex" );
     return false;
 });
 

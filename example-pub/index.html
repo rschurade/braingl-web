@@ -8,32 +8,39 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />	
 		<script data-main="../framework/javascripts/main" src="../framework/javascripts/require-jquery.js"></script>
     </head>
-    <body class="">
+
+    <body>
+        <!-- wrapper: wrapper around the whole page content -->
         <div id="wrapper">
-            <div id="content-container">
+
+            <!-- left side: paper page -->
+            <div id="content-left">
+                <!-- left side: navigation tabs on top -->
                 <nav id="nav">
-                    <ul>
-                        <li><a href="index.html">Introduction</a></li>
-                        <li><a href="toc.html">Table of Contents</a></li>
-                        <li><a href="glossary.html">Glossary</a></li>
-                        <li><a href="about.html">About</a></li>
-                    </ul>
+                    <a class="navlink" href="index.html">Introduction</a>
+                    <a class="a2page" href="page2">Table of Contents</a>
+                    <a class="a2page" href="page3">Glossary</a>
+                    <a class="a2page" href="page2">About</a>
                 </nav>
+                <!-- left side: paper page content -->
                 <div id="content-outer">
                     <section id="content"></section>
                 </div>
             </div>
-            <div id="sidebar-container">
-                <aside id="sidebar">
-                	
+
+            <!-- right side: viewer and element toggle check-boxes -->
+            <div id="content-right">
+                    <!-- right side: tabs for viewer on top -->
+                <div id="floater">
                     <nav id="viewer-nav">
-                        <ul>
-                            <li><a id="controlsLink" href="#controls">Controls</a></li>
-                            <li><a id="resetLink" href="#reset-view">Reset view</a></li>
-                        </ul>
+                        <a class="viewer-navlink" id="controlsLink" href="#controls">Controls</a>
+                        <a class="viewer-navlink" id="resetLink" href="#reset-view">Reset view</a>
                     </nav>
+                    <!-- right side: 3D viewer -->
                     <div id="viewer">
-                        <canvas id="viewer-canvas"></canvas>
+                        <canvas id="viewer-canvas"></canvas>  
+                    
+                        <!-- right side: controls overlaid over viewer: slider for slices and controls for textures --> 
                         <div id="controls">
                             <div id="controls-toggles">
                                 <div><input type="checkbox" id="showTexture" /><label for="showTexture">T1/FA_RGB</label></div>
@@ -45,15 +52,21 @@
                                 <div><label for="sliceZ">Z </label><input type="range" min="9" max="149" id="sliceZ" value="80" step="1" /></div>
                             </div>
                         </div>
+                        <!-- right side: element toggle check boxes below viewer -->
                         <div id="toggles">
-                        	<section id="elements"></section>
-                        	<section id="activations"></section>
-                    	</div>
+                            <section id="elements"></section>
+                            <section id="activations"></section>
+                        </div>
                     </div>
-                    
-                    <div id="status"></div>
-                </aside>
+                </div>
+                
+                <!-- showing loading status -->
+                <div id="status"></div>    
             </div>
+
+        </div>
+        
 		<script>window.settings = {'DATA_URL': './data/', 'CONFIG_URL': './config/'};</script>        
+    
     </body>
 </html>
