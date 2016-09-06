@@ -479,6 +479,7 @@ function displayPage( id ) {
 $('#controlsLink').click(function(e) {
     e.preventDefault();
     $('#controls').slideToggle();
+    //$('#controls').css( "display", "flex" );
     return false;
 });
 

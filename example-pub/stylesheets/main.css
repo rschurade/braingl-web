@@ -39,6 +39,7 @@ h1 {
 	font-family: var( --main-font-family );
 	font-weight: bold;
 	font-size: var( --h1-font-size );
+	line-height: 1.5;
 	text-rendering: optimizeLegibility;
 	margin-top: 1em;
 	margin-bottom: 1em;
@@ -48,6 +49,7 @@ figcaption h2 {
 	font-size: var( --figcaption-font-size );
 	color: var( --figcaption-color );
 	font-weight: bold;
+	line-height: 1.5;
 }
 /* figure description */
 figcaption {
@@ -56,9 +58,18 @@ figcaption {
 	line-height: 1.3;
 	margin: 0em 0em 0.5em 0em;
 }
+/* label: rights side: font for texture toggles & slice sliders */
+label {
+	font-size: 12px;
+	padding-left: 0.5em;
+	padding-right: 3em; 								/*labels of the boxes below viewer*/
+	height: 2em;
+	overflow: hidden;
+}
 
 
-/* ********************************* navigation ********************************** */
+
+/* ************************************************ navigation ************************************************ */
 /* left side: navigation tabs on top */
 #nav a.navlink, #nav a.a2page {
 	margin: 0px 12px 12px 0px;
@@ -94,7 +105,7 @@ a.next {
 	font-size: var( --text-font-size );
 }
 
-/* ********************************** figures *********************************** */
+/* ************************************************* figures ************************************************** */
 /* figures */
 .contentImage {
 	width: 53vw;
@@ -102,8 +113,8 @@ a.next {
 	margin: 2em 0em 0.5em 0em;
 }
 
-/* *********************************** code ************************************* */
-/* for code examples */
+/* ************************************************** code **************************************************** */
+/* for code examples in the paper page */
 .code {
 	background-color: #ffffff;
 	font-family: "Lucida Console";
@@ -116,7 +127,9 @@ a.next {
 	margin: 2.5em;
 }
 
-/* ################################################################################## */
+/* ########################################################################################################### */
+
+/* ########################################################################################################### */
 
 /* wrapper around the whole page content */
 #wrapper {
@@ -126,7 +139,7 @@ a.next {
 	justify-content: space-between;
 }
 
-/* *********************************** left side ************************************ */
+/* ************************************************ left side ************************************************ */
 /* left side: paper page */
 #content-left {
 	flex: 1 55%;
@@ -146,9 +159,7 @@ a.next {
 }
 
 
-
-
-/* ********************************** right side ************************************ */
+/* *********************************************** right side ************************************************ */
 /* right side: viewer and element toggle check-boxes */ 
 #content-right {
 	background-color: #eeeeee;
@@ -156,16 +167,16 @@ a.next {
 }
 /* floater: container to keep viewer static in window when scrolling left side down */
 #floater {
-	padding: 2.5em 2.5em 0em 0em;
+	flex: auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	position: fixed;
-	top : 0;
 }
 
 /* right side: tabs for viewer on top */
 #viewer-nav {
+	flex: auto;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -174,12 +185,87 @@ a.next {
 /* right side: 3D viewer */
 #viewer {
 	display: flex;
-	flex: 1 1 100%;
+	flex-direction: column;
+	justify-content: flex-start;
 	width: 100%;
-	padding-top: 0.5em;
 }
 #viewer-canvas {
 	flex: auto;
 	width: 40vw;
 	height: 40vw;
 }
+
+/* right side: controls overlaid over viewer: sliders for slices and controls for textures; */
+#controls {
+	display: none;
+	width: 40vw;
+	position: absolute;
+	z-index: 3;
+	background: #808080;
+	opacity: 0.5;
+	color: #ffffff;
+	font-family: var( --main-font-family );
+	overflow: hidden;
+	*zoom: 1
+}
+
+/* make texture toggles & sliders appear next to each other */
+#controls-toggles,#controls-slices {
+	display: inline;
+	float: left;
+	margin: 1em 1em 1em 1em;
+}
+
+/* *************************************** right side: texture toggles ***************************************** */
+/* texture toggles to appear top left with gap to slice sliders */
+#controls-toggles {
+	width: 25%;
+	margin-right: 5%;
+}
+
+/* **************************************** right side: slices sliders *************************************** */
+/* width of area for slice sliders */
+#controls-slices {
+	width: 60%;
+}
+#controls-slices input[type="range"] {
+	width: 60%;
+}
+
+/* ********************************** right side: element toggles beow viewer ********************************** */
+#toggles {
+	display: flex;
+	flex: auto;
+	width: 40vw;
+	background: #eeeeee;
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	margin: 1em 0em 1em 0em;
+}
+/* element check boxes below viewer & above viewer */
+#toggles .toggle span,#controls-toggles .toggle span {	
+	display: inline-block;
+	vertical-align: center;
+	width: 8px;
+	height: 8px;
+	margin-left: 2px;
+	margin-right: 2px;
+	background-color: transparent;
+	border: 1px solid #808080;
+	border-radius: 1px;
+}
+#toggles .toggle.active span,#controls-toggles .toggle.active span {
+	background-color: #a21226
+}
+#toggles .toggle label {
+	color: #000000;
+}
+#elements {
+	margin: 1em 1em 1em 1em;
+}
+
+
+
+

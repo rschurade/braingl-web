@@ -1,12 +1,12 @@
 [
 	{
 		"id": "page1",
-		"title": "Example for online publications with braingl-web",
+		"title": "Example for online publications with braingl-web lorem ipsum dolor sit amet et etiam numericus und ich will doch nur das ende der zeile erreichen manno ey kannst du mir botte eine zweite zeile zeigen ",
 		"paragraphs" : [
 		{
 			"text" : [
-						"<br>Katja Heuer, Ralph Schurade, Angela D Friederici & Alfred Anwander<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an", 
-						"example on how to use braingl-web for online publications with interactive 3D figures. The code of the template can be found as example-pub at github.com/rschurade/braingl-web.<br>In ",
+						"<br>Katja Heuer, Ralph Schurade, Angela D Friederici & Alfred Anwander<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an ", 
+						"<strong>example</strong> on how to use braingl-web for online publications with interactive 3D figures. The code of the template can be found as example-pub at github.com/rschurade/braingl-web.<br>In ",
 						"addition to such an online article template, braingl-web also provides a framework to create an interactive 3D website for your data which you can easily link with your journal ",
 						"publication. The code for the template can be found as brainnetworks at github.com/rschurade/braingl-web.<br>The following article is a user documentation for the framework.<br>",
 						"<a class='a2page' href='page2'>link to page 2</a><br>",
