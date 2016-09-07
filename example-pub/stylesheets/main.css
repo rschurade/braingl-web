@@ -201,8 +201,7 @@ a.next {
 	width: 40vw;
 	position: absolute;
 	z-index: 3;
-	background: #808080;
-	opacity: 0.5;
+	background-color: rgba( 255, 0, 0, 0.3 );
 	color: #ffffff;
 	font-family: var( --main-font-family );
 	overflow: hidden;
@@ -232,15 +231,39 @@ a.next {
 	width: 60%;
 }
 
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 1px;
+    background: #ffffff;
+    border: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+    margin-top: -6px;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ffffff;
+}
+
+
+
 /* ********************************** right side: element toggles beow viewer ********************************** */
 #toggles {
 	display: flex;
 	flex: auto;
 	width: 40vw;
 	background: #eeeeee;
-	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-	-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	margin: 1em 0em 1em 0em;
 }
