@@ -258,7 +258,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 
 
-/* ********************************** right side: element toggles beow viewer ********************************** */
+/* *************************** right side: elements & activations toggles below viewer ************************ */
 #toggles {
 	display: flex;
 	flex: auto;
@@ -266,8 +266,65 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 	background: #eeeeee;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	margin: 1em 0em 1em 0em;
+	overflow: hidden;
+	*zoom: 1;
 }
-/* element check boxes below viewer & above viewer */
+/* section elements & section activations */
+#toggles section {
+	overflow: hidden;
+	*zoom: 1;
+	margin-bottom: 1em
+}
+#toggles section:last-child {
+	margin-bottom: 0
+}
+
+/* have the available elements displayed in 2 columns */
+#toggles .toggle {
+	display: block;
+	width: 50%;
+	display: inline;
+	float: left;
+	color: inherit;
+	line-height: 1;
+	position: relative;
+	margin-bottom: 3px
+}
+
+#toggles .toggle.disabled {
+	color: #eeeeee;										
+}
+#toggles .toggle.active:hover {
+	color: #a21226
+}
+
+/* labels of the boxes for the elements available */
+#toggles .toggle label {
+	display: block;
+	padding-left: 18px; 								
+	height: 2em;
+	overflow: hidden
+}
+
+/* check boxes below viewer */
+#toggles .toggle span {	
+	display: block;
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	top: 1px;
+	left: 0;
+	margin-left: 2px;
+	margin-bottom: 2px;
+	margin-right: 8px;
+	background-color: transparent;
+	border: 1px solid #ffffff; 
+	outline: 1px solid #000000;
+}
+#toggles .toggle.active span {
+	background-color: #a21226
+}
+/*
 #toggles .toggle span,#controls-toggles .toggle span {	
 	display: inline-block;
 	vertical-align: center;
@@ -282,12 +339,15 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 #toggles .toggle.active span,#controls-toggles .toggle.active span {
 	background-color: #a21226
 }
-#toggles .toggle label {
-	color: #000000;
-}
-#elements {
+
+*/
+#elements, #activations {
 	margin: 1em 1em 1em 1em;
 }
+
+
+
+
 
 
 
