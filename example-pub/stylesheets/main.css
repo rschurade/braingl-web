@@ -1,12 +1,14 @@
 :root{
 	--main-bg-color: #eeeeee;							/* background-color of web page: light grey */
-	--main-padding: 2.5em;								/* global padding */
+	--content-bg-color: #ffffff;						/* background color of left side paper page & right side element toggle boxes */ 
+	--box-shadow-color: #eeeeee;						/* color of the shadow around content page box & element toggle box: grey */
+	--main-padding: 2.5em 2.5em 2em 2.5em;				/* global padding */
 	--main-font-family: "Droid Sans", sans-serif;		/* font family: sans serif */
 	--text-font-size: 16px;								/* font size of main text */
-	--h1-font-size: 18px;								/* font size of title */
-	--nav-font-size: 14px;
-	--figcaption-font-size: 14px;
-	--figcaption-color: #808080;
+	--h1-font-size: 18px;								/* font size of title in main text */
+	--nav-font-size: 14px;								/* font size of navigation links on tope of page */
+	--figcaption-font-size: 14px;						/* font size for figure description text */
+	--figcaption-color: #808080;						/* font color for figure descriptions: grey */ 
 	--main-font-color: #000000;							/* font color of texts: black */
 	--main-link-color: #a21226;							/* font color of links: dark red */
 }
@@ -62,7 +64,7 @@ figcaption {
 label {
 	font-size: 12px;
 	padding-left: 0.5em;
-	padding-right: 3em; 								/*labels of the boxes below viewer*/
+	padding-right: 3em; 	
 	height: 2em;
 	overflow: hidden;
 }
@@ -72,13 +74,13 @@ label {
 /* ************************************************ navigation ************************************************ */
 /* left side: navigation tabs on top */
 #nav a.navlink, #nav a.a2page {
-	margin: 0px 12px 12px 0px;
+	margin: 0em 0em 1.5em 1.5em;
 	font-size: var( --nav-font-size );
 }
 
 /* right side: tabs for viewer on top */
 a.viewer-navlink {
-	margin: 0px 0px 12px 12px;
+	margin: 0em 0em 1.5em 1.5em;
 	font-size: var( --nav-font-size );
 }
 
@@ -155,14 +157,17 @@ a.next {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	padding: 1.5em 1.5em 1em 0em;
+	margin: 0em 1.5em 0em 0em;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	padding: 1.5em 1.5em 1.5em 1.5em;
+	background: var( --content-bg-color );
 }
 
 
 /* *********************************************** right side ************************************************ */
 /* right side: viewer and element toggle check-boxes */ 
 #content-right {
-	background-color: #eeeeee;
+	background-color: var( --main-bg-color );
 	flex: 1 45%;
 }
 /* floater: container to keep viewer static in window when scrolling left side down */
@@ -193,6 +198,7 @@ a.next {
 	flex: auto;
 	width: 40vw;
 	height: 40vw;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 /* right side: controls overlaid over viewer: sliders for slices and controls for textures; */
@@ -201,8 +207,7 @@ a.next {
 	width: 40vw;
 	position: absolute;
 	z-index: 3;
-	background: #808080;
-	opacity: 0.5;
+	background-color: rgba( 255, 0, 0, 0.3 );
 	color: #ffffff;
 	font-family: var( --main-font-family );
 	overflow: hidden;
@@ -232,20 +237,103 @@ a.next {
 	width: 60%;
 }
 
-/* ********************************** right side: element toggles beow viewer ********************************** */
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 1px;
+    background: #ffffff;
+    border: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -6px;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ffffff;
+}
+
+
+
+/* *************************** right side: elements & activations toggles below viewer ************************ */
+/* box containing elements & activations to toggle */
 #toggles {
 	display: flex;
 	flex: auto;
 	width: 40vw;
-	background: #eeeeee;
-	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-	-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	background: var( --content-bg-color );
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	margin: 1em 0em 1em 0em;
+	overflow-y: scroll;
+	*zoom: 1;
 }
-/* element check boxes below viewer & above viewer */
-#toggles .toggle span,#controls-toggles .toggle span {	
+/* section elements & section activations */
+#toggles section {
+	overflow: hidden;
+	*zoom: 1;
+	margin-bottom: 1em
+}
+#toggles section:last-child {
+	margin-bottom: 0
+}
+
+/* have the available elements displayed in 2 columns */
+#toggles .toggle {
+	display: block;
+	width: 50%;
+	display: inline;
+	float: left;
+	color: inherit;
+	line-height: 1;
+	position: relative;
+	margin-bottom: 3px;
+}
+
+#toggles .toggle.disabled {
+	color: var( --main-bg-color );										
+}
+#toggles .toggle.active:hover {
+	color: var( --main-link-color );
+}
+
+/* labels of the boxes for the elements available */
+#toggles .toggle label {
+	display: block;
+	padding-left: 18px; 								
+	height: 2em;
+	overflow: hidden
+}
+
+/* check boxes below viewer */
+#toggles .toggle span {	
+	display: block;
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	top: 1px;
+	left: 0;
+	margin-left: 2px;
+	margin-bottom: 2px;
+	margin-right: 8px;
+	background-color: transparent;
+	border: 1px solid var( --content-bg-color ); 
+	outline: 1px solid var( --main-font-color );
+}
+#toggles .toggle.active span {
+	background-color: var( --main-link-color );
+}
+
+
+#controls-toggles .toggle span {	
 	display: inline-block;
 	vertical-align: center;
 	width: 8px;
@@ -259,12 +347,13 @@ a.next {
 #toggles .toggle.active span,#controls-toggles .toggle.active span {
 	background-color: #a21226
 }
-#toggles .toggle label {
-	color: #000000;
-}
-#elements {
+#elements, #activations {
 	margin: 1em 1em 1em 1em;
 }
+
+
+
+
 
 
 
