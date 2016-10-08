@@ -1,6 +1,7 @@
-define(["jquery", "mousewheel", "io", "./gfx/mygl", "./gfx/viewer", "./gfx/arcball", "./gfx/scene"], 
-		function($, mousewheel, io, mygl, viewer, arcball, scene ) {
+define(["jquery", "mousewheel", "io", "./gfx/mygl", "./gfx/viewer", "./gfx/arcball", "./gfx/scene", "d3"], 
+		function($, mousewheel, io, mygl, viewer, arcball, scene, d3 ) {
 	
+var diagramDiameter = 600;
 //***************************************************************************************************
 //
 // resizing
@@ -263,7 +264,7 @@ function elementLoaded( el ) {
     if ( allStarted && elementsLoading == 0 ) {
         // here everything is loaded 
 	    console.log( 'all elements loaded' );
-		$('#status').css('display', 'none');
+		$('#status2').css('display', 'none');
 		
 		scene.setValue('tex1', 'tex1' );
         $('#sliceX').attr('max', io.niftiis()['tex1'].getDims()[0] );
@@ -306,7 +307,6 @@ function displayPage( id ) {
 	var $nav = $('<nav />');
 	$nav.addClass('prev-next top');
 	
-
 	// viewer flag for a page in the content.json 	
 	if ( !co.viewer )
 	{
@@ -374,6 +374,11 @@ function displayPage( id ) {
 		$text.append('<p>'+ts+'</p>');
 		$page.append($text);
 		
+		
+		var $diagram = $('<div />');
+		createDiagram( co.paragraphs[i].diagram_data, $diagram )
+		$page.append( $diagram );
+		
 		var $fig = $('<figure />');
 		var $img = $('<img />');
 		$img.attr('src', co.paragraphs[i].image_url);
@@ -384,7 +389,7 @@ function displayPage( id ) {
 		$fig.append( $img );
 		
 		var $caption = $('<figcaption />');
-		$caption.append( '<h2>'+co.paragraphs[i].image_title+'</h2>');
+		$caption.append( '<h1>'+co.paragraphs[i].image_title+'</h1>');
 		$caption.append( '<div class="document"><p>'+co.paragraphs[i].image_text+'</p></div>');
 	
 		$fig.append( $caption );
@@ -467,6 +472,133 @@ function displayPage( id ) {
 	$.each(sc.elementsActive, function(i, id) {
 		$('#toggle-' + id).toggleClass('active', true);
 	});
+
+}
+
+
+function createDiagram( dataUrl, $diagramDiv ) {
+	var diameter = diagramDiameter,
+    radius = diameter / 2,
+    innerRadius = radius - 120;
+
+	var cluster = d3.layout.cluster()
+	    .size([360, innerRadius])
+	    .sort(null)
+	    .value(function(d) { return d.size; });
+	
+	var bundle = d3.layout.bundle();
+	
+	var line = d3.svg.line.radial()
+	    .interpolate("bundle")
+	    .tension(.85)
+	    .radius(function(d) { return d.y; })
+	    .angle(function(d) { return d.x / 180 * Math.PI; });
+	
+	var svg = d3.select($diagramDiv.get(0)).append("svg")
+	    .attr("width", diameter)
+	    .attr("height", diameter)
+	  .append("g")
+	    .attr("transform", "translate(" + radius + "," + radius + ")");
+	
+	var link = svg.append("g").selectAll(".link"),
+	    node = svg.append("g").selectAll(".node");
+	//classes will contain content of the json
+	d3.json(settings.CONFIG_URL + dataUrl, function(error, classes) {
+	  if (error) throw error;
+	
+	  var nodes = cluster.nodes(packageHierarchy(classes) ),
+	      links = packageImports(nodes);
+	  link = link
+	      .data(bundle(links))
+	    .enter().append("path")
+	      .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+	      .attr("class", "link")
+	      .attr("d", line);
+	
+	  node = node
+	      .data(nodes.filter(function(n) { return !n.children; }))
+	    .enter().append("text")
+	      .attr("class", "node")
+	      .attr("dy", ".31em")
+	      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+	      .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+	      .text(function(d) { return d.key; })
+	      .on("mouseover", mouseovered)
+	      .on("mouseout", mouseouted);
+	});
+	
+	function mouseovered(d) {
+	  scene.showElement( d.connection );
+	  node
+	      .each(function(n) { n.target = n.source = false; });
+	
+	  link
+	      .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+	      .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+	    .filter(function(l) { return l.target === d || l.source === d; })
+	      .each(function() { this.parentNode.appendChild(this); });
+	
+	  node
+	      .classed("node--target", function(n) { return n.target; })
+	      .classed("node--source", function(n) { return n.source; });
+	}
+	
+	function mouseouted(d) {
+	  scene.hideElement( d.connection );
+	  link
+	      .classed("link--target", false)
+	      .classed("link--source", false);
+	
+	  node
+	      .classed("node--target", false)
+	      .classed("node--source", false);
+	}
+	
+	d3.select(self.frameElement).style("height", diameter + "px");
+	
+	// Lazily construct the package hierarchy from class names.
+	function packageHierarchy(classes) {
+	  var map = {};
+	
+	  function find(name, data) {
+	    var node = map[name], i;
+	    if (!node) {
+	      node = map[name] = data || {name: name, children: []};
+	      if (name.length) {
+	        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+	        node.parent.children.push(node);
+	        node.key = name.substring(i + 1);
+	      }
+	    }
+	    return node;
+	  }
+		// loop over data.json; d will contain one line of it
+	  classes.forEach(function(d) {
+	    find(d.name, d);
+	  });
+	
+	  return map[""];
+	}
+	
+	// Return a list of imports for the given array of nodes.
+	function packageImports(nodes) {
+	  var map = {},
+	      imports = [];
+	
+	  // Compute a map from name to node.
+	  nodes.forEach(function(d) {
+	    map[d.name] = d;
+	  });
+	
+	  // For each import, construct a link from the source to target node.
+	  nodes.forEach(function(d) {
+	    if (d.imports) d.imports.forEach(function(i) {
+	      imports.push({source: map[d.name], target: map[i]});
+	    });
+	  });
+	
+	  return imports;
+	}
 
 }
 
