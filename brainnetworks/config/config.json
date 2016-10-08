@@ -1,4 +1,5 @@
 {
     "backgroundColor": [0.0,0.0,0.0,1],
-    "debug": true
+    "debug": true,
+    "viewer" : true
 }
