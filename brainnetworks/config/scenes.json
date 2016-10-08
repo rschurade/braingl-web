@@ -4,7 +4,7 @@
 		"name": "view front left",
 		"isView" : true,
 		"cameraPosition": [2.0, -2.2, 0.2],
-		"elementsAvailable": [],
+		"elementsAvailable": ["fib1", "fib2"],
 		"elementsActive": [],
 		"cameraTranslation": [0, 0],
 		"cameraZoom": 1.0

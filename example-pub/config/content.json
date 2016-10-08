@@ -1,17 +1,19 @@
 [
 	{
 		"id": "page1",
-		"title": "Example for online publications with braingl-web lorem ipsum dolor sit amet et etiam numericus und ich will doch nur das ende der zeile erreichen manno ey kannst du mir botte eine zweite zeile zeigen ",
+		"title": "Example for online publications with braingl-web including interactive 2D figures linked with the interactive 3D viewer ",
 		"paragraphs" : [
 		{
 			"text" : [
 						"<br>Katja Heuer, Ralph Schurade, Angela D Friederici & Alfred Anwander<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an ", 
-						"<strong>example</strong> on how to use braingl-web for online publications with interactive 3D figures. The code of the template can be found as example-pub at github.com/rschurade/braingl-web.<br>In ",
+						"example for an online publication with interactive 3D figures. The code of the template can be found as example-pub at github.com/rschurade/braingl-web.<br>In ",
 						"addition to such an online article template, braingl-web also provides a framework to create an interactive 3D website for your data which you can easily link with your journal ",
-						"publication. The code for the template can be found as brainnetworks at github.com/rschurade/braingl-web.<br>The following article is a user documentation for the framework.<br>",
+						"publication. The code for the template can be found as 'brainnetworks' within braingl-web.<br>This image is a collage as to what the online publication will look like once the interlinked figure and viewer will be implemented.<br>",
 						"<a class='a2page' href='page2'>link to page 2</a><br>",
 						"<br><a class='a2page' href='page1' para='para2'>link to paragraph 2</a><br />"
 					 ],
+			"diagram_title" : "connections",
+			"diagram_data" : "data.json",
 			"image_url": "images/brainnetworks1.png",
 			"image_title": "Surfing the Connectome: An interactive combined visualization of structural and functional connectivity.",
 			"image_text": "Template website at openscience.cbs.mpg.de/brainnetworks.<br>Transcallosal functional connectivity of the precentral gyrus. The end points on the right motor cortex are rainbow coded and show an asymmetric devision into two functional \"bundles\"."
@@ -22,6 +24,8 @@
 						"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint ",
 						"occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 					 ],
+			"diagram_title" : "connections",
+			"diagram_data" : "data.json",
 			"image_url": "images/QlJ44h.jpeg",
 			"image_title": "Figure 2: figure figure figure figure figure figure",
 			"image_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -32,6 +36,8 @@
 						"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint ",
 						"occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 					 ],
+			"diagram_title" : "connections",
+			"diagram_data" : "data.json",
 		    "image_url": "images/QlJ44h.jpeg",
 			"image_title": "Figure 3: figure figure figure figure figure figure",
 			"image_text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -57,6 +63,8 @@
 						"}<br>",
 						"</div>"
 					 ],
+			"diagram_title" : "connections",
+			"diagram_data" : "data.json",
 			"image_url": "images/QlJ44h.jpeg",
 			"image_title": "Figure 1: figure figure figure figure figure figure",
 			"image_text": "figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure"
@@ -73,6 +81,8 @@
 		"paragraphs" : [
 		{
 			"text" : "",
+			"diagram_title" : "connections",
+			"diagram_data" : "data.json",
 			"image_url": "images/QlJ44h.jpeg",
 			"image_title": "Figure 1: figure figure figure figure figure figure",
 			"image_text": "figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure figure"
