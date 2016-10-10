@@ -1,0 +1,404 @@
+:root{
+	--main-bg-color: #eeeeee;							/* background-color of web page: light grey */
+	--content-bg-color: #ffffff;						/* background color of left side paper page & right side element toggle boxes */ 
+	--box-shadow-color: #eeeeee;						/* color of the shadow around content page box & element toggle box: grey */
+	--main-padding: 2.5em 2.5em 2em 2.5em;				/* global padding */
+	--main-font-family: "Droid Sans", sans-serif;		/* font family: sans serif */
+	--text-font-size: 16px;								/* font size of main text */
+	--h1-font-size: 18px;								/* font size of title in main text */
+	--nav-font-size: 14px;								/* font size of navigation links on tope of page */
+	--figcaption-font-size: 14px;						/* font size for figure description text */
+	--figcaption-color: #808080;						/* font color for figure descriptions: grey */ 
+	--main-font-color: #000000;							/* font color of texts: black */
+	--main-link-color: #a21226;							/* font color of links: dark red */
+}
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: var( --text-font-size );
+	vertical-align: baseline;
+}
+
+body {
+	line-height: 1.2;
+	overflow-y: scroll;
+	background-color: var( --main-bg-color );						
+	color: var( --main-font-color );													
+	font-family: var( --main-font-family )
+}
+
+/* text links */
+a {
+	color: var( --main-link-color ); 								
+	text-decoration: none;
+}
+
+/* heading */
+h1 {
+	font-family: var( --main-font-family );
+	font-weight: bold;
+	font-size: var( --h1-font-size );
+	line-height: 1.5;
+	text-rendering: optimizeLegibility;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+/* figure caption */
+figcaption h2 {
+	font-size: var( --figcaption-font-size );
+	color: var( --figcaption-color );
+	font-weight: bold;
+	line-height: 1.5;
+}
+/* figure description */
+figcaption {
+	font-size: 100%;
+	color: var( --figcaption-color );
+	line-height: 1.3;
+	margin: 0em 0em 0.5em 0em;
+}
+/* label: rights side: font for texture toggles & slice sliders */
+label {
+	font-size: 12px;
+	padding-left: 0.5em;
+	padding-right: 3em; 	
+	height: 2em;
+	overflow: hidden;
+}
+
+
+
+/* ************************************************ navigation ************************************************ */
+/* left side: navigation tabs on top */
+#nav a.navlink, #nav a.a2page {
+	margin: 0em 0em 1.5em 1.5em;
+	font-size: var( --nav-font-size );
+}
+
+/* right side: tabs for viewer on top */
+a.viewer-navlink {
+	margin: 0em 0em 1.5em 1.5em;
+	font-size: var( --nav-font-size );
+}
+
+/* previous-next navigation tabs */
+.prev-next {
+	display: flex;
+	flex-direction: row;
+}
+a.prev {
+	flex: auto;
+	align-self: flex-start;
+	font-size: var( --nav-font-size );
+}
+a.next {
+	flex: auto;
+	align-self: flex-end;
+	text-align: right;
+	font-size: var( --nav-font-size );
+}
+
+/* link to different page */
+#content .a2page {
+	margin: 0px 12px 12px 0px;
+	font-size: var( --text-font-size );
+}
+
+/* ************************************************* figures ************************************************** */
+/* figures */
+.contentImage {
+	width: 53vw;
+	height: auto;
+	margin: 2em 0em 0.5em 0em;
+}
+
+/* ************************************************** code **************************************************** */
+/* for code examples in the paper page */
+.code {
+	background-color: #ffffff;
+	font-family: "Lucida Console";
+	font-size: 12px;
+	line-height: 1.3;
+	border: 1px solid;
+	border-color: #999999;
+	border-radius: 3px;
+	padding: 1em 1.5em 1em 1.5em;
+	margin: 2.5em;
+}
+
+/* ########################################################################################################### */
+
+/* ########################################################################################################### */
+
+/* wrapper around the whole page content */
+#wrapper {
+	padding: var( --main-padding );
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+/* ************************************************ left side ************************************************ */
+/* left side: paper page */
+#content-left {
+	flex: 1 100%;
+}
+/* left side: navigation tabs on top */
+#nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+/* left side: paper page content */
+#content-outer {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	margin: 0em 1.5em 0em 0em;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	padding: 1.5em 1.5em 1.5em 1.5em;
+	background: var( --content-bg-color );
+}
+
+
+/* *********************************************** right side ************************************************ */
+/* right side: viewer and element toggle check-boxes */ 
+#content-right {
+	background-color: var( --main-bg-color );
+	flex: 1 45%;
+}
+/* floater: container to keep viewer static in window when scrolling left side down */
+#floater {
+	flex: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	position: fixed;
+}
+
+/* right side: tabs for viewer on top */
+#viewer-nav {
+	flex: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+/* right side: 3D viewer */
+#viewer {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 100%;
+}
+#viewer-canvas {
+	flex: auto;
+	width: 40vw;
+	height: 40vw;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* right side: controls overlaid over viewer: sliders for slices and controls for textures; */
+#controls {
+	display: none;
+	width: 40vw;
+	position: absolute;
+	z-index: 3;
+	background-color: rgba( 255, 0, 0, 0.3 );
+	color: #ffffff;
+	font-family: var( --main-font-family );
+	overflow: hidden;
+	*zoom: 1
+}
+
+/* make texture toggles & sliders appear next to each other */
+#controls-toggles,#controls-slices {
+	display: inline;
+	float: left;
+	margin: 1em 1em 1em 1em;
+}
+
+/* *************************************** right side: texture toggles ***************************************** */
+/* texture toggles to appear top left with gap to slice sliders */
+#controls-toggles {
+	width: 25%;
+	margin-right: 5%;
+}
+
+/* **************************************** right side: slices sliders *************************************** */
+/* width of area for slice sliders */
+#controls-slices {
+	width: 60%;
+}
+#controls-slices input[type="range"] {
+	width: 60%;
+}
+
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 1px;
+    background: #ffffff;
+    border: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -6px;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ffffff;
+}
+
+
+
+/* *************************** right side: elements & activations toggles below viewer ************************ */
+/* box containing elements & activations to toggle */
+#toggles {
+	display: flex;
+	flex: auto;
+	width: 40vw;
+	background: var( --content-bg-color );
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	margin: 1em 0em 1em 0em;
+	overflow-y: scroll;
+	*zoom: 1;
+}
+/* section elements & section activations */
+#toggles section {
+	overflow: hidden;
+	*zoom: 1;
+	margin-bottom: 1em
+}
+#toggles section:last-child {
+	margin-bottom: 0
+}
+
+/* have the available elements displayed in 2 columns */
+#toggles .toggle {
+	display: block;
+	width: 50%;
+	display: inline;
+	float: left;
+	color: inherit;
+	line-height: 1;
+	position: relative;
+	margin-bottom: 3px;
+}
+
+#toggles .toggle.disabled {
+	color: var( --main-bg-color );										
+}
+#toggles .toggle.active:hover {
+	color: var( --main-link-color );
+}
+
+/* labels of the boxes for the elements available */
+#toggles .toggle label {
+	display: block;
+	padding-left: 18px; 								
+	height: 2em;
+	overflow: hidden
+}
+
+/* check boxes below viewer */
+#toggles .toggle span {	
+	display: block;
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	top: 1px;
+	left: 0;
+	margin-left: 2px;
+	margin-bottom: 2px;
+	margin-right: 8px;
+	background-color: transparent;
+	border: 1px solid var( --content-bg-color ); 
+	outline: 1px solid var( --main-font-color );
+}
+#toggles .toggle.active span {
+	background-color: var( --main-link-color );
+}
+
+
+#controls-toggles .toggle span {	
+	display: inline-block;
+	vertical-align: center;
+	width: 8px;
+	height: 8px;
+	margin-left: 2px;
+	margin-right: 2px;
+	background-color: transparent;
+	border: 1px solid #808080;
+	border-radius: 1px;
+}
+#toggles .toggle.active span,#controls-toggles .toggle.active span {
+	background-color: #a21226
+}
+#elements, #activations {
+	margin: 1em 1em 1em 1em;
+}
+
+
+
+.node {
+  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  fill: #bbb;
+}
+
+.node:hover {
+  fill: #000;
+}
+
+.link {
+  stroke: grey;
+  stroke-opacity: .4;
+  fill: none;
+  pointer-events: none;
+}
+
+.node:hover,
+.node--source,
+.node--target {
+  font-weight: 700;
+}
+
+.node--source {
+  fill: #2ca02c;
+}
+
+.node--target {
+  fill: #d62728;
+}
+
+.link--source,
+.link--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.link--source {
+  stroke: #d62728;
+}
+
+.link--target {
+  stroke: #2ca02c;
+}
+
+
+
+
+
+

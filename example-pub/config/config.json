@@ -1,4 +1,7 @@
 {
-    "backgroundColor": [1.0,1.0,1.0,1],
-    "debug": true
+    "backgroundColor": [0.0,0.0,0.0,1],
+    "debug": true,
+    "viewer": true,
+    "hasContent" : true,
+    "hasKeyBindings" : true
 }
