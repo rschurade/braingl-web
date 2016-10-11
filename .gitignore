@@ -1,1 +1,6 @@
 /example-pub/data
+.project
+/.settings
+/example-pub/config/brainbox.md
+/test
+/pub2D

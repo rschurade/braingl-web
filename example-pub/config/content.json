@@ -2,6 +2,7 @@
 	{
 		"id": "page1",
 		"markdown-remove_including_-_to_make_it_work" : "page1.txt",
+		"markdown-remove_including_-_to_make_it_work" : "brainbox.md",
 		"title": "Example for online publications with braingl-web including interactive 2D figures linked with the interactive 3D viewer ",
 		"paragraphs" : [
 		{
