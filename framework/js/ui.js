@@ -37,11 +37,10 @@ function loadConfig( error, configObject ) {
 	
 	if ( config && config.viewer ) {
 		console.log( "create viewer");
-		console.log( d3.select('#viewer').attr('width') );
-		var view = new Viewer( d3.select('#viewer-div').attr('width'), d3.select('#viewer-div').attr('height') );
+		var view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
 		//d3.select('#viewer-div').append(view.html);
 		
-		//document.getElementById('viewer-div').appendChild( view.html() );
+		document.getElementById('viewer-div').appendChild( view.html() );
 		console.log( view.size() );
 		view.render();
 	}	

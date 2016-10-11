@@ -6,12 +6,12 @@ define(["d3", "three"], function( d3, three ) {
 	var width = width;
 	var height = height;
 	var scene = new three.Scene();
-	var camera = new three.PerspectiveCamera( 75, width, height, 0.1, 1000 );
+	var camera = new three.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, -1000, 1000 );
 	var renderer = new three.WebGLRenderer();
 	renderer.setSize( width, height );
 	
-	var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-	var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+	var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+	var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe : true } );
 	var cube = new THREE.Mesh( geometry, material );
 	scene.add( cube );
 
@@ -29,8 +29,8 @@ define(["d3", "three"], function( d3, three ) {
 		requestAnimationFrame( this.render );
 		renderer.render(scene, camera);
 		
-		cube.rotation.x += 0.1;
-		cube.rotation.y += 0.1;
+		cube.rotation.x += 0.01;
+		cube.rotation.y += 0.01;
 	}
 	
 	return {
