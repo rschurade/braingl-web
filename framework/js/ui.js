@@ -1,6 +1,5 @@
+define(["io", "diagrams", "viewer", "niftii", "d3", "showdown"], function( io, diagrams, viewer, niftii, d3, showdown ) {
 // module structure: first a 'define' to make the module usable; and at the very end of ui.js: return
-
-define(["io", "diagrams", "d3", "showdown"], function( io, diagrams, d3, showdown ) {
 
 // diagram parameter 'diameter' variable that would have to refine here for different use cases
 var diagramDiameter = 600;	
@@ -18,12 +17,13 @@ function startUp() {
 	console.log( "ui.js startUp()" )
 	// load config files
 	d3.json( settings.CONFIG_URL + "config.json", loadConfig );  
-
 };
+
 // not visible, like a private function
 // receives 2 arguments from d3
 function loadConfig( error, configObject ) {
 	console.log( "ui.js loadConfig()" );
+
 	// d3 throws nice error messages when config.json is broken
 	if( error ) {
 		console.log( error );
@@ -33,8 +33,18 @@ function loadConfig( error, configObject ) {
 	// then we load the content.json
 	if ( config && config.hasContent ) {
 		io.loadContent( settings.CONFIG_URL + "content.json", onContentLoaded );
-	};
-};
+	}
+	
+	if ( config && config.viewer ) {
+		console.log( "create viewer");
+		var view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
+		//d3.select('#viewer-div').append(view.html);
+		
+		document.getElementById('viewer-div').appendChild( view.html() );
+		console.log( view.size() );
+		view.render();
+	}	
+}
 
 
 function onContentLoaded() {
@@ -44,8 +54,8 @@ function onContentLoaded() {
 };
 
 // this function will get the object from the content.json: 
-	// in content.json line 3: "markdown-remove_including_-_to_make_it_work" : "page1.txt",  would take a text file as input; 
-	// and if you would like to use a markdown file, you insert in content.json line 4: "markdown" : "page1.md",
+// in content.json line 3: "markdown-remove_including_-_to_make_it_work" : "page1.txt",  would take a text file as input; 
+// and if you would like to use a markdown file, you insert in content.json line 4: "markdown" : "page1.md",
 function buildPage( id ) {
 	// get object of the page to be built; if there is none, quit function
 	var co = io.content()[id];
