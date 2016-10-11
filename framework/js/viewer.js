@@ -10,9 +10,9 @@ define(["d3", "three"], function( d3, three ) {
 	var renderer = new three.WebGLRenderer();
 	renderer.setSize( width, height );
 	
-	var geometry = new THREE.BoxGeometry( 100, 100, 100 );
-	var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe : true } );
-	var cube = new THREE.Mesh( geometry, material );
+	var geometry = new three.BoxGeometry( 100, 100, 100 );
+	var material = new three.MeshBasicMaterial( { color: 0x00ff00, wireframe : true } );
+	var cube = new three.Mesh( geometry, material );
 	scene.add( cube );
 
 	camera.position.z = 5;
