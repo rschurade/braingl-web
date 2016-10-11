@@ -3,5 +3,6 @@
     "debug": true,
     "viewer": true,
     "hasContent" : true,
+    "firstPage" : "page1",
     "hasKeyBindings" : true
 }

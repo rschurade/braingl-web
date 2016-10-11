@@ -1,4 +1,4 @@
-define(["io", "diagrams", "d3", "showdown"], function( io, diagrams, d3, showdown ) {
+define(["io", "diagrams", "viewer", "niftii", "d3", "showdown"], function( io, diagrams, viewer, niftii, d3, showdown ) {
 
 	
 var diagramDiameter = 600;	
@@ -14,18 +14,32 @@ function startUp() {
 
 function loadConfig( error, configObject ) {
 	console.log( "ui.js loadConfig()" );
+	if(error) {
+		console.log( error );
+	}
 	config = configObject;
 	
 	if ( config && config.hasContent ) {
 		io.loadContent( settings.CONFIG_URL + "content.json", onContentLoaded );
-	};
-};
+	}
+	
+	if ( config && config.viewer ) {
+		console.log( "create viewer");
+		console.log( d3.select('#viewer').attr('width') );
+		var view = new Viewer( d3.select('#viewer-div').attr('width'), d3.select('#viewer-div').attr('height') );
+		//d3.select('#viewer-div').append(view.html);
+		
+		//document.getElementById('viewer-div').appendChild( view.html() );
+		console.log( view.size() );
+		view.render();
+	}	
+}
 
 
 function onContentLoaded() {
 	console.log( "ui.js onContentLoaded()" );
 	
-	buildPage( "page1" );
+	buildPage( config.firstPage );
 };
 
 function buildPage( id ) {

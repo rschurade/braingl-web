@@ -144,7 +144,7 @@ a.next {
 /* ************************************************ left side ************************************************ */
 /* left side: paper page */
 #content-left {
-	flex: 1 100%;
+	flex: 1 55%;
 }
 /* left side: navigation tabs on top */
 #nav {
@@ -194,7 +194,7 @@ a.next {
 	justify-content: flex-start;
 	width: 100%;
 }
-#viewer-canvas {
+#viewer-div {
 	flex: auto;
 	width: 40vw;
 	height: 40vw;
