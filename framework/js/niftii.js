@@ -5,7 +5,7 @@
 * @author Ralph Schurade <schurade@gmx.de>
 * @copyright Copyright (c) 2011, Ralph Schurade
 * @link 
-* @license http://www.opensource.org/licenses/bsd-license.php BSD License
+* @license MIT License
 *
 */
 define(["d3", "three"], function( d3, three ) {
@@ -19,8 +19,10 @@ define(["d3", "three"], function( d3, three ) {
 		var zero = 0;
 		var type = '';
 		var loaded = false;
+
+		var texSize = 128;
 				
-		this.load = function(url) {
+		this.load = function(url, callback) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('GET', url, true);
 			xhr.responseType = 'arraybuffer';
@@ -42,8 +44,13 @@ define(["d3", "three"], function( d3, three ) {
 				dim3 = Math.min( 255, hdr.dim3 );
 				
 				if ( hdr.datatype === 2 ) {
-					min = 0;
-					max = 255;
+					for ( var i = 88; i < data.length; ++i ) {
+						if ( data[i] < min ) min = data[i];
+						if ( data[i] > max ) max = data[i];
+					}
+					console.log( "min: " + min + " max: " + max );
+					//min = 0;
+					//max = 255;
 					if (hdr.dim4 === 1 ) {
 						type = 'anatomy';
 					}
@@ -75,7 +82,7 @@ define(["d3", "three"], function( d3, three ) {
 				}
 				
 				loaded = true;
-					
+				if ( callback ) callback();		
 			};
 			xhr.send();
 		};
@@ -107,8 +114,8 @@ define(["d3", "three"], function( d3, three ) {
 		
 		function getImageGrayByte(orient, pos) {
 			var c2d = document.createElement("canvas");
-			c2d.width = 256;
-			c2d.height = 256;
+			c2d.width = texSize;
+			c2d.height = texSize;
 			var ctx = c2d.getContext("2d");
 			var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
 			
@@ -122,7 +129,7 @@ define(["d3", "three"], function( d3, three ) {
 		                imageData.data[index] = col;
 		                imageData.data[index+1] = col;
 		                imageData.data[index+2] = col;
-		                imageData.data[index+3] = 255;
+		                imageData.data[index+3] = ( col > 0 ) ? 255 : 0;
 		            }
 		        }
 			}
@@ -137,7 +144,7 @@ define(["d3", "three"], function( d3, three ) {
 		            	imageData.data[index] = col;
 		                imageData.data[index+1] = col;
 		                imageData.data[index+2] = col;
-		                imageData.data[index+3] = 255;
+		                imageData.data[index+3] = ( col > 0 ) ? 255 : 0;
 		            }
 		        }
 			}
@@ -147,17 +154,17 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		            	var col = data[getId(pos-1+1,y,z)];
+		            	var col = data[getId(pos,y,z)];
 		            	var index = 4 * (z * imageData.width + y);
 		            	imageData.data[index] = col;
 		                imageData.data[index+1] = col;
 		                imageData.data[index+2] = col;
-		                imageData.data[index+3] = 255;
+		                imageData.data[index+3] = ( col > 0 ) ? 255 : 0;
 		            }
 		        }
 			}
-			
-			return imageData;
+			ctx.putImageData( imageData, 0, 0 );
+			return c2d;
 		} 
 		
 		function getId(x,y,z) {
@@ -170,8 +177,8 @@ define(["d3", "three"], function( d3, three ) {
 		
 		function getImageRGBByte(orient, pos) {
 			var c2d = document.createElement("canvas");
-			c2d.width = 256;
-			c2d.height = 256;
+			c2d.width = texSize;
+			c2d.height = texSize;
 			var ctx = c2d.getContext("2d");
 			var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
 			
@@ -234,8 +241,8 @@ define(["d3", "three"], function( d3, three ) {
 		
 		function getImageGrayFloat(orient, pos) {
 			var c2d = document.createElement("canvas");
-			c2d.width = 256;
-			c2d.height = 256;
+			c2d.width = texSize;
+			c2d.height = texSize;
 			var ctx = c2d.getContext("2d");
 			var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
 			
@@ -303,7 +310,7 @@ define(["d3", "three"], function( d3, three ) {
 		};
 		
 		this.getDims = function() {
-			return new Array(hdr.dim1, hdr.dim2, hdr.dim3 ); 
+			return new Array(hdr.dim1, hdr.dim2, hdr.dim3, hdr.dim4, hdr.dim5, hdr.dim6, hdr.dim7 ); 
 		};
 		
 		this.getType = function() {

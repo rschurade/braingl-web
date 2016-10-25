@@ -32,9 +32,9 @@ requirejs.config({
  * and calls startup function in --> ui.js with function startUp() {
  */
 require(['d3', 'three', 'ui'], 
-function( d3, three, ui ) {
+function( d3, THREE, ui ) {
 	console.log( "loaded d3.js, version: " + d3.version );
-	console.log( "loaded three.js, revision: " + three.REVISION );
+	console.log( "loaded three.js, revision: " + THREE.REVISION );
 	
 	ui.startUp();
 });
