@@ -5,7 +5,8 @@ define(["io", "diagrams", "viewer", "niftii", "d3", "arcball"], function( io, di
 var diagramDiameter = 600;	
 	
 // var config will be the config object
-var config = {};	
+var config = {};
+var view;
 
 /**
  * @function startUp()
@@ -37,7 +38,7 @@ function loadConfig( error, configObject ) {
 	
 	if ( config && config.viewer ) {
 		console.log( "create viewer");
-		var view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
+		view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
 		//d3.select('#viewer-div').append(view.html);
 		
 		document.getElementById('viewer-div').appendChild( view.html() );
@@ -250,23 +251,16 @@ d3.select('#viewer-div').on( 'mousemove', function () {
 	}
 });
 
-/*
-d3.select('#viewer-canvas').on("mousewheel", function(event, delta, deltaX, deltaY) {
-    if (middleDown) {
-		return;
-	}
-    if ( !event.shiftKey )
-	{
-    	return;
-	}
-	if (delta < 0) {
-		arcball.zoomOut();
-	}
-	else {
-		arcball.zoomIn();
-	}
+d3.select("#viewer-div")
+	.on("wheel.zoom", function() {
+		//console.log( d3.event );
+		view.zoom( event.deltaY );
+		d3.event.preventDefault();
 });
-*/
+
+
+
+
 
 // what is returned is the only thing what is visible to the outside of this module; all the rest is invisible outside this module 
 return {

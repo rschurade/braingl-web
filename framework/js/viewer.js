@@ -6,11 +6,12 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	var width = width;
 	var height = height;
 	var scene = new THREE.Scene();
-	var camera = new THREE.OrthographicCamera( width / - 6, width / 6, height / 6, height / - 6, -1000, 1000 );
+	var zoom = 6.0;
+	var camera = new THREE.OrthographicCamera( width / - zoom, width / zoom, height / zoom, height / - zoom, -1000, 1000 );
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize( width, height );
 	arcball.setViewportDims( width, height );
-	
+	renderer.setClearColor( 0xffffff, 1 );
 	
 	var t1data;
 	var vshader = "varying vec2 vUv;void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
@@ -80,9 +81,9 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		
 		coronal = new THREE.Mesh( geometry3, coronalMat );
 		//coronal = new THREE.Mesh( geometry3, mat1 );
-		coronal.rotation.x = Math.PI / -2;
-		coronal.translateX( sliceDim / 2 );
-		coronal.translateY( sliceDim / -2 );
+		coronal.rotation.x = Math.PI;
+		coronal.rotation.y = Math.PI;
+		coronal.rotation.z = Math.PI;
 		
 		
 		var geometry = new THREE.PlaneGeometry( sliceDim, sliceDim );
@@ -90,8 +91,6 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		axial = new THREE.Mesh( geometry, axialMat );
 		axial.rotation.x = Math.PI;
 		axial.rotation.y = Math.PI * 2;
-		axial.translateX( sliceDim / 2 );
-		axial.translateY( sliceDim / -2 );
 		
 		
 		var geometry2 = new THREE.PlaneGeometry( sliceDim, sliceDim );
@@ -99,8 +98,10 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		//sagittal = new THREE.Mesh( geometry2, mat3 );
 		sagittal.rotation.x = Math.PI / -2;
 		sagittal.rotation.y = Math.PI / -2;
-		sagittal.translateX( sliceDim / 2 );
-		sagittal.translateY( sliceDim / -2 );
+		
+		axial.name = "axialTmp"
+		coronal.name = "coronalTmp";
+		sagittal.name = "sagittalTmp"
 		
 		slices.add( axial );
 		slices.add( sagittal );
@@ -175,38 +176,70 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		t1data.load( settings.DATA_URL + url, callback );
 	}
 	
+	zoom = function( delta ) {
+		if ( delta < 0 ) {
+			camera.zoom *= 0.9;
+		}
+		else if ( delta > 0 ) {
+			camera.zoom *= 1.1;
+		}
+		camera.updateProjectionMatrix();
+	}
+	
 	function texLoaded() {
 		console.log( "tex loaded" );
-		console.log( t1data.getDims() );
-		var image = t1data.getImage( "coronal", Math.floor( t1data.getDims()[1]/2 ) );
+
+		var object = scene.getObjectByName( "coronalTmp" );
+	    slices.remove( object );
+	    object = scene.getObjectByName( "axialTmp" );
+	    slices.remove( object );
+	    object = scene.getObjectByName( "sagittalTmp" );
+	    slices.remove( object );
+				
+		var dims = t1data.getDims();
+		console.log( dims );
+		
+		var image = t1data.getImage( "coronal", Math.floor( dims.ny / 2 ) );
 		var tex = new THREE.Texture( image );
 		tex.needsUpdate = true;
+		
+		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
+		coronal = new THREE.Mesh( geometry, coronalMat );
 		coronal.material.uniforms.tex.value = tex;
 		coronal.material.needsUpdate = true;
-		//coronal.position.y =  Math.floor( t1data.getDims()[1]/2 );
-		coronal.translateX( t1data.getDims()[0]/-2 );
-		coronal.translateY( t1data.getDims()[2]/2 );
+		coronal.rotation.x = Math.PI / -2;
 		coronal.needsUpdate = true;
+		coronal.name = "coronal";
+		slices.add( coronal );
 		
-		var image2 = t1data.getImage( "axial", Math.floor( t1data.getDims()[2]/2 ) );
+		
+		var image2 = t1data.getImage( "axial", Math.floor( dims.nz/2 ) );
 		var tex2 = new THREE.Texture( image2 );
 		tex2.needsUpdate = true;
+		
+		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
+		axial = new THREE.Mesh( geometry, axialMat );
 		axial.material.uniforms.tex.value = tex2;
 		axial.material.needsUpdate = true;
-		//axial.position.z =  Math.floor( t1data.getDims()[2]/2 );
-		axial.translateX( t1data.getDims()[0]/-2 );
-		axial.translateY( t1data.getDims()[1]/2 );
+		axial.rotation.x = Math.PI;
+		axial.rotation.y = Math.PI * 2;
 		axial.needsUpdate = true;
+		axial.name = "axial";
+		slices.add( axial );
 
-		var image3 = t1data.getImage( "sagittal", Math.floor( t1data.getDims()[0]/2 ) );
+		var image3 = t1data.getImage( "sagittal", Math.floor( dims.nx/2 ) );
 		var tex3 = new THREE.Texture( image3 );
 		tex3.needsUpdate = true;
+		
+		var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
+		sagittal = new THREE.Mesh( geometry, sagittalMat );
 		sagittal.material.uniforms.tex.value = tex3;
 		sagittal.material.needsUpdate = true;
-		//sagittal.position.x =  Math.floor( t1data.getDims()[0]/2 );
-		sagittal.translateX( t1data.getDims()[1]/-2 );
-		sagittal.translateY( t1data.getDims()[2]/2 );
+		sagittal.rotation.x = Math.PI / -2;
+		sagittal.rotation.y = Math.PI / -2;
 		sagittal.needsUpdate = true;
+		sagittal.name = "sagittal";
+		slices.add( sagittal );
 	}
 	
 	return {
@@ -214,6 +247,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		html : html,
 		size : size,
 		setSize : setSize,
+		zoom : zoom,
 	}
 }
 
