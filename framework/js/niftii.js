@@ -28,25 +28,29 @@ define(["d3", "three"], function( d3, three ) {
 			xhr.responseType = 'arraybuffer';
 
 			xhr.onload = function(e) {
-				data = new Uint8Array(this.response); // this.response == uInt8Array.buffer
+				data = new DataView(this.response); // this.response == uInt8Array.buffer
 
-				hdr.datatype = data[70] + data[71] * 256;
-				hdr.dim0 = data[40] + data[41] * 256;
-				hdr.dim1 = data[42] + data[43] * 256;
-				hdr.dim2 = data[44] + data[45] * 256;
-				hdr.dim3 = data[46] + data[47] * 256;
-				hdr.dim4 = data[48] + data[49] * 256;
-				hdr.dim5 = data[50] + data[51] * 256;
-				hdr.dim6 = data[52] + data[53] * 256;
-				hdr.dim7 = data[54] + data[54] * 256;
+				hdr.pixdim1 = data.getFloat32( 80, true ); // little endian
+				hdr.pixdim2 = data.getFloat32( 84, true );
+				hdr.pixdim3 = data.getFloat32( 88, true );
+				
+				hdr.datatype = data.getInt16( 70, true );
+				hdr.dim0 = data.getInt16( 40, true );
+				hdr.dim1 = data.getInt16( 42, true );
+				hdr.dim2 = data.getInt16( 44, true );
+				hdr.dim3 = data.getInt16( 46, true );
+				hdr.dim4 = data.getInt16( 48, true );
+				hdr.dim5 = data.getInt16( 52, true );
+				hdr.dim6 = data.getInt16( 54, true );
+				hdr.dim7 = data.getInt16( 56, true );
 				dim1 = Math.min( 255, hdr.dim1 );
 				dim2 = Math.min( 255, hdr.dim2 );
 				dim3 = Math.min( 255, hdr.dim3 );
 				
 				if ( hdr.datatype === 2 ) {
-					for ( var i = 88; i < data.length; ++i ) {
-						if ( data[i] < min ) min = data[i];
-						if ( data[i] > max ) max = data[i];
+					for ( var i = 88; i < data.byteLength; ++i ) {
+						if ( data.getUint8( i ) < min ) min = data.getUint8( i );
+						if ( data.getUint8( i ) > max ) max = data.getUint8( i );
 					}
 					console.log( "min: " + min + " max: " + max );
 					//min = 0;
@@ -58,20 +62,18 @@ define(["d3", "three"], function( d3, three ) {
 						type = 'rgb';
 					}
 				}
-				
+
 				if ( hdr.datatype === 16 ) {
-					data = new Float32Array(this.response);
-					
-					for ( var i = 88; i < data.length; ++i ) {
-						if ( data[i] < min ) min = data[i];
-						if ( data[i] > max ) max = data[i];
+					for ( var i = 88; i < data.byteLength; i+=4 ) {
+						if ( data.getFloat32( i ) < min ) min = data.getFloat32( i );
+						if ( data.getFloat32( i ) > max ) max = data.getFloat32( i );
 					}
 					//console.log( "min: " + min + " max: " + max );
 					
 					var div = max - min;
 					zero = ( 0 - min ) / div;
-					for ( var j = 88; j < data.length; ++j ) {
-						data[j] = ( data[j] - min ) / div;
+					for ( var j = 88; j < data.length; j+=4 ) {
+						data.setFloat32(j, ( data.getFloat32(j) - min ) / div );
 					}
 					if ( min < 0 ) {
 						type = 'fmri';
@@ -114,17 +116,19 @@ define(["d3", "three"], function( d3, three ) {
 		
 		function getImageGrayByte(orient, pos) {
 			var c2d = document.createElement("canvas");
-			c2d.width = texSize;
-			c2d.height = texSize;
-			var ctx = c2d.getContext("2d");
-			var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
+			
+			
 			
 			if ( orient === "axial" ) {
+				c2d.width = hdr.dim1;
+				c2d.height = hdr.dim2;
+				var ctx = c2d.getContext("2d");
+				var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
 				for( var x = 0; x < dim1; ++x )
 		        {
 		            for( var y = 0; y < dim2; ++y )
 		            {
-		            	var col = data[getId(x,y,pos)];
+		            	var col = data.getUint8( getId(x,y,pos) );
 		            	var index = 4 * (y * imageData.width + x);
 		                imageData.data[index] = col;
 		                imageData.data[index+1] = col;
@@ -135,11 +139,15 @@ define(["d3", "three"], function( d3, three ) {
 			}
 			
 			if ( orient === "coronal" ) {
+				c2d.width = hdr.dim1;
+				c2d.height = hdr.dim3;
+				var ctx = c2d.getContext("2d");
+				var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
 				for( var x = 0; x < dim1; ++x )
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		            	var col = data[getId(x,pos,z)];
+		            	var col = data.getUint8( getId(x,pos,z) );
 		            	var index = 4 * (z * imageData.width + x);
 		            	imageData.data[index] = col;
 		                imageData.data[index+1] = col;
@@ -150,11 +158,15 @@ define(["d3", "three"], function( d3, three ) {
 			}
 			
 			if ( orient === "sagittal" ) {
+				c2d.width = hdr.dim2;
+				c2d.height = hdr.dim3;
+				var ctx = c2d.getContext("2d");
+				var imageData = ctx.getImageData(0, 0, c2d.width, c2d.height);
 				for( var y = 0; y < dim2; ++y )
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		            	var col = data[getId(pos,y,z)];
+		            	var col = data.getUint8( getId(pos,y,z) );
 		            	var index = 4 * (z * imageData.width + y);
 		            	imageData.data[index] = col;
 		                imageData.data[index+1] = col;
@@ -190,9 +202,9 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var y = 0; y < dim2; ++y )
 		            {
-		            	var r = data[getId(x,y,pos)];
-		            	var g = data[parseInt(getId(x,y,pos))+parseInt(gOff)];
-		            	var b = data[parseInt(getId(x,y,pos))+parseInt(bOff)];
+		            	var r = data.getUint8( getId(x,y,pos) );
+		            	var g = data.getUint8(parseInt(getId(x,y,pos))+parseInt(gOff) );
+		            	var b = data.getUint8(parseInt(getId(x,y,pos))+parseInt(bOff) );
 		            	var index = 4 * (y * imageData.width + x);
 		            	imageData.data[index] = r;
 		                imageData.data[index+1] = g;
@@ -207,9 +219,9 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		                var r = data[getId(x,pos,z)];
-		            	var g = data[getId(x,pos,z)+gOff];
-		            	var b = data[getId(x,pos,z)+bOff];
+		                var r = data.getUint8( getId(x,pos,z) );
+		            	var g = data.getUint8( getId(x,pos,z)+gOff );
+		            	var b = data.getUint8( getId(x,pos,z)+bOff );
 		            	var index = 4 * (z * imageData.width + x);
 		            	imageData.data[index] = r;
 		                imageData.data[index+1] = g;
@@ -224,9 +236,9 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		                var r = data[getId(pos-1+1,y,z)];
-		            	var g = data[getId(pos-1+1,y,z)+gOff];
-		            	var b = data[getId(pos-1+1,y,z)+bOff];
+		                var r = data.getUint8( getId(pos-1+1,y,z) );
+		            	var g = data.getUint8( getId(pos-1+1,y,z)+gOff );
+		            	var b = data.getUint8( getId(pos-1+1,y,z)+bOff );
 		            	var index = 4 * (z * imageData.width + y);
 		            	imageData.data[index] = r;
 		                imageData.data[index+1] = g;
@@ -258,7 +270,7 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var y = 0; y < dim2; ++y )
 		            {
-		            	var col = data[getIdFloat(x,y,pos)];
+		            	var col = data.getFloat32( getIdFloat(x,y,pos) );
 		            	var index = 4 * (y * imageData.width + x);
 		                imageData.data[index] = col * 255;
 		                imageData.data[index+1] = col * 255;
@@ -273,7 +285,7 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		            	var col = data[getIdFloat(x,pos,z)];
+		            	var col = data.getFloat32( getIdFloat(x,pos,z) );
 		            	var index = 4 * (z * imageData.width + x);
 		            	imageData.data[index] = col * 255;
 		                imageData.data[index+1] = col * 255;
@@ -288,7 +300,7 @@ define(["d3", "three"], function( d3, three ) {
 		        {
 		            for( var z = 0; z < dim3; ++z )
 		            {
-		            	var col = data[getIdFloat(pos-1+1,y,z)];
+		            	var col = data.getFloat32( getIdFloat(pos-1+1,y,z) );
 		            	var index = 4 * (z * imageData.width + y);
 		            	imageData.data[index] = col * 255;
 		                imageData.data[index+1] = col * 255;
@@ -310,7 +322,7 @@ define(["d3", "three"], function( d3, three ) {
 		};
 		
 		this.getDims = function() {
-			return new Array(hdr.dim1, hdr.dim2, hdr.dim3, hdr.dim4, hdr.dim5, hdr.dim6, hdr.dim7 ); 
+			return { "nx" : hdr.dim1, "ny" : hdr.dim2, "nz" : hdr.dim3, "dx" : hdr.pixdim1, "dy" : hdr.pixdim2, "dz" : hdr.pixdim3 }; 
 		};
 		
 		this.getType = function() {
