@@ -1,4 +1,4 @@
-define(["io", "diagrams", "viewer", "niftii", "d3", "arcball"], function( io, diagrams, viewer, niftii, d3, arcball ) {
+define(["io", "diagram", "viewer", "niftii", "d3", "arcball"], function( io, diagram, viewer, niftii, d3, arcball ) {
 // module structure: first a 'define' to make the module usable; and at the very end of ui.js: return
 
 // diagram parameter 'diameter' variable that would have to refine here for different use cases
@@ -145,7 +145,8 @@ function buildPage( id ) {
 		// produce diagram if there is one
 		if ( p.diagram_data ) {
 			var diagram = page.append('div'); 
-			diagrams.createDiagram( p.diagram_data, diagram, diagramDiameter )
+			var d = new Diagram( view.addConnections, view.removeConnections )
+			d.create( p.diagram_data, diagram, diagramDiameter )
 		}
 		// insert 3 line breaks before the next paragraph
 		div.append('br');

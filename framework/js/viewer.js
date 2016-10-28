@@ -38,6 +38,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	var coronal;
 	var sagittal;
 	var slices;
+	var connections;
 	var sliceDim = 128;
 
 	// load a resource
@@ -72,7 +73,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 			});
 		// setup slices
 		slices = new THREE.Group();
-		
+		connections = new THREE.Group();
 //		var mat1 = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
 //		var mat2 = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
 //		var mat3 = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.DoubleSide} );
@@ -110,7 +111,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		var geometry = new THREE.SphereGeometry( 5, 32, 32 );
 		var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
 		var sphere = new THREE.Mesh( geometry, material );
-		
+		/*
 		var g1 = new THREE.SphereGeometry( 5, 32, 32 );
 		var m1 = new THREE.MeshBasicMaterial( {color: 0xff0000} );
 		var s1 = new THREE.Mesh( g1, m1 );
@@ -126,10 +127,11 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		var s3 = new THREE.Mesh( g3, m3 );
 		s3.translateZ( 50 );
 		scene.add( s3 );		
-		
+		*/
 		
 		scene.add( sphere );
 		scene.add( slices );
+		scene.add( connections );
 		
 		loadTexture( "t1.nii", texLoaded );
 		},
@@ -242,12 +244,55 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		slices.add( sagittal );
 	}
 	
+	function addConnections( id, position, destinations ) {
+		var con = new THREE.Group();
+		con.name = id;
+		addSphere( con, 5, 0x00ff00, position );
+		destinations.forEach( function(d,i) {
+			addSphere( con, 5, 0xff0000, d.position );
+			addLine( con, position, d.position, 0x0000ff );
+		})
+		connections.add( con );
+	}
+	
+	function removeConnections( id ) {
+		var con = connections.getObjectByName( id );
+	    connections.remove( con );
+	}
+	
+	function addSphere( parent, radius, col, position ) {
+		var geometry = new THREE.SphereGeometry( radius, 32, 32 );
+		var material = new THREE.MeshBasicMaterial( {color: col} );
+		var s = new THREE.Mesh( geometry, material );
+		s.translateX( position[0] );
+		s.translateY( position[1] );
+		s.translateZ( position[2] );
+		parent.add( s );
+	}
+	
+	function addLine( parent, pos1, pos2, col ) {
+		var material = new THREE.LineBasicMaterial({
+			color: col
+		});
+
+		var geometry = new THREE.Geometry();
+		geometry.vertices.push(
+			new THREE.Vector3( pos1[0], pos1[1], pos1[2] ),
+			new THREE.Vector3( pos2[0], pos2[1], pos2[2] )
+		);
+
+		var line = new THREE.Line( geometry, material );
+		parent.add( line );
+	}
+	
 	return {
 		render : render,
 		html : html,
 		size : size,
 		setSize : setSize,
 		zoom : zoom,
+		addConnections : addConnections,
+		removeConnections : removeConnections,
 	}
 }
 
