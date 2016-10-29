@@ -1,11 +1,12 @@
-define(["io", "diagrams", "viewer", "niftii", "d3", "showdown"], function( io, diagrams, viewer, niftii, d3, showdown ) {
+define(["io", "diagram", "viewer", "niftii", "d3", "arcball"], function( io, diagram, viewer, niftii, d3, arcball ) {
 // module structure: first a 'define' to make the module usable; and at the very end of ui.js: return
 
 // diagram parameter 'diameter' variable that would have to refine here for different use cases
 var diagramDiameter = 600;	
 	
 // var config will be the config object
-var config = {};	
+var config = {};
+var view;
 
 /**
  * @function startUp()
@@ -37,7 +38,7 @@ function loadConfig( error, configObject ) {
 	
 	if ( config && config.viewer ) {
 		console.log( "create viewer");
-		var view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
+		view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
 		//d3.select('#viewer-div').append(view.html);
 		
 		document.getElementById('viewer-div').appendChild( view.html() );
@@ -52,6 +53,12 @@ function onContentLoaded() {
 	//Kenner in config.json
 	buildPage( config.firstPage );
 };
+
+d3.select('#viewer-div').on("resize", function(d) {
+    arcball.setViewportDims( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
+})
+
+
 
 // this function will get the object from the content.json: 
 // in content.json line 3: "markdown-remove_including_-_to_make_it_work" : "page1.txt",  would take a text file as input; 
@@ -138,7 +145,8 @@ function buildPage( id ) {
 		// produce diagram if there is one
 		if ( p.diagram_data ) {
 			var diagram = page.append('div'); 
-			diagrams.createDiagram( p.diagram_data, diagram, diagramDiameter )
+			var d = new Diagram( view.addConnections, view.removeConnections )
+			d.create( p.diagram_data, diagram, diagramDiameter )
 		}
 		// insert 3 line breaks before the next paragraph
 		div.append('br');
@@ -181,10 +189,79 @@ function buildPage( id ) {
 };
 
 function buildMarkdownPage( error, text ) {
+	/*
 	var converter = new showdown.Converter(),
     html      = converter.makeHtml(text);
 	d3.select( "#content" ).html(html);
+	*/
 }
+
+//***************************************************************************************************
+//
+// everything mouse related
+//
+//***************************************************************************************************/
+var leftDown = false;
+var middleDown = false;
+var rightDown = false;
+    
+d3.select('#viewer-div').on("contextmenu", function(d) {
+    d3.event.preventDefault();
+})
+
+d3.select('#viewer-div').on( 'mousedown', function () {
+	var coords = d3.mouse( this );
+	var button = d3.event.which;
+	switch ( button ) {
+	case 1:
+		arcball.click(coords[0], coords[1]);
+		leftDown = true;
+		break;
+	case 2:
+		middleDown = true;
+		arcball.midClick(coords[0], coords[1]);
+		break;
+	case 3:
+		rightDown = true;
+	}
+	return false;
+});
+
+d3.select('#viewer-div').on( 'mouseup', function () {
+	var button = d3.event.which;
+	switch ( button ) {
+	case 1:
+		leftDown = false;
+		break;
+	case 2:
+		middleDown = false;
+		break;
+	case 3:
+		rightDown = false;
+		break;
+	}
+});
+
+d3.select('#viewer-div').on( 'mousemove', function () {
+	var coords = d3.mouse( this );
+	if (leftDown) {
+		arcball.drag(coords[0], coords[1]);
+	} 
+	else if (middleDown) {
+		arcball.midDrag(coords[0], coords[1]);
+	}
+});
+
+d3.select("#viewer-div")
+	.on("wheel.zoom", function() {
+		//console.log( d3.event );
+		view.zoom( event.deltaY );
+		d3.event.preventDefault();
+});
+
+
+
+
 
 // what is returned is the only thing what is visible to the outside of this module; all the rest is invisible outside this module 
 return {
