@@ -15,7 +15,8 @@
 						"<br><a class='a2page' href='page1' para='para2'>link to paragraph 2</a><br />"
 					 ],
 			"diagram_title" : "connections",
-			"diagram_data" : "data.json"
+			"diagram_data" : "data.json",
+			"diagram_type" : "matrix"
 			
 		},
 		{
@@ -37,6 +38,7 @@
 					 ],
 			"diagram_title" : "connections",
 			"diagram_data" : "data.json",
+			"diagram_type" : "circle",
 		    "image_url": "images/example1.png",
 			"image_title": "Figure 3: figure figure figure figure figure figure",
 			"image_text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."

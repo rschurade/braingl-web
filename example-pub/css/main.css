@@ -354,7 +354,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 
 .node {
-  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 300 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
   fill: #bbb;
 }
 
@@ -402,3 +402,27 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 
 
+/* matrix diagram */
+.background {
+  fill: #eee;
+}
+
+line {
+  stroke: #fff;
+}
+
+text.active {
+  fill: red;
+}
+
+.diagramLabelRow {
+	font-size: 12px;
+}
+
+.diagramLabelColumn {
+	font-size: 12px;
+}
+
+.diagramContainer {
+	margin-left : 8em;
+}

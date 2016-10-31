@@ -1,12 +1,10 @@
 define(["io", "diagram", "viewer", "niftii", "d3", "arcball"], function( io, diagram, viewer, niftii, d3, arcball ) {
 // module structure: first a 'define' to make the module usable; and at the very end of ui.js: return
-
-// diagram parameter 'diameter' variable that would have to refine here for different use cases
-var diagramDiameter = 600;	
 	
 // var config will be the config object
 var config = {};
 var view;
+var currentPage;
 
 /**
  * @function startUp()
@@ -37,7 +35,7 @@ function loadConfig( error, configObject ) {
 	}
 	
 	if ( config && config.viewer ) {
-		console.log( "create viewer");
+		console.log( "create viewer" );
 		view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
 		//d3.select('#viewer-div').append(view.html);
 		
@@ -64,6 +62,7 @@ d3.select('#viewer-div').on("resize", function(d) {
 // in content.json line 3: "markdown-remove_including_-_to_make_it_work" : "page1.txt",  would take a text file as input; 
 // and if you would like to use a markdown file, you insert in content.json line 4: "markdown" : "page1.md",
 function buildPage( id ) {
+	currentPage = id;
 	// get object of the page to be built; if there is none, quit function
 	var co = io.content()[id];
 	if ( !co ) return;
@@ -107,7 +106,7 @@ function buildPage( id ) {
 	            return false;
 	        });
 	}
-	// create var div, which will contain the div, that will be appended here
+	// create div that will contain the actual page
 	var page = content.append('div');
 		page.attr('class', 'section')
 			.attr('id', 'page-body')
@@ -145,8 +144,28 @@ function buildPage( id ) {
 		// produce diagram if there is one
 		if ( p.diagram_data ) {
 			var diagram = page.append('div'); 
-			var d = new Diagram( view.addConnections, view.removeConnections )
-			d.create( p.diagram_data, diagram, diagramDiameter )
+			diagram.attr( 'class', 'diagramContainer' );
+			var d = new Diagram( view.addConnection, view.addConnections, view.removeConnections );
+			if ( p.diagram_type == "circle") {
+				d.create( settings.DATA_URL + p.diagram_data, diagram, page.property( 'clientWidth' ) );	
+			}
+			else if( p.diagram_type == "matrix" ) {
+				d.createMatrix( settings.DATA_URL + p.diagram_data, diagram, page.property( 'clientWidth' ) * 0.9);
+
+				var data = ["name", "count", "group"];
+
+				var select = page
+				  .append('select')
+				  	.attr('class','select')
+				  	.attr('id', 'order');
+
+				var options = select
+				  .selectAll('option')
+					.data(data).enter()
+					.append('option')
+						.text(function (d) { return d; });
+							}
+				page.append('br');
 		}
 		// insert 3 line breaks before the next paragraph
 		div.append('br');
@@ -209,7 +228,7 @@ d3.select('#viewer-div').on("contextmenu", function(d) {
     d3.event.preventDefault();
 })
 
-d3.select('#viewer-div').on( 'mousedown', function () {
+.on( 'mousedown', function () {
 	var coords = d3.mouse( this );
 	var button = d3.event.which;
 	switch ( button ) {
@@ -225,9 +244,8 @@ d3.select('#viewer-div').on( 'mousedown', function () {
 		rightDown = true;
 	}
 	return false;
-});
-
-d3.select('#viewer-div').on( 'mouseup', function () {
+})
+.on( 'mouseup', function () {
 	var button = d3.event.which;
 	switch ( button ) {
 	case 1:
@@ -240,9 +258,8 @@ d3.select('#viewer-div').on( 'mouseup', function () {
 		rightDown = false;
 		break;
 	}
-});
-
-d3.select('#viewer-div').on( 'mousemove', function () {
+})
+.on( 'mousemove', function () {
 	var coords = d3.mouse( this );
 	if (leftDown) {
 		arcball.drag(coords[0], coords[1]);
@@ -250,13 +267,21 @@ d3.select('#viewer-div').on( 'mousemove', function () {
 	else if (middleDown) {
 		arcball.midDrag(coords[0], coords[1]);
 	}
-});
+})
 
-d3.select("#viewer-div")
-	.on("wheel.zoom", function() {
+.on("wheel.zoom", function() {
 		//console.log( d3.event );
 		view.zoom( event.deltaY );
 		d3.event.preventDefault();
+});
+
+window.addEventListener("resize", function() {
+	if ( view ) {
+		view.setSize( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
+	}
+	if( currentPage ) {
+		buildPage( currentPage );
+	}
 });
 
 
