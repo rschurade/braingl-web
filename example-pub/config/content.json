@@ -1,6 +1,8 @@
 [
 	{
 		"id": "page1",
+		"markdown-remove_including_-_to_make_it_work" : "page1.txt",
+		"markdown-remove_including_-_to_make_it_work" : "brainbox.md",
 		"title": "Example for online publications with braingl-web including interactive 2D figures linked with the interactive 3D viewer ",
 		"paragraphs" : [
 		{
@@ -14,9 +16,19 @@
 					 ],
 			"diagram_title" : "connections",
 			"diagram_data" : "data.json",
+			"diagram_type" : "matrix"
+			
+		},
+		{
+			"text" : [
+						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ",
+						"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint ",
+						"occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					 ],
 			"image_url": "images/brainnetworks1.png",
 			"image_title": "Surfing the Connectome: An interactive combined visualization of structural and functional connectivity.",
 			"image_text": "Template website at openscience.cbs.mpg.de/brainnetworks.<br>Transcallosal functional connectivity of the precentral gyrus. The end points on the right motor cortex are rainbow coded and show an asymmetric devision into two functional \"bundles\"."
+			
 		},
 		{
 			"text" : [
@@ -26,19 +38,8 @@
 					 ],
 			"diagram_title" : "connections",
 			"diagram_data" : "data.json",
-			"image_url": "images/QlJ44h.jpeg",
-			"image_title": "Figure 2: figure figure figure figure figure figure",
-			"image_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-		},
-		{
-			"text" : [
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ",
-						"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint ",
-						"occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-					 ],
-			"diagram_title" : "connections",
-			"diagram_data" : "data.json",
-		    "image_url": "images/QlJ44h.jpeg",
+			"diagram_type" : "circle",
+		    "image_url": "images/example1.png",
 			"image_title": "Figure 3: figure figure figure figure figure figure",
 			"image_text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 		}],

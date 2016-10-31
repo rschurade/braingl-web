@@ -119,19 +119,6 @@
         "display": false,
         "color": {"r": 1.0, "g": 1.0, "b": 1.0}
     },
-    {
-        "id": "con1",
-        "name": "test connection 1",
-        "type": "fibre",
-        "url": "fcon/cons1.json",
-        "display": false,
-        "display2": false,
-        "allowTube": false,
-        "thinTubes": true,
-        "savedColor": false,
-        "transparency": 1.0,
-        "color": {"r": 1.0, "g": 0.0, "b": 0.0}
-    },
    {
         "id": "fib1",
         "name": "arcuate fascicle left",

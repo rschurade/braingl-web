@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <title>Example template for online publications with braingl-web</title>
         
-        <link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />	
-		<script data-main="../framework/javascripts/main" src="../framework/javascripts/require-jquery.js"></script>
+		<script data-main="../framework/js/main" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"></script>
     </head>
 
     <body>
@@ -24,10 +24,10 @@
                 </nav>
                 <!-- left side: paper page content -->
                 <div id="content-outer">
+                    <!-- gets content in ui.js with  var content = d3.select('#content'); -->
                     <section id="content"></section>
                 </div>
             </div>
-
             <!-- right side: viewer and element toggle check-boxes -->
             <div id="content-right">
                     <!-- right side: tabs for viewer on top -->
@@ -38,7 +38,7 @@
                     </nav>
                     <!-- right side: 3D viewer -->
                     <div id="viewer">
-                        <canvas id="viewer-canvas"></canvas>  
+                        <div id="viewer-div"></div>  
                     
                         <!-- right side: controls overlaid over viewer: slider for slices and controls for textures --> 
                         <div id="controls">
@@ -63,7 +63,6 @@
                 <!-- showing loading status -->
                 <div id="status"></div>    
             </div>
-
         </div>
         
 		<script>window.settings = {'DATA_URL': './data/', 'CONFIG_URL': './config/'};</script>        
