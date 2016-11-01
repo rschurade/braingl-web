@@ -352,77 +352,60 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 
-
+/* ******************************************* content: diagrams **************************************** */
+/* circular diagram */
 .node {
-  font: 300 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  fill: #bbb;
+  	font: 300 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  	fill: #bbb;
 }
-
 .node:hover {
-  fill: #000;
+  	fill: #000;
 }
-
 .link {
-  stroke: grey;
-  stroke-opacity: .4;
-  fill: none;
-  pointer-events: none;
+  	stroke: grey;
+  	stroke-opacity: .4;
+  	fill: none;
+  	pointer-events: none;
 }
-
 .node:hover,
 .node--source,
 .node--target {
-  font-weight: 700;
+  	font-weight: 700;
 }
-
 .node--source {
-  fill: #2ca02c;
+  	fill: #2ca02c;
 }
-
 .node--target {
-  fill: #d62728;
+  	fill: #d62728;
 }
-
 .link--source,
 .link--target {
-  stroke-opacity: 1;
-  stroke-width: 2px;
+  	stroke-opacity: 1;
+  	stroke-width: 2px;
 }
-
 .link--source {
-  stroke: #d62728;
+  	stroke: #d62728;
 }
-
 .link--target {
-  stroke: #2ca02c;
+  	stroke: #2ca02c;
 }
-
-
-
-
-
 
 /* matrix diagram */
 .background {
-  fill: #eee;
+  	fill: #eee;
 }
-
 line {
-  stroke: #fff;
+  	stroke: #fff;
 }
-
 text.active {
-  fill: red;
+  	fill: red;
 }
-
 .diagramLabelRow {
 	font-size: 12px;
 }
-
 .diagramLabelColumn {
 	font-size: 12px;
 }
-
 .diagramContainer {
-	margin-left : 8em;
+	margin-left: 8em;
 }
