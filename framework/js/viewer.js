@@ -40,6 +40,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	var slices;
 	var connections;
 	var sliceDim = 128;
+	var zero;
 
 	// load a resource
 	loader.load(
@@ -171,9 +172,10 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		width = w;
 		height = h;
 		renderer.setSize( width, height );
+		arcball.setViewportDims( width, height );
 	}
 	
-	function loadTexture(url, callback ) {
+	function loadTexture( url, callback ) {
 		t1data = new Niftii();
 		t1data.load( settings.DATA_URL + url, callback );
 	}
@@ -190,12 +192,11 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	
 	function texLoaded() {
 		console.log( "tex loaded" );
-
-		var object = scene.getObjectByName( "coronalTmp" );
+		var object = slices.getObjectByName( "coronalTmp" );
 	    slices.remove( object );
-	    object = scene.getObjectByName( "axialTmp" );
+	    object = slices.getObjectByName( "axialTmp" );
 	    slices.remove( object );
-	    object = scene.getObjectByName( "sagittalTmp" );
+	    object = slices.getObjectByName( "sagittalTmp" );
 	    slices.remove( object );
 				
 		var dims = t1data.getDims();
@@ -242,10 +243,16 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		sagittal.needsUpdate = true;
 		sagittal.name = "sagittal";
 		slices.add( sagittal );
+
+		zero = new THREE.Vector3( dims.nx * dims.dx / 2, dims.ny * dims.dy / 2, dims.nz * dims.dz / 2 );
+		connections.translateX( -zero.x );
+		connections.translateY( -zero.y );
+		connections.translateZ( -zero.z );
+
 	}
 	
 	function addConnections( id, position, destinations ) {
-		var con = new THREE.Group();
+		var con = new THREE.Group(); 	// one line from data.json
 		con.name = id;
 		addSphere( con, 5, 0x00ff00, position );
 		destinations.forEach( function(d,i) {
@@ -254,9 +261,18 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		})
 		connections.add( con );
 	}
+
+	function addConnection( id, pos1, pos2 ) {
+		var con = new THREE.Group(); 	// one line from data.json
+		con.name = id;
+		addSphere( con, 5, 0x00ff00, pos1 );
+		addSphere( con, 5, 0xff0000, pos2 );
+		addLine( con, pos1, pos2, 0x0000ff );
+		connections.add( con );
+	}
 	
 	function removeConnections( id ) {
-		var con = connections.getObjectByName( id );
+		var con = connections.getObjectByName( id )
 	    connections.remove( con );
 	}
 	
@@ -291,6 +307,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		size : size,
 		setSize : setSize,
 		zoom : zoom,
+		addConnection : addConnection,
 		addConnections : addConnections,
 		removeConnections : removeConnections,
 	}
