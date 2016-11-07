@@ -204,6 +204,7 @@ a.next {
 /* right side: controls overlaid over viewer: sliders for slices and controls for textures; */
 #controls {
 	display: none;
+	opacity: 0;
 	width: 40vw;
 	position: absolute;
 	z-index: 3;

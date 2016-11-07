@@ -187,6 +187,10 @@ function setTranslation( x, y ) {
 	moveY = y;
 }
 
+function translation() {
+	return { "x": moveX, "y": moveY };
+}
+
 function setRotation( rot ) {
 	m_rot = rot;
 }
@@ -203,6 +207,7 @@ return {
 	midDrag: midDrag,
 	reset: reset,
 	setTranslation : setTranslation,
+	translation : translation,
 	setRotation : setRotation
 };
 }));
