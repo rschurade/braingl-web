@@ -21,6 +21,15 @@ function startUp() {
 	d3.select('#sliceY').on('input', function() { view.setSlice( this.id, this.value ); d3.select('#lsliceY').text(this.value); } );
 	d3.select('#sliceZ').on('input', function() { view.setSlice( this.id, this.value ); d3.select('#lsliceZ').text(this.value); } );
 	
+	d3.select('#buttonRot').on('click', function() {
+		var x = d3.select('#rotX').property('value' ) / 100.0 - 3.1415;
+		var y = d3.select('#rotY').property('value' ) / 100.0 - 3.1415;
+		var z = d3.select('#rotZ').property('value' ) / 100.0 - 3.1415;
+		console.log( x + " " + y + " " + z );
+		arcball.interpolateTo( [x, y, z] );
+		
+	});
+	
 	// load config files
 	d3.json( settings.CONFIG_URL + "config.json", loadConfig );  
 };

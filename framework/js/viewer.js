@@ -250,6 +250,8 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		pivot.translateZ( -zero.z );
 		
 		dispatch.dimsChanged( dims );
+		
+		arcball.interpolateTo( [-1.2, -0.111, 2.5] );
 	}
 	
 	function setSlice( id, value ) {
