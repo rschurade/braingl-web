@@ -93,7 +93,6 @@ function onDimsChanged( dims ) {
 
 
 //in content json is our content
-
 function onContentLoaded() {
 	console.log( "ui.js onContentLoaded()" );
 	//Kenner in config.json
@@ -192,12 +191,15 @@ function buildPage( id ) {
 				.attr( 'class', 'contentImage');
 		}
 		// produce diagram if there is one
-		if ( p.diagram_data ) {
+		if ( p.diagram_data || p.diagram_dataPos ) {
 			var diagram = page.append('div'); 
 			diagram.attr( 'class', 'diagramContainer' );
 			var d = new Diagram( view.addConnection, view.addConnections, view.removeConnections );
 			if ( p.diagram_type == "circle") {
 				d.create( settings.DATA_URL + p.diagram_data, diagram, page.property( 'clientWidth' ) );	
+			}
+			else if ( p.diagram_type == "circleCSV") {
+				d.createCircleCSV( settings.DATA_URL + p.diagram_dataPos, settings.DATA_URL + p.diagram_dataCon, diagram, page.property( 'clientWidth' ) );	
 			}
 			else if( p.diagram_type == "matrix" ) {
 				d.createMatrix( settings.DATA_URL + p.diagram_data, diagram, page.property( 'clientWidth' ) * 0.9);
@@ -214,8 +216,24 @@ function buildPage( id ) {
 					.data(data).enter()
 					.append('option')
 						.text(function (d) { return d; });
-							}
-				page.append('br');
+			}
+			else if( p.diagram_type == "matrixCSV" ) {
+				d.createMatrixCSV( settings.DATA_URL + p.diagram_dataPos, settings.DATA_URL + p.diagram_dataCon, diagram, page.property( 'clientWidth' ) * 0.9);
+
+				var data = ["name", "count", "group"];
+
+				var select = page
+				  .append('select')
+				  	.attr('class','select')
+				  	.attr('id', 'order');
+
+				var options = select
+				  .selectAll('option')
+					.data(data).enter()
+					.append('option')
+						.text(function (d) { return d; });
+			}
+			page.append('br');
 		}
 		// insert 3 line breaks before the next paragraph
 		div.append('br');

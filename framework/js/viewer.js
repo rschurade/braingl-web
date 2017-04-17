@@ -3,7 +3,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 //anonyme fct called when file is being loaded	--> creates window class 
 //index html loads main.js (belongs to require.js --> html is being loaded main.js is being loaded
 
-	
+
+
 
 (function() { window.Viewer = function( width, height ) {
 	
@@ -165,7 +166,6 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	);
 	
 
-	
 	init = function() {
 	
 		// load a resource
