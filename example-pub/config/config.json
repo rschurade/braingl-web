@@ -4,5 +4,6 @@
     "viewer": true,
     "hasContent" : true,
     "firstPage" : "page1",
-    "hasKeyBindings" : true
+    "hasKeyBindings" : true,
+    "showDebugElements" : true
 }

@@ -7,7 +7,7 @@
 		"paragraphs" : [
 		{
 			"text" : [
-						"<br>Katja Heuer, Ralph Schurade, Angela D Friederici & Alfred Anwander<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an ", 
+						"<br>Katja Heuer, Ralph Schurade<br><br>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany<br><br>This is an ", 
 						"example for an online publication with interactive 3D figures. The code of the template can be found as example-pub at github.com/rschurade/braingl-web.<br>In ",
 						"addition to such an online article template, braingl-web also provides a framework to create an interactive 3D website for your data which you can easily link with your journal ",
 						"publication. The code for the template can be found as 'brainnetworks' within braingl-web.<br>This image is a collage as to what the online publication will look like once the interlinked figure and viewer will be implemented.<br>",
@@ -15,8 +15,9 @@
 						"<br><a class='a2page' href='page1' para='para2'>link to paragraph 2</a><br />"
 					 ],
 			"diagram_title" : "connections",
-			"diagram_data" : "data.json",
-			"diagram_type" : "matrix"
+			"diagram_dataPos" : "position.csv",
+			"diagram_dataCon" : "connections.csv",
+			"diagram_type" : "matrixCSV"
 			
 		},
 		{
@@ -37,8 +38,9 @@
 						"occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 					 ],
 			"diagram_title" : "connections",
-			"diagram_data" : "data.json",
-			"diagram_type" : "circle",
+			"diagram_dataPos" : "position.csv",
+			"diagram_dataCon" : "connections.csv",
+			"diagram_type" : "circleCSV",
 		    "image_url": "images/example1.png",
 			"image_title": "Figure 3: figure figure figure figure figure figure",
 			"image_text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
