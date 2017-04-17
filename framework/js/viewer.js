@@ -1,4 +1,4 @@
-define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, niftii ) {
+define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti ) {
 	
 	
 (function() { window.Viewer = function( width, height ) {
@@ -154,8 +154,8 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	}
 	
 	function loadTexture( url, callback ) {
-		t1data = new Niftii();
-		t1data.load( settings.DATA_URL + url, callback );
+		t1data = new Nifti();
+		t1data.download( settings.DATA_URL + url, callback );
 	}
 	
 	zoom = function( delta ) {

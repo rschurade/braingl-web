@@ -270,6 +270,19 @@ function interpolateTo( rot ) {
 	
 }
 
+function setRotation( rot ) {
+	nextRot = new THREE.Matrix4();	
+	var m1 = new THREE.Matrix4();
+	var m2 = new THREE.Matrix4();
+	var m3 = new THREE.Matrix4();
+	m1.makeRotationX( rot[0] );
+	m2.makeRotationY( rot[1] );
+	m3.makeRotationZ( rot[2] );
+	nextRot.multiplyMatrices( m1, m2 );
+	nextRot.multiply( m3 );
+	m_rot = nextRot;
+}
+
 return {
 	setViewportDims: setViewportDims,
 	click: click,
