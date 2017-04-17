@@ -1,6 +1,7 @@
-define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, niftii ) {
-	
-	
+define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti ) {
+//syntax: require.js --> quasi classes	
+//anonyme fct called when file is being loaded	--> creates window class 
+//index html loads main.js (belongs to require.js --> html is being loaded main.js is being loaded
 (function() { window.Viewer = function( width, height ) {
 	
 	var width = width;
@@ -42,6 +43,8 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	var sliceDim = 128;
 	var zero;
 
+
+//then init viewer --> creates slices, rotate them!! Three.js wants it like that: create plane geometry of target size --> rotate it, texturise it
 	// load a resource
 	loader.load(
 		// resource URL
@@ -72,6 +75,7 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 			fragmentShader: fshader,
 			side: THREE.DoubleSide
 			});
+			
 		// setup slices
 		slices = new THREE.Group();
 		connections = new THREE.Group();
@@ -134,7 +138,8 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 		scene.add( slices );
 		scene.add( connections );
 		
-		loadTexture( "t1.nii", texLoaded );
+		//loadTexture( "t1.nii", texLoaded );
+		loadTexture( "MNI152_T1_1mm_Brain.nii", texLoaded );
 		},
 		// Function called when download progresses
 		function ( xhr ) {
@@ -176,8 +181,8 @@ define(["d3", "three", "arcball", "niftii"], function( d3, THREE, arcball, nifti
 	}
 	
 	function loadTexture( url, callback ) {
-		t1data = new Niftii();
-		t1data.load( settings.DATA_URL + url, callback );
+		t1data = new Nifti();
+		t1data.download( settings.DATA_URL + url, callback );
 	}
 	
 	zoom = function( delta ) {

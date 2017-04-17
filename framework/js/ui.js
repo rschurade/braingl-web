@@ -1,5 +1,8 @@
-define(["io", "diagram", "viewer", "niftii", "d3", "arcball"], function( io, diagram, viewer, niftii, d3, arcball ) {
+define(["io", "diagram", "viewer", "nifti", "d3", "arcball"], function( io, diagram, viewer, nifti, d3, arcball ) {
 // module structure: first a 'define' to make the module usable; and at the very end of ui.js: return
+	
+	//initilaizes slider, then loads config --> json function of d3 gets url of config file and a callback,
+	//load config has signature and errore --> from d3 eror message (empty if success); and in config object: our config obj from d3
 	
 // var config will be the config object
 var config = {};
@@ -46,6 +49,8 @@ function loadConfig( error, configObject ) {
 }
 
 
+//in content json is our content
+
 function onContentLoaded() {
 	console.log( "ui.js onContentLoaded()" );
 	//Kenner in config.json
@@ -56,6 +61,8 @@ d3.select('#viewer-div').on("resize", function(d) {
     arcball.setViewportDims( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
 })
 
+
+//if in config json viewer truwe: initialised here; then event gets attached: if dims change, call function onDIMS --> THEN VIEWER CALLS INIT FUNCTION AND THE FIRST TIME THE RENDER FUNCTION --> VIEWER FILE
 
 
 // this function will get the object from the content.json: 

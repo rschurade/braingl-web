@@ -7,10 +7,10 @@ var adjust_width  = 1.0 / ((width - 1.0) * 0.5);
 var adjust_height = 1.0 / ((height - 1.0) * 0.5);
 var m_zoom = 1.0;
 
-var v_mouse_current = new THREE.Vector3();  		// mouse position at the beginning of dragging
-var v_mouse_down = new THREE.Vector3();  			// mouse position at the beginning of dragging
-var q_current_rotation = new THREE.Quaternion();	// current rotation
-var m_rot = new THREE.Matrix4();				 			// current rotation matrix
+var v_mouse_current = new THREE.Vector3();  			// mouse position at the beginning of dragging
+var v_mouse_down = new THREE.Vector3();  				// mouse position at the beginning of dragging
+var q_current_rotation = new THREE.Quaternion();		// current rotation
+var m_rot = new THREE.Matrix4();				 		// current rotation matrix
 var v_from = new THREE.Vector3();
 var lastRot = new THREE.Matrix4();
 
