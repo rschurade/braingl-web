@@ -227,7 +227,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			slices.add( sagittal );
 			slices.add( coronal );
 			
-			loadTexture( "t1.nii", texLoaded );
+			//loadTexture( "t1.nii", texLoaded );
+			loadTexture( "MNI152_T1_1mm_Brain.nii", texLoaded );
 			},
 			// Function called when download progresses
 			function ( xhr ) {
