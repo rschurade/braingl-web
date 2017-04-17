@@ -14,6 +14,11 @@ var m_rot = new THREE.Matrix4();				 		// current rotation matrix
 var v_from = new THREE.Vector3();
 var lastRot = new THREE.Matrix4();
 
+var m_rotTarget = new THREE.Quaternion();
+var m_oldRot = new THREE.Quaternion();
+var m_interpolating = false;
+var m_interpolateStep = 0;
+
 
 /// maps the specified mouse position to the sphere defined
 /// with center and radius. the resulting vector lies on the
@@ -93,6 +98,21 @@ function click(x,y)
 /// returns the rotation matrix to be used directly
 function get()
 { 
+	if ( m_interpolating ) {
+		++m_interpolateStep;
+		if ( m_interpolateStep == 50 ) {
+			m_interpolating = false;
+		}
+		else {
+			// slerp quats
+			d = Math.log( m_interpolateStep ) / Math.log( 50 );
+			qrot = new THREE.Quaternion();
+			THREE.Quaternion.slerp( m_oldRot, m_rotTarget, qrot, d );
+			// set rot
+			m_rot.makeRotationFromQuaternion( qrot );
+		}
+	}
+	
 	return m_rot;
 	
 	
@@ -128,6 +148,43 @@ function get()
 	return mv;
 	*/
 }
+
+function slerp(qa, qb, t) 
+{
+	// quaternion to return
+	qm = new THREE.Quaternion();
+	// Calculate angle between them.
+	cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
+	// if qa=qb or qa=-qb then theta = 0 and we can return qa
+	if (Math.abs(cosHalfTheta) >= 1.0)
+	{
+		qm.w = qa.w;qm.x = qa.x;qm.y = qa.y;qm.z = qa.z;
+		return qm;
+	}
+	// Calculate temporary values.
+	halfTheta = Math.acos(cosHalfTheta);
+	sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta*cosHalfTheta);
+	// if theta = 180 degrees then result is not fully defined
+	// we could rotate around any axis normal to qa or qb
+	if (Math.abs(sinHalfTheta) < 0.001)
+	{ // fabs is floating point absolute
+		qm.w = (qa.w * 0.5 + qb.w * 0.5);
+		qm.x = (qa.x * 0.5 + qb.x * 0.5);
+		qm.y = (qa.y * 0.5 + qb.y * 0.5);
+		qm.z = (qa.z * 0.5 + qb.z * 0.5);
+		return qm;
+	}
+	ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta;
+	ratioB = Math.sin(t * halfTheta) / sinHalfTheta; 
+	//calculate Quaternion.
+	w = (qa.w * ratioA + qb.w * ratioB);
+	x = (qa.x * ratioA + qb.x * ratioB);
+	y = (qa.y * ratioA + qb.y * ratioB);
+	z = (qa.z * ratioA + qb.z * ratioB);
+	qm.set( x, y, z, w );
+	return qm;
+}	
+
 
 function zoomIn() {
 	if ( m_zoom < 1.0 ) {
@@ -187,8 +244,43 @@ function setTranslation( x, y ) {
 	moveY = y;
 }
 
+function translation() {
+	return { "x": moveX, "y": moveY };
+}
+
 function setRotation( rot ) {
 	m_rot = rot;
+}
+
+function interpolateTo( rot ) {
+	nextRot = new THREE.Matrix4();	
+	var m1 = new THREE.Matrix4();
+	var m2 = new THREE.Matrix4();
+	var m3 = new THREE.Matrix4();
+	m1.makeRotationX( rot[0] );
+	m2.makeRotationY( rot[1] );
+	m3.makeRotationZ( rot[2] );
+	nextRot.multiplyMatrices( m1, m2 );
+	nextRot.multiply( m3 );
+	m_rotTarget.setFromRotationMatrix( nextRot );
+	m_interpolating = true;
+	m_interpolateStep = 0;
+	m_oldRot = new THREE.Quaternion();
+	m_oldRot.setFromRotationMatrix( m_rot );
+	
+}
+
+function setRotation( rot ) {
+	nextRot = new THREE.Matrix4();	
+	var m1 = new THREE.Matrix4();
+	var m2 = new THREE.Matrix4();
+	var m3 = new THREE.Matrix4();
+	m1.makeRotationX( rot[0] );
+	m2.makeRotationY( rot[1] );
+	m3.makeRotationZ( rot[2] );
+	nextRot.multiplyMatrices( m1, m2 );
+	nextRot.multiply( m3 );
+	m_rot = nextRot;
 }
 
 return {
@@ -203,6 +295,8 @@ return {
 	midDrag: midDrag,
 	reset: reset,
 	setTranslation : setTranslation,
-	setRotation : setRotation
+	translation : translation,
+	setRotation : setRotation,
+	interpolateTo : interpolateTo
 };
 }));

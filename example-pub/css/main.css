@@ -204,6 +204,7 @@ a.next {
 /* right side: controls overlaid over viewer: sliders for slices and controls for textures; */
 #controls {
 	display: none;
+	opacity: 0;
 	width: 40vw;
 	position: absolute;
 	z-index: 3;
@@ -215,7 +216,7 @@ a.next {
 }
 
 /* make texture toggles & sliders appear next to each other */
-#controls-toggles,#controls-slices {
+#controls-toggles,#controls-slices, #controls-rot {
 	display: inline;
 	float: left;
 	margin: 1em 1em 1em 1em;
@@ -236,6 +237,14 @@ a.next {
 #controls-slices input[type="range"] {
 	width: 60%;
 }
+
+#controls-rot {
+	width: 90%;
+}
+#controls-rot input[type="range"] {
+	width: 90%;
+}
+
 
 input[type=range]{
     -webkit-appearance: none;

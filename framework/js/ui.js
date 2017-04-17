@@ -9,6 +9,7 @@ var config = {};
 var view;
 var currentPage;
 
+
 /**
  * @function startUp()
  * loads the config.json
@@ -17,9 +18,26 @@ var currentPage;
  */
 function startUp() {
 	console.log( "ui.js startUp()" )
+	
+	// ui elements
+	d3.select('#sliceX').on('input', function() { view.setSlice( this.id, this.value ); d3.select('#lsliceX').text(this.value); } );
+	d3.select('#sliceY').on('input', function() { view.setSlice( this.id, this.value ); d3.select('#lsliceY').text(this.value); } );
+	d3.select('#sliceZ').on('input', function() { view.setSlice( this.id, this.value ); d3.select('#lsliceZ').text(this.value); } );
+	
+	d3.select('#rotX').on('input', function() { updateRotation(); d3.select('#lrotX').text( (this.value / 100.0 - 3.1415).toFixed(2) ); } );
+	d3.select('#rotY').on('input', function() { updateRotation(); d3.select('#lrotY').text( (this.value / 100.0 - 3.1415).toFixed(2) ); } );
+	d3.select('#rotZ').on('input', function() { updateRotation(); d3.select('#lrotZ').text( (this.value / 100.0 - 3.1415).toFixed(2) ); } );
+	
 	// load config files
 	d3.json( settings.CONFIG_URL + "config.json", loadConfig );  
 };
+
+function updateRotation() {
+	var x = d3.select('#rotX').property('value' ) / 100.0 - 3.1415;
+	var y = d3.select('#rotY').property('value' ) / 100.0 - 3.1415;
+	var z = d3.select('#rotZ').property('value' ) / 100.0 - 3.1415;
+	arcball.setRotation( [x, y, z] );
+} 
 
 // not visible, like a private function
 // receives 2 arguments from d3
@@ -37,15 +55,40 @@ function loadConfig( error, configObject ) {
 		io.loadContent( settings.CONFIG_URL + "content.json", onContentLoaded );
 	}
 	
+	if ( config && config.showDebugElements ) {
+		d3.select( '#controls-rot' ).style('display', 'block' );
+	}
+	else {
+		d3.select( '#controls-rot' ).style('display', 'none' );
+	}
+	
 	if ( config && config.viewer ) {
 		console.log( "create viewer" );
 		view = new Viewer( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
 		//d3.select('#viewer-div').append(view.html);
-		
+		view.dispatch.on('dimsChanged', onDimsChanged );
 		document.getElementById('viewer-div').appendChild( view.html() );
+		
+		view.init();
+		
 		console.log( view.size() );
 		view.render();
 	}	
+}
+
+function onDimsChanged( dims ) {
+	console.log( 'dims changed');
+	d3.select('#sliceX').attr('max', dims.nx - 1 );
+	d3.select('#sliceY').attr('max', dims.ny - 1 );
+	d3.select('#sliceZ').attr('max', dims.nz - 1 );
+	
+	d3.select('#sliceX').attr('value', parseInt( dims.nx / 2 ) );
+	d3.select('#sliceY').attr('value', parseInt( dims.ny / 2 ) );
+	d3.select('#sliceZ').attr('value', parseInt( dims.nz / 2 ) );
+
+	d3.select('#lsliceX').text( parseInt( dims.nx / 2 ) );
+	d3.select('#lsliceY').text( parseInt( dims.ny / 2 ) );
+	d3.select('#lsliceZ').text( parseInt( dims.nz / 2 ) );
 }
 
 
@@ -291,6 +334,19 @@ window.addEventListener("resize", function() {
 	}
 });
 
+d3.select('#controlsLink').on( 'click', function() {
+	d3.event.preventDefault();
+	if ( d3.select('#controls').style('display') == 'block' ) {
+		d3.select('#controls').style('opacity', 100 );
+	    d3.select('#controls').transition().style('opacity', 0 ).duration( 2500 )
+	    	.each( 'end', function() {d3.select('#controls').style('display', 'none');});
+	}
+	else {
+	    d3.select('#controls').style('display', 'block');
+	    d3.select('#controls').style('opacity', 0 );
+	    d3.select('#controls').transition().style('opacity', 100 ).duration( 3000 );
+	}
+});
 
 
 

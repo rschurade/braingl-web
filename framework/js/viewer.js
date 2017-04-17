@@ -2,7 +2,12 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 //syntax: require.js --> quasi classes	
 //anonyme fct called when file is being loaded	--> creates window class 
 //index html loads main.js (belongs to require.js --> html is being loaded main.js is being loaded
+
+	
+
 (function() { window.Viewer = function( width, height ) {
+	
+	var dispatch = d3.dispatch("dimsChanged");
 	
 	var width = width;
 	var height = height;
@@ -38,8 +43,16 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var axial;
 	var coronal;
 	var sagittal;
-	var slices;
-	var connections;
+	
+	var pivot = new THREE.Group();
+	var slices = new THREE.Group();
+	var connections = new THREE.Group();
+	
+	pivot.add( slices );
+	pivot.add( connections );
+	
+	scene.add( pivot );
+	
 	var sliceDim = 128;
 	var zero;
 
@@ -151,8 +164,81 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		}
 	);
 	
+
 	
+	init = function() {
 	
+		// load a resource
+		loader.load(
+			// resource URL
+			settings.DATA_URL + "tex_loading.png",
+			// Function when resource is loaded
+			function ( texture ) {
+				axialMat = new THREE.ShaderMaterial({
+				uniforms: {
+					tex: {type: 't', value: texture }
+				},
+				vertexShader: vshader,
+				fragmentShader: fshader,
+				side: THREE.DoubleSide
+				});
+				coronalMat = new THREE.ShaderMaterial({
+				uniforms: {
+					tex: {type: 't', value: texture }
+				},
+				vertexShader: vshader,
+				fragmentShader: fshader,
+				side: THREE.DoubleSide
+				});
+				sagittalMat = new THREE.ShaderMaterial({
+				uniforms: {
+					tex: {type: 't', value: texture }
+				},
+				vertexShader: vshader,
+				fragmentShader: fshader,
+				side: THREE.DoubleSide
+				}
+			);
+			// setup slices
+			var geometry3 = new THREE.PlaneGeometry( sliceDim, sliceDim );
+			
+			coronal = new THREE.Mesh( geometry3, coronalMat );
+			coronal.rotation.x = Math.PI;
+			coronal.rotation.y = Math.PI;
+			coronal.rotation.z = Math.PI;
+			
+			
+			var geometry = new THREE.PlaneGeometry( sliceDim, sliceDim );
+			axial = new THREE.Mesh( geometry, axialMat );
+			axial.rotation.x = Math.PI;
+			axial.rotation.y = Math.PI * 2;
+			
+			
+			var geometry2 = new THREE.PlaneGeometry( sliceDim, sliceDim );
+			sagittal = new THREE.Mesh( geometry2, sagittalMat );
+			sagittal.rotation.x = Math.PI / -2;
+			sagittal.rotation.y = Math.PI / -2;
+			
+			axial.name = "axialTmp"
+			coronal.name = "coronalTmp";
+			sagittal.name = "sagittalTmp"
+			
+			slices.add( axial );
+			slices.add( sagittal );
+			slices.add( coronal );
+			
+			loadTexture( "t1.nii", texLoaded );
+			},
+			// Function called when download progresses
+			function ( xhr ) {
+				console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			},
+			// Function called when download errors
+			function ( xhr ) {
+				console.log( 'An error happened' );
+			}
+		);
+	}
 	
 	
 
@@ -207,53 +293,160 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		var dims = t1data.getDims();
 		console.log( dims );
 		
+		var x = dims.nx * dims.dx / 2;
+		var y = dims.ny * dims.dy / 2;
+		var z = dims.nz * dims.dz / 2;
+		
 		var image = t1data.getImage( "coronal", Math.floor( dims.ny / 2 ) );
 		var tex = new THREE.Texture( image );
 		tex.needsUpdate = true;
 		
 		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
+		geometry.vertices = [];
+		geometry.vertices.push(
+			new THREE.Vector3( 0 , y, 0 ),
+			new THREE.Vector3( dims.nx * dims.dx, y, 0 ),
+			new THREE.Vector3( 0 , y, dims.nz * dims.dz ),
+			new THREE.Vector3( dims.nx * dims.dx, y, dims.nz * dims.dz )
+		);
+		
 		coronal = new THREE.Mesh( geometry, coronalMat );
 		coronal.material.uniforms.tex.value = tex;
 		coronal.material.needsUpdate = true;
-		coronal.rotation.x = Math.PI / -2;
 		coronal.needsUpdate = true;
 		coronal.name = "coronal";
 		slices.add( coronal );
 		
 		
-		var image2 = t1data.getImage( "axial", Math.floor( dims.nz/2 ) );
+		var image2 = t1data.getImage( "axial", Math.floor( dims.nz / 2 ) );
 		var tex2 = new THREE.Texture( image2 );
 		tex2.needsUpdate = true;
 		
 		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
+		geometry.vertices = [];
+		geometry.vertices.push(
+			new THREE.Vector3( 0, 0, z ),
+			new THREE.Vector3( dims.nx * dims.dx, 0, z ),
+			new THREE.Vector3( 0, dims.ny * dims.dy, z ),
+			new THREE.Vector3( dims.nx * dims.dx, dims.ny * dims.dy, z )
+		);
 		axial = new THREE.Mesh( geometry, axialMat );
 		axial.material.uniforms.tex.value = tex2;
 		axial.material.needsUpdate = true;
-		axial.rotation.x = Math.PI;
-		axial.rotation.y = Math.PI * 2;
 		axial.needsUpdate = true;
 		axial.name = "axial";
 		slices.add( axial );
 
-		var image3 = t1data.getImage( "sagittal", Math.floor( dims.nx/2 ) );
+		var image3 = t1data.getImage( "sagittal", Math.floor( dims.nx / 2 ) );
 		var tex3 = new THREE.Texture( image3 );
 		tex3.needsUpdate = true;
 		
 		var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
+		geometry.vertices = [];
+		geometry.vertices.push(
+			new THREE.Vector3( x, 0, 0 ),
+			new THREE.Vector3( x, dims.ny * dims.dy, 0 ),
+			new THREE.Vector3( x, 0, dims.nz * dims.dz ),
+			new THREE.Vector3( x, dims.ny * dims.dy, dims.nz * dims.dz )
+		);
 		sagittal = new THREE.Mesh( geometry, sagittalMat );
 		sagittal.material.uniforms.tex.value = tex3;
 		sagittal.material.needsUpdate = true;
-		sagittal.rotation.x = Math.PI / -2;
-		sagittal.rotation.y = Math.PI / -2;
 		sagittal.needsUpdate = true;
 		sagittal.name = "sagittal";
 		slices.add( sagittal );
 
 		zero = new THREE.Vector3( dims.nx * dims.dx / 2, dims.ny * dims.dy / 2, dims.nz * dims.dz / 2 );
-		connections.translateX( -zero.x );
-		connections.translateY( -zero.y );
-		connections.translateZ( -zero.z );
-
+		
+		pivot.translateX( -zero.x );
+		pivot.translateY( -zero.y );
+		pivot.translateZ( -zero.z );
+		
+		dispatch.dimsChanged( dims );
+		
+		arcball.interpolateTo( [-1.2, -0.111, 2.5] );
+	}
+	
+	function setSlice( id, value ) {
+		var dims = t1data.getDims();
+		switch ( id ) {
+			case 'sliceX' :
+			{
+				object = slices.getObjectByName( "sagittal" );
+				slices.remove( object );
+				var image3 = t1data.getImage( "sagittal", Math.floor( value ) );
+				var tex3 = new THREE.Texture( image3 );
+				tex3.needsUpdate = true;
+				
+				var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
+				geometry.vertices = [];
+				var x = value * dims.dx;
+				geometry.vertices.push(
+					new THREE.Vector3( x, 0, 0 ),
+					new THREE.Vector3( x, dims.ny * dims.dy, 0 ),
+					new THREE.Vector3( x, 0, dims.nz * dims.dz ),
+					new THREE.Vector3( x, dims.ny * dims.dy, dims.nz * dims.dz )
+				);
+				sagittal = new THREE.Mesh( geometry, sagittalMat );
+				sagittal.material.uniforms.tex.value = tex3;
+				sagittal.material.needsUpdate = true;
+				sagittal.needsUpdate = true;
+				sagittal.name = "sagittal";
+				slices.add( sagittal );
+			}
+				break;
+			case 'sliceY' :
+			{
+				object = slices.getObjectByName( "coronal" );
+				slices.remove( object );
+				var image = t1data.getImage( "coronal", Math.floor( value ) );
+				var tex = new THREE.Texture( image );
+				tex.needsUpdate = true;
+				
+				var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
+				geometry.vertices = [];
+				var y = value * dims.dy;
+				geometry.vertices.push(
+					new THREE.Vector3( 0 , y, 0 ),
+					new THREE.Vector3( dims.nx * dims.dx, y, 0 ),
+					new THREE.Vector3( 0 , y, dims.nz * dims.dz ),
+					new THREE.Vector3( dims.nx * dims.dx, y, dims.nz * dims.dz )
+				);
+				
+				coronal = new THREE.Mesh( geometry, coronalMat );
+				coronal.material.uniforms.tex.value = tex;
+				coronal.material.needsUpdate = true;
+				coronal.needsUpdate = true;
+				coronal.name = "coronal";
+				slices.add( coronal );
+			}
+				break;
+			case 'sliceZ' :
+			{
+				object = slices.getObjectByName( "axial" );
+				slices.remove( object );
+				var image2 = t1data.getImage( "axial", Math.floor( value ) );
+				var tex2 = new THREE.Texture( image2 );
+				tex2.needsUpdate = true;
+				
+				var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
+				geometry.vertices = [];
+				var z = value * dims.dz;
+				geometry.vertices.push(
+					new THREE.Vector3( 0, 0, z ),
+					new THREE.Vector3( dims.nx * dims.dx, 0, z ),
+					new THREE.Vector3( 0, dims.ny * dims.dy, z ),
+					new THREE.Vector3( dims.nx * dims.dx, dims.ny * dims.dy, z )
+				);
+				axial = new THREE.Mesh( geometry, axialMat );
+				axial.material.uniforms.tex.value = tex2;
+				axial.material.needsUpdate = true;
+				axial.needsUpdate = true;
+				axial.name = "axial";
+				slices.add( axial );
+			}
+				break;				
+		}
 	}
 	
 	function addConnections( id, position, destinations ) {
@@ -307,6 +500,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	}
 	
 	return {
+		dispatch : dispatch,
+		init : init,
 		render : render,
 		html : html,
 		size : size,
@@ -315,6 +510,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		addConnection : addConnection,
 		addConnections : addConnections,
 		removeConnections : removeConnections,
+		setSlice : setSlice,
 	}
 }
 
