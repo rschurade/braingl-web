@@ -3,8 +3,12 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 //anonyme fct called when file is being loaded	--> creates window class 
 //index html loads main.js (belongs to require.js --> html is being loaded main.js is being loaded
 
-
-
+	//anonyme function without name --> called immediately when is being loaded, in global cobnetext (window) inits a viewer object which is the prototype for viewer classes, i e 
+	// when in ui.js viewer = new viewer (l 64) --> creates object which looks like this one 
+	//creates viewer object and the functuon which this object shall make availabe are defined down there in line 182 return :) 
+	// eg add connections; but add sphere and stuff are bot visible to outside --> in ui.js they are not callable --... just used by the addconnection functions
+	// slices is three.js group 
+	// cor is three.js mesh (object to render with three.js
 
 (function() { window.Viewer = function( width, height ) {
 	
@@ -56,118 +60,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	var sliceDim = 128;
 	var zero;
-
-
+	
+	
 //then init viewer --> creates slices, rotate them!! Three.js wants it like that: create plane geometry of target size --> rotate it, texturise it
-	// load a resource
-	loader.load(
-		// resource URL
-		settings.DATA_URL + "tex_loading.png",
-		// Function when resource is loaded
-		function ( texture ) {
-			axialMat = new THREE.ShaderMaterial({
-            uniforms: {
-                tex: {type: 't', value: texture }
-            },
-            vertexShader: vshader,
-			fragmentShader: fshader,
-			side: THREE.DoubleSide
-			});
-			coronalMat = new THREE.ShaderMaterial({
-            uniforms: {
-                tex: {type: 't', value: texture }
-            },
-            vertexShader: vshader,
-			fragmentShader: fshader,
-			side: THREE.DoubleSide
-			});
-			sagittalMat = new THREE.ShaderMaterial({
-            uniforms: {
-                tex: {type: 't', value: texture }
-            },
-            vertexShader: vshader,
-			fragmentShader: fshader,
-			side: THREE.DoubleSide
-			});
-			
-		// setup slices
-		slices = new THREE.Group();
-		connections = new THREE.Group();
-//		var mat1 = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
-//		var mat2 = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
-//		var mat3 = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.DoubleSide} );
-		
-		var geometry3 = new THREE.PlaneGeometry( sliceDim, sliceDim );
-		
-		coronal = new THREE.Mesh( geometry3, coronalMat );
-		//coronal = new THREE.Mesh( geometry3, mat1 );
-		coronal.rotation.x = Math.PI;
-		coronal.rotation.y = Math.PI;
-		coronal.rotation.z = Math.PI;
-		
-		
-		var geometry = new THREE.PlaneGeometry( sliceDim, sliceDim );
-		//axial = new THREE.Mesh( geometry, mat2 );
-		axial = new THREE.Mesh( geometry, axialMat );
-		axial.rotation.x = Math.PI;
-		axial.rotation.y = Math.PI * 2;
-		
-		
-		var geometry2 = new THREE.PlaneGeometry( sliceDim, sliceDim );
-		sagittal = new THREE.Mesh( geometry2, sagittalMat );
-		//sagittal = new THREE.Mesh( geometry2, mat3 );
-		sagittal.rotation.x = Math.PI / -2;
-		sagittal.rotation.y = Math.PI / -2;
-		
-		axial.name = "axialTmp"
-		coronal.name = "coronalTmp";
-		sagittal.name = "sagittalTmp"
-		
-		slices.add( axial );
-		slices.add( sagittal );
-		slices.add( coronal );
-		
-		var geometry = new THREE.SphereGeometry( 5, 32, 32 );
-		var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-		var sphere = new THREE.Mesh( geometry, material );
-		/*
-		var g1 = new THREE.SphereGeometry( 5, 32, 32 );
-		var m1 = new THREE.MeshBasicMaterial( {color: 0xff0000} );
-		var s1 = new THREE.Mesh( g1, m1 );
-		s1.translateX( 50 );
-		scene.add( s1 );
-		var g2 = new THREE.SphereGeometry( 5, 32, 32 );
-		var m2 = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-		var s2 = new THREE.Mesh( g2, m2 );
-		s2.translateY( 50 );
-		scene.add( s2 );
-		var g3 = new THREE.SphereGeometry( 5, 32, 32 );
-		var m3 = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
-		var s3 = new THREE.Mesh( g3, m3 );
-		s3.translateZ( 50 );
-		scene.add( s3 );		
-		*/
-		
-		scene.add( sphere );
-		scene.add( slices );
-		scene.add( connections );
-		
-		//loadTexture( "t1.nii", texLoaded );
-		loadTexture( "MNI152_T1_1mm_Brain.nii", texLoaded );
-		},
-		// Function called when download progresses
-		function ( xhr ) {
-			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-		},
-		// Function called when download errors
-		function ( xhr ) {
-			console.log( 'An error happened' );
-		}
-	);
-	
-
 	init = function() {
-	
 		// load a resource
 		loader.load(
 			// resource URL
@@ -199,6 +95,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				side: THREE.DoubleSide
 				}
 			);
+
 			// setup slices
 			var geometry3 = new THREE.PlaneGeometry( sliceDim, sliceDim );
 			
@@ -227,8 +124,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			slices.add( sagittal );
 			slices.add( coronal );
 			
-			//loadTexture( "t1.nii", texLoaded );
-			loadTexture( "MNI152_T1_1mm_Brain.nii", texLoaded );
+			loadTexture( "t1.nii", texLoaded );
 			},
 			// Function called when download progresses
 			function ( xhr ) {
@@ -240,7 +136,6 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			}
 		);
 	}
-	
 	
 
 	render = function() {
