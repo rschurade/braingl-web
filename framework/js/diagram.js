@@ -7,6 +7,75 @@ define( ["d3"], function(d3) {
 		var addConsCallback = addConnections;
 		var removeConCallback = removeConnection;
 		
+		var classes = [];
+		var connectionMatrix;
+		
+		this.setInputCSV = function( positionCSV, connectionsCSV, callback )
+		{
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', positionCSV, true);
+			xhr.responseType = 'text';
+			
+			xhr.onload = function(e) {
+				var text = this.response;
+				csv2json( text );
+				
+				var xhr2 = new XMLHttpRequest();
+				xhr2.open('GET', connectionsCSV, true);
+				xhr2.responseType = 'text';
+				
+				xhr2.onload = function(e) {
+					var text2 = this.response;
+					connectionMatrix = csv2matrix( text2 );
+					callback();
+				};
+				xhr2.send();
+				
+			};
+			xhr.send();
+			
+		}
+		
+		function csv2matrix( text )
+		{
+			
+		}
+		
+		function csv2json( text )
+		{
+			var lines = text.split("\n");
+			var names = [];
+			
+			for( var i = 0; i < lines.length; ++i )
+			{
+				var tokens = lines[i].split(",");
+				if( tokens.length == 5 )
+				{
+					names.push( tokens[3] );
+				}
+			}
+			for( var i = 0; i < lines.length; ++i )
+			{
+				var tokens = lines[i].split(",");
+				if( tokens.length == 5 )
+				{
+					var entry = {};
+					entry.name = tokens[3];
+					entry.position = [tokens[0], tokens[1], tokens[2]];
+					entry.group = tokens[4];
+					entry.imports = [];
+					for ( var k = 0; k < names.length; ++k )
+					{
+						if ( entry.name != names[k] )
+						{
+							entry.imports.push( names[k] );
+						}
+					}
+					classes.push( entry );
+				}
+			}
+		}
+		
 		
 		this.create = function( dataUrl, diagramDiv, diagramDiameter ) {
 			diagramDiv.style( 'margin-left', '0');
@@ -35,7 +104,7 @@ define( ["d3"], function(d3) {
 			
 			var link = svg.append("g").selectAll(".link"),
 			    node = svg.append("g").selectAll(".node");
-			//classes will contain content of the json
+			// classes will contain content of the json
 			d3.json( dataUrl, function(error, classes) {
 			  if (error) throw error;
 			
@@ -145,7 +214,8 @@ define( ["d3"], function(d3) {
 			    map[d.name] = d;
 			  });
 			
-			  // For each import, construct a link from the source to target node.
+			  // For each import, construct a link from the source to target
+				// node.
 			  nodes.forEach(function(d) {
 			    if (d.imports) d.imports.forEach(function(i) {
 			      imports.push({source: map[d.name], target: map[i]});
@@ -156,46 +226,9 @@ define( ["d3"], function(d3) {
 		
 		};
 
-		function csv2json( text )
-		{
-			var classes = [];
-			var lines = text.split("\n");
-			var names = [];
-			
-			for( var i = 0; i < lines.length; ++i )
-			{
-				var tokens = lines[i].split(",");
-				if( tokens.length == 5 )
-				{
-					names.push( tokens[3] );
-				}
-			}
-			for( var i = 0; i < lines.length; ++i )
-			{
-				var tokens = lines[i].split(",");
-				if( tokens.length == 5 )
-				{
-					var entry = {};
-					entry.name = tokens[3];
-					entry.position = [tokens[0], tokens[1], tokens[2]];
-					entry.group = tokens[4];
-					entry.imports = [];
-					for ( var k = 0; k < names.length; ++k )
-					{
-						if ( entry.name != names[k] )
-						{
-							entry.imports.push( names[k] );
-						}
-					}
-					classes.push( entry );
-				}
-			}
-			
-			return classes;
-		}
 		
-		this.createCircleCSV = function( positionCSV, connectionsCSV, diagramDiv, diagramDiameter ) {
-			console.log( positionCSV );
+		
+		this.createCircleCSV = function( diagramDiv, diagramDiameter ) {
 			diagramDiv.style( 'margin-left', '0');
 			var diameter = diagramDiameter,
 		    radius = diameter / 2,
@@ -222,18 +255,9 @@ define( ["d3"], function(d3) {
 			
 			var link = svg.append("g").selectAll(".link"),
 			    node = svg.append("g").selectAll(".node");
-			//classes will contain content of the json
+			// classes will contain content of the json
 			
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', positionCSV, true);
-			xhr.responseType = 'text';
 			
-			xhr.onload = function(e) {
-				var text = this.response;
-				
-				var classes = csv2json( text );
-	
-				console.log( classes );
 			
 			
 			
@@ -258,8 +282,7 @@ define( ["d3"], function(d3) {
 			      .on("mouseover", mouseovered)
 			      .on("mouseout", mouseouted)
 			      .on("mousedown", mouseclick)
-			};
-			xhr.send();
+			
 			
 			var block = false;
 
@@ -345,7 +368,8 @@ define( ["d3"], function(d3) {
 			    map[d.name] = d;
 			  });
 			
-			  // For each import, construct a link from the source to target node.
+			  // For each import, construct a link from the source to target
+				// node.
 			  nodes.forEach(function(d) {
 			    if (d.imports) d.imports.forEach(function(i) {
 			      imports.push({source: map[d.name], target: map[i]});
@@ -512,7 +536,8 @@ define( ["d3"], function(d3) {
 
 			  var timeout = setTimeout(function() {
 			    order("name");
-			    //d3.select("#order").property("selectedIndex", 0).node().focus();
+			    // d3.select("#order").property("selectedIndex",
+				// 0).node().focus();
 			  }, 5000);
 			});
 
@@ -522,7 +547,7 @@ define( ["d3"], function(d3) {
 		
 		
 		
-		this.createMatrixCSV = function( positionCSV, connectionsCSV, diagramDiv, diagramSize ) {
+		this.createMatrixCSV = function( diagramDiv, diagramSize ) {
 
 
 			var margin = {top: 80, right: 0, bottom: 10, left: 80},
@@ -540,41 +565,31 @@ define( ["d3"], function(d3) {
 			  .append("g")
 			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', positionCSV, true);
-			xhr.responseType = 'text';
-			
-			xhr.onload = function(e) {
-				var text = this.response;
-				
-				var nodes = csv2json( text );
-	
-				console.log( nodes );
-			  	var matrix = [],
-			    n = nodes.length;
+		  	var matrix = [],
+			    n = classes.length;
 
 				// Compute index per node.
-				nodes.forEach(function(node, i) {
+				classes.forEach(function(node, i) {
 				    node.index = i;
 				    node.count = 0;
 				    
 				    matrix[i] = d3.range(n).map(function(j) { return {x: j, y: i, z: 0}; });
 				});
 
-				nodes.forEach( function( node, i ) {
+				classes.forEach( function( node, i ) {
 				  	node.imports.forEach( function(target, j) {
 				  		matrix[node.index][findId(target)].z += 1;
 					    matrix[findId(target)][node.index].z += 1;
 					    matrix[node.index][node.index].z += 1;
 					    matrix[findId(target)][findId(target)].z += 1;
-					    nodes[node.index].count += 1;
-					    nodes[findId(target)].count += 1;
+					    classes[node.index].count += 1;
+					    classes[findId(target)].count += 1;
 				  	});
 				});
 
 				function findId( name ) {
 					var id;
-					nodes.forEach( function( node, i ) {
+					classes.forEach( function( node, i ) {
 				  		if ( node.name == name ) {
 				  			id = node.index;
 				  			return
@@ -587,9 +602,9 @@ define( ["d3"], function(d3) {
 
 			  // Precompute the orders.
 			  var orders = {
-			    name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
-			    count: d3.range(n).sort(function(a, b) { return nodes[b].count - nodes[a].count; }),
-			    group: d3.range(n).sort(function(a, b) { return nodes[b].group - nodes[a].group; })
+			    name: d3.range(n).sort(function(a, b) { return d3.ascending(classes[a].name, classes[b].name); }),
+			    count: d3.range(n).sort(function(a, b) { return classes[b].count - classes[a].count; }),
+			    group: d3.range(n).sort(function(a, b) { return classes[b].group - classes[a].group; })
 			  };
 
 			  // The default sort order.
@@ -616,7 +631,7 @@ define( ["d3"], function(d3) {
 			      .attr("dy", ".32em")
 			      .attr("text-anchor", "end")
 			      .attr('class', 'diagramLabelRow')
-			      .text(function(d, i) { return nodes[i].name; });
+			      .text(function(d, i) { return classes[i].name; });
 
 			  var column = svg.selectAll(".column")
 			      .data(matrix)
@@ -633,7 +648,7 @@ define( ["d3"], function(d3) {
 			      .attr("dy", ".32em")
 			      .attr("text-anchor", "start")
 			      .attr('class', 'diagramLabelColumn' )
-			      .text(function(d, i) { return nodes[i].name; });
+			      .text(function(d, i) { return classes[i].name; });
 
 			  function row(row) {
 			    var cell = d3.select(this).selectAll(".cell")
@@ -644,19 +659,19 @@ define( ["d3"], function(d3) {
 			        .attr("width", x.rangeBand())
 			        .attr("height", x.rangeBand())
 			        .style("fill-opacity", function(d) { return z(d.z); })
-			        .style("fill", function(d) { return nodes[d.x].group == nodes[d.y].group ? c(nodes[d.x].group) : null; })
+			        .style("fill", function(d) { return classes[d.x].group == classes[d.y].group ? c(classes[d.x].group) : null; })
 			        .on("mouseover", mouseover)
 			        .on("mouseout", mouseout);
 			  }
 
 			  function mouseover(p) {
-			  	addConCallback( nodes[p.x].name, nodes[p.x].position, nodes[p.y].position );
+			  	addConCallback( classes[p.x].name, classes[p.x].position, classes[p.y].position );
 			  	d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
 			    d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
 			  }
 
 			  function mouseout(p) {
-			  	removeConCallback( nodes[p.x].name );
+			  	removeConCallback( classes[p.x].name );
 			    d3.selectAll("text").classed("active", false);
 			  }
 
@@ -684,10 +699,10 @@ define( ["d3"], function(d3) {
 
 			  var timeout = setTimeout(function() {
 			    order("name");
-			    //d3.select("#order").property("selectedIndex", 0).node().focus();
+			    // d3.select("#order").property("selectedIndex",
+				// 0).node().focus();
 			  }, 5000);
-			};
-			xhr.send();
+
 			
 			
 			
