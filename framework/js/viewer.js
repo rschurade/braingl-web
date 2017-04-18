@@ -1,6 +1,15 @@
 define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti ) {
-	
-	
+//syntax: require.js --> quasi classes	
+//anonyme fct called when file is being loaded	--> creates window class 
+//index html loads main.js (belongs to require.js --> html is being loaded main.js is being loaded
+
+	//anonyme function without name --> called immediately when is being loaded, in global cobnetext (window) inits a viewer object which is the prototype for viewer classes, i e 
+	// when in ui.js viewer = new viewer (l 64) --> creates object which looks like this one 
+	//creates viewer object and the functuon which this object shall make availabe are defined down there in line 182 return :) 
+	// eg add connections; but add sphere and stuff are bot visible to outside --> in ui.js they are not callable --... just used by the addconnection functions
+	// slices is three.js group 
+	// cor is three.js mesh (object to render with three.js
+
 (function() { window.Viewer = function( width, height ) {
 	
 	var dispatch = d3.dispatch("dimsChanged");
@@ -51,10 +60,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	var sliceDim = 128;
 	var zero;
-
 	
+	
+//then init viewer --> creates slices, rotate them!! Three.js wants it like that: create plane geometry of target size --> rotate it, texturise it
 	init = function() {
-	
 		// load a resource
 		loader.load(
 			// resource URL
@@ -86,6 +95,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				side: THREE.DoubleSide
 				}
 			);
+
 			// setup slices
 			var geometry3 = new THREE.PlaneGeometry( sliceDim, sliceDim );
 			
@@ -126,7 +136,6 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			}
 		);
 	}
-	
 	
 
 	render = function() {

@@ -41,7 +41,7 @@ function loadContent( url, callback ) {
 return {
 	loadContent : loadContent,
 	
-	niftiis : function() {return niftiis;},
+	niftis : function() {return niftis;},
 	textures : function() {return textures;},
 	meshes : function() {return meshes;},
 	fibres : function() {return fibres;},

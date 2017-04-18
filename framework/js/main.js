@@ -1,6 +1,7 @@
 /**
  * @function
  */
+ //calls config function and gives paths, shim : to make d3 work with require.js
 requirejs.config({
     //By default load any module IDs from framework/js
     baseUrl: '../framework/js',
@@ -18,6 +19,7 @@ requirejs.config({
         three: {
             exports: 'THREE'
         },
+        //showdown might be markdown
         showdown: {
             exports: 'SHOWDOWN'
         }

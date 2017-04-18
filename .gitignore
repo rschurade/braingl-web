@@ -1,5 +1,12 @@
 .project
 /.settings
-/example-pub/config/brainbox.md
 /test
 /pub2D
+/brainnetworks/data
+/example-pub/config/brainbox.md
+/example-pub/config/content_backup.json
+/example-pub/config/content_BrainboxBackup.json
+/example-pub/indexBackup.html
+/example-pub/stylesheets/mainBackup.css
+/example-pub/data/testing
+/framework/javascripts/util/ui_neu.js
