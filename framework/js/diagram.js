@@ -8,7 +8,9 @@ define( ["d3"], function(d3) {
 		var removeConCallback = removeConnection;
 		
 		var classes = [];
-		var connectionMatrix;
+		var connectionMatrix = [];
+		var valueMin = 10000000;
+		var valueMax = -10000000;
 		
 		this.setInputCSV = function( positionCSV, connectionsCSV, callback )
 		{
@@ -26,7 +28,7 @@ define( ["d3"], function(d3) {
 				
 				xhr2.onload = function(e) {
 					var text2 = this.response;
-					connectionMatrix = csv2matrix( text2 );
+					csv2matrix( text2 );
 					callback();
 				};
 				xhr2.send();
@@ -38,7 +40,22 @@ define( ["d3"], function(d3) {
 		
 		function csv2matrix( text )
 		{
-			
+			var lines = text.split("\n");
+			for( var i = 0; i < lines.length; ++i ) 
+			{
+				var row = {};
+				row.index = i;
+				row.values = [];
+				var values = lines[i].split(",");
+				for( var k = 0; k < values.length; ++k ) {
+					var value = parseFloat( values[k] )
+					if ( value < valueMin ) valueMin = value;
+					if ( value > valueMax ) valueMax = value;
+					row.values.push( value );
+				}
+				connectionMatrix.push( row );
+			}
+			console.log( "value min: " + valueMin + " valueMax: " + valueMax );
 		}
 		
 		function csv2json( text )
@@ -653,17 +670,53 @@ define( ["d3"], function(d3) {
 			  function row(row) {
 			    var cell = d3.select(this).selectAll(".cell")
 			        .data(row.filter(function(d) { return d.z; }))
-			      .enter().append("rect")
+			        .enter().append("rect")
 			        .attr("class", "cell")
 			        .attr("x", function(d) { return x(d.x); })
 			        .attr("width", x.rangeBand())
 			        .attr("height", x.rangeBand())
 			        .style("fill-opacity", function(d) { return z(d.z); })
-			        .style("fill", function(d) { return classes[d.x].group == classes[d.y].group ? c(classes[d.x].group) : null; })
+			        //.style("fill", function(d) { return classes[d.x].group == classes[d.y].group ? c(classes[d.x].group) : null; })
+			        .style("fill", function(d) { return connectionColor( d.y, d.x ) })
 			        .on("mouseover", mouseover)
 			        .on("mouseout", mouseout);
 			  }
 
+			  function connectionColor( row, column ) {
+				  var value = connectionMatrix[row].values[column];
+				  var cm = colorMap( value );
+				  //console.log( cm );
+				  return cm;
+			  }
+			  
+			  function colorMap( value ) {
+				  var blue;
+				  var green;
+				  var red;
+				  if ( value < 0 ) {
+					  var scaledValue = value / Math.abs( valueMin );
+					  blue = 1.0;
+					  green = 1.0 + scaledValue;
+					  red = 1.0 + scaledValue;
+				  }
+				  else {
+					  var scaledValue = value / valueMax;
+					  red = 1.0;
+					  green = 1.0 - scaledValue;
+					  blue = 1.0 - scaledValue;
+				  }
+				  return rgbToHex( parseInt( red * 255 ), parseInt( green * 255 ) , parseInt( blue * 255 ) );
+			  }
+			  
+			  function componentToHex(c) {
+				    var hex = c.toString(16);
+				    return hex.length == 1 ? "0" + hex : hex;
+				}
+
+				function rgbToHex(r, g, b) {
+				    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+				}
+			  
 			  function mouseover(p) {
 			  	addConCallback( classes[p.x].name, classes[p.x].position, classes[p.y].position );
 			  	d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
