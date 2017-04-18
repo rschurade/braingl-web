@@ -60,6 +60,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	var sliceDim = 128;
 	var zero;
+	var brainZero;
 	
 	
 //then init viewer --> creates slices, rotate them!! Three.js wants it like that: create plane geometry of target size --> rotate it, texturise it
@@ -124,7 +125,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			slices.add( sagittal );
 			slices.add( coronal );
 			
-			loadTexture( "t1.nii", texLoaded );
+			//loadTexture( "t1.nii", texLoaded );
+			loadTexture( "MNI152_T1_1mm_Brain.nii", texLoaded );
 			},
 			// Function called when download progresses
 			function ( xhr ) {
@@ -192,6 +194,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		var x = dims.nx * dims.dx / 2;
 		var y = dims.ny * dims.dy / 2;
 		var z = dims.nz * dims.dz / 2;
+		
+		var sform = t1data.getSForm();
+		brainZero = new THREE.Vector3( sform.rowX[0] * sform.rowX[3], sform.rowY[1] * sform.rowY[3], sform.rowZ[2] * sform.rowZ[3] );
+		
 		
 		var image = t1data.getImage( "coronal", Math.floor( dims.ny / 2 ) );
 		var tex = new THREE.Texture( image );
@@ -374,9 +380,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		var geometry = new THREE.SphereGeometry( radius, 32, 32 );
 		var material = new THREE.MeshBasicMaterial( {color: col} );
 		var s = new THREE.Mesh( geometry, material );
-		s.translateX( position[0] );
-		s.translateY( position[1] );
-		s.translateZ( position[2] );
+		s.translateX( position[0] - brainZero.x );
+		s.translateY( position[1] - brainZero.y );
+		s.translateZ( position[2] - brainZero.z );
 		parent.add( s );
 	}
 	
@@ -387,8 +393,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 
 		var geometry = new THREE.Geometry();
 		geometry.vertices.push(
-			new THREE.Vector3( pos1[0], pos1[1], pos1[2] ),
-			new THREE.Vector3( pos2[0], pos2[1], pos2[2] )
+			new THREE.Vector3( pos1[0] - brainZero.x, pos1[1] - brainZero.y, pos1[2] - brainZero.z ),
+			new THREE.Vector3( pos2[0] - brainZero.x, pos2[1] - brainZero.y, pos2[2] - brainZero.z )
 		);
 
 		var line = new THREE.Line( geometry, material );
