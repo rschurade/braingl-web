@@ -178,6 +178,8 @@
 			dimX = hdr.dim[1];
 			dimY = hdr.dim[2];
 			dimZ = hdr.dim[3];
+			
+			//console.log( 'hdr.srow: ' + hdr.srow_x + ' ' + hdr.srow_y + ' ' + hdr.srow_z );
 		}
 		
 			
@@ -470,5 +472,9 @@
 		this.getDims = function() {
 			return { 'nx' : hdr.dim[1], 'ny' : hdr.dim[2], 'nz' : hdr.dim[3], 'dx' : hdr.pixdim[1], 'dy' : hdr.pixdim[2], 'dz' : hdr.pixdim[3] }; 
 		};
+		
+		this.getSForm = function() {
+			return { 'rowX' : hdr.srow_x, 'rowY' : hdr.srow_y, 'rowZ' : hdr.srow_z };
+		}
 	};
 })();
