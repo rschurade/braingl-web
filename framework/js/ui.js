@@ -199,7 +199,9 @@ function buildPage( id ) {
 				d.create( settings.DATA_URL + p.diagram_data, diagram, page.property( 'clientWidth' ) );	
 			}
 			else if ( p.diagram_type == "circleCSV") {
-				d.createCircleCSV( settings.DATA_URL + p.diagram_dataPos, settings.DATA_URL + p.diagram_dataCon, diagram, page.property( 'clientWidth' ) );	
+				d.setInputCSV( settings.DATA_URL + p.diagram_dataPos, settings.DATA_URL + p.diagram_dataCon, function(){
+					d.createCircleCSV( diagram, page.property( 'clientWidth' ) );
+				});
 			}
 			else if( p.diagram_type == "matrix" ) {
 				d.createMatrix( settings.DATA_URL + p.diagram_data, diagram, page.property( 'clientWidth' ) * 0.9);
@@ -218,7 +220,11 @@ function buildPage( id ) {
 						.text(function (d) { return d; });
 			}
 			else if( p.diagram_type == "matrixCSV" ) {
-				d.createMatrixCSV( settings.DATA_URL + p.diagram_dataPos, settings.DATA_URL + p.diagram_dataCon, diagram, page.property( 'clientWidth' ) * 0.9);
+				
+				d.setInputCSV( settings.DATA_URL + p.diagram_dataPos, settings.DATA_URL + p.diagram_dataCon, function() { 
+					d.createMatrixCSV( diagram, page.property( 'clientWidth' ) * 0.9 );
+				});
+				
 
 				var data = ["name", "count", "group"];
 
