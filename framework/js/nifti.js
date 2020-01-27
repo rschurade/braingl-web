@@ -251,7 +251,7 @@
 				for( var x = 0; x < dimX; ++x )
 		            for( var y = 0; y < dimY; ++y )
 		            {
-		            	var col = data.getUint8( this.getId(x,(dimY-1)-y,pos) );
+		            	var col = data.getUint8( this.getId(x,y,pos) );
 		            	var index = 4 * (y * imageData.width + x);
 		            	setImgData( index, col );
 		            }
@@ -261,7 +261,7 @@
 				for( var x = 0; x < dimX; ++x )
 		            for( var z = 0; z < dimZ; ++z )
 		            {
-		            	var col = data.getUint8( this.getId( x, pos,(dimZ-1)-z) );
+		            	var col = data.getUint8( this.getId( x, pos,z) );
 		            	var index = 4 * (z * imageData.width + x);
 		            	setImgData( index, col );
 		            }
@@ -271,7 +271,7 @@
 				for( var y = 0; y < dimY; ++y )
 		            for( var z = 0; z < dimZ; ++z )
 		            {
-		            	var col = data.getUint8( this.getId(parseInt(pos),y,(dimZ-1)-z) );
+		            	var col = data.getUint8( this.getId(parseInt(pos),y,z) );
 		            	var index = 4 * (z * imageData.width + y);
 		            	setImgData( index, col );
 		            }

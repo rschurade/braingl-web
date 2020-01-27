@@ -11,18 +11,15 @@ requirejs.config({
     paths: {
     	d3: "http://d3js.org/d3.v3.min",
         three: "../libs/three.min",
-        showdown: "https://cdn.rawgit.com/showdownjs/showdown/1.4.3/dist/showdown.min"
-    	//three: "https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min"
+    	//three: "https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min",
+   	
     },
-    // shim: because three.js and showdown are not really require modules, so you need shim fix
+    // shim: because three.js are not really require modules, so you need shim fix
     shim: {
         three: {
             exports: 'THREE'
         },
-        //showdown might be markdown
-        showdown: {
-            exports: 'SHOWDOWN'
-        }
+        
     }
 });
 

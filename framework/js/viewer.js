@@ -52,9 +52,15 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var pivot = new THREE.Group();
 	var slices = new THREE.Group();
 	var connections = new THREE.Group();
+	var fibres = new THREE.Group();
+	
+	
+	var translationX = 0;
+	var translationY = 0;
 	
 	pivot.add( slices );
 	pivot.add( connections );
+	pivot.add( fibres );
 	
 	scene.add( pivot );
 	
@@ -117,16 +123,14 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			sagittal.rotation.x = Math.PI / -2;
 			sagittal.rotation.y = Math.PI / -2;
 			
-			axial.name = "axialTmp"
-			coronal.name = "coronalTmp";
-			sagittal.name = "sagittalTmp"
+			axial.name = "axial"
+			coronal.name = "coronal";
+			sagittal.name = "sagittal"
 			
 			slices.add( axial );
 			slices.add( sagittal );
 			slices.add( coronal );
 			
-			//loadTexture( "t1.nii", texLoaded );
-			loadTexture( "MNI152_T1_1mm_Brain.nii", texLoaded );
 			},
 			// Function called when download progresses
 			function ( xhr ) {
@@ -144,7 +148,17 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		requestAnimationFrame( this.render );
 		
 
-		scene.quaternion.setFromRotationMatrix( arcball.get() )
+		scene.quaternion.setFromRotationMatrix( arcball.get() );
+		
+		
+		camera.translateX( -translationX );
+		camera.translateY( translationY );
+		
+		camera.translateX( arcball.translation().x );
+		camera.translateY( -arcball.translation().y );
+		
+		translationX = arcball.translation().x;
+		translationY = arcball.translation().y;
 		
 		renderer.render( scene, camera );
 	}
@@ -179,13 +193,15 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		camera.updateProjectionMatrix();
 	}
 	
-	function texLoaded() {
+	function setAnatomy( nifti ) {
+		t1data = nifti;
+		
 		console.log( "tex loaded" );
-		var object = slices.getObjectByName( "coronalTmp" );
+		var object = slices.getObjectByName( "coronal" );
 	    slices.remove( object );
-	    object = slices.getObjectByName( "axialTmp" );
+	    object = slices.getObjectByName( "axial" );
 	    slices.remove( object );
-	    object = slices.getObjectByName( "sagittalTmp" );
+	    object = slices.getObjectByName( "sagittal" );
 	    slices.remove( object );
 				
 		var dims = t1data.getDims();
@@ -201,6 +217,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		
 		var image = t1data.getImage( "coronal", Math.floor( dims.ny / 2 ) );
 		var tex = new THREE.Texture( image );
+		tex.magFilter = THREE.NearestFilter;
+		tex.minFilter = THREE.NearestFilter;
 		tex.needsUpdate = true;
 		
 		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
@@ -222,6 +240,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		
 		var image2 = t1data.getImage( "axial", Math.floor( dims.nz / 2 ) );
 		var tex2 = new THREE.Texture( image2 );
+		tex2.magFilter = THREE.NearestFilter;
+		tex2.minFilter = THREE.NearestFilter;
 		tex2.needsUpdate = true;
 		
 		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
@@ -241,6 +261,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 
 		var image3 = t1data.getImage( "sagittal", Math.floor( dims.nx / 2 ) );
 		var tex3 = new THREE.Texture( image3 );
+		tex3.magFilter = THREE.NearestFilter;
+		tex3.minFilter = THREE.NearestFilter;
 		tex3.needsUpdate = true;
 		
 		var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
@@ -278,8 +300,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				slices.remove( object );
 				var image3 = t1data.getImage( "sagittal", Math.floor( value ) );
 				var tex3 = new THREE.Texture( image3 );
+				tex3.magFilter = THREE.NearestFilter;
+				tex3.minFilter = THREE.NearestFilter;
 				tex3.needsUpdate = true;
-				
 				var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
 				geometry.vertices = [];
 				var x = value * dims.dx;
@@ -303,8 +326,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				slices.remove( object );
 				var image = t1data.getImage( "coronal", Math.floor( value ) );
 				var tex = new THREE.Texture( image );
+				tex.magFilter = THREE.NearestFilter;
+				tex.minFilter = THREE.NearestFilter;
 				tex.needsUpdate = true;
-				
 				var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
 				geometry.vertices = [];
 				var y = value * dims.dy;
@@ -329,8 +353,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				slices.remove( object );
 				var image2 = t1data.getImage( "axial", Math.floor( value ) );
 				var tex2 = new THREE.Texture( image2 );
+				tex2.magFilter = THREE.NearestFilter;
+				tex2.minFilter = THREE.NearestFilter;
 				tex2.needsUpdate = true;
-				
 				var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
 				geometry.vertices = [];
 				var z = value * dims.dz;
@@ -401,6 +426,29 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		parent.add( line );
 	}
 	
+	function addFibs( id, json ) {
+		var material = new THREE.LineBasicMaterial({
+			color: 0xff0000
+		});
+
+		var geometry = new THREE.Geometry();
+		
+		var vertices = json.vertices;
+		
+		for ( var i = 0; i < json.vertices.length / 3; ++i ) {
+			geometry.vertices.push(	new THREE.Vector3( vertices[3 * i], vertices[3 * i + 1], vertices[3 * i + 2] ) );
+		}
+		geometry.computeVertexNormals();
+		var line = new THREE.Line( geometry, material );
+		line.name = id;
+		fibres.add( line );
+		
+	}
+	
+	function removeFibs( id ) {
+		
+	}
+	
 	return {
 		dispatch : dispatch,
 		init : init,
@@ -413,6 +461,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		addConnections : addConnections,
 		removeConnections : removeConnections,
 		setSlice : setSlice,
+		setAnatomy : setAnatomy,
+		addFibs : addFibs,
+		removeFibs : removeFibs
 	}
 }
 

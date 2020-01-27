@@ -10,12 +10,7 @@ var view;
 var currentPage;
 
 
-/**
- * @function startUp()
- * loads the config.json
- * is a d3 function which takes the url for the config.json file and a callback
- * callback function: loading is asynchronous --> tells server that it wants to have the json file, when server sends it back, it shall do something; (to not wait ;)
- */
+
 function startUp() {
 	console.log( "ui.js startUp()" )
 	
@@ -39,17 +34,15 @@ function updateRotation() {
 	arcball.setRotation( [x, y, z] );
 } 
 
-// not visible, like a private function
-// receives 2 arguments from d3
+
 function loadConfig( error, configObject ) {
 	console.log( "ui.js loadConfig()" );
 
-	// d3 throws nice error messages when config.json is broken
 	if( error ) {
 		console.log( error );
 	}
 	config = configObject;
-	// if config has been loaded and has config var which equals true
+	// if config has been loaded
 	// then we load the content.json
 	if ( config && config.hasContent ) {
 		io.loadContent( settings.CONFIG_URL + "content.json", onContentLoaded );
@@ -73,7 +66,11 @@ function loadConfig( error, configObject ) {
 		
 		console.log( view.size() );
 		view.render();
-	}	
+	}
+	
+	if ( config && config.hasElements ) {
+		io.loadElements( settings.CONFIG_URL + "elements.json", onTexLoaded, onFibreLoaded );
+	}
 }
 
 function onDimsChanged( dims ) {
@@ -95,9 +92,21 @@ function onDimsChanged( dims ) {
 //in content json is our content
 function onContentLoaded() {
 	console.log( "ui.js onContentLoaded()" );
-	//Kenner in config.json
 	buildPage( config.firstPage );
 };
+
+function onTexLoaded() {
+	console.log( "ui.js onElementsLoaded()" );
+	view.setAnatomy( io.niftis()["tex1"] );
+	
+};
+
+function onFibreLoaded( id ) {
+	console.log( "ui.js onFibreLoaded()" + " " + id );
+	view.addFibs( id, io.fibres()[id] );
+	
+};
+
 
 d3.select('#viewer-div').on("resize", function(d) {
     arcball.setViewportDims( d3.select('#viewer-div').property('clientWidth'), d3.select('#viewer-div').property('clientHeight') );
