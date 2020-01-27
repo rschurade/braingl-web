@@ -431,17 +431,29 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			color: 0xff0000
 		});
 
-		var geometry = new THREE.Geometry();
+		
 		
 		var vertices = json.vertices;
+		var indices = json.indices; 
 		
-		for ( var i = 0; i < json.vertices.length / 3; ++i ) {
-			geometry.vertices.push(	new THREE.Vector3( vertices[3 * i], vertices[3 * i + 1], vertices[3 * i + 2] ) );
+		
+		var fib = new THREE.Group();
+		var index = 0;
+		for( var k = 0; k < indices.length; ++k )
+		{
+			var geometry = new THREE.Geometry();
+			var numVerts = indices[k];
+			console.log( "numverts" + numVerts );
+			for ( var i = 0; i < numVerts; ++i ) {
+				geometry.vertices.push(	new THREE.Vector3( vertices[index], vertices[index+1], vertices[index+2] ) );
+				index += 3;
+			}
+			var line = new THREE.Line( geometry, material );
+			fib.add( line );
 		}
-		geometry.computeVertexNormals();
-		var line = new THREE.Line( geometry, material );
-		line.name = id;
-		fibres.add( line );
+		
+		fib.name = id;
+		fibres.add( fib );
 		
 	}
 	
