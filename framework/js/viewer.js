@@ -37,6 +37,24 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		"	gl_FragColor = col;" +
 		"}";
 	
+	var vLineShader = "attribute vec3 aNormal;varying vec3 vNormal;void main() { vNormal = aNormal; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
+	var fLineShader = 
+		"varying vec3 vNormal;" +
+		"uniform float color;" +
+		"void main(void){" +
+    		"vec3 uAmbientColor = vec3(0.4);" +
+    		"vec3 uPointLightingDiffuseColor= vec3(0.6);" +
+    		"vec3 lightDirection = vec3( 0.0, 0.0, 1.0 );" +
+    		"vec3 lightWeighting;" +
+    
+    		"float diffuseLightWeighting = max(dot(vNormal, lightDirection), 0.0);" +
+    			
+    		"lightWeighting = uAmbientColor + uPointLightingDiffuseColor * diffuseLightWeighting;" +
+    
+    		"vec3 myColor = vec3( 1.0, 0.0, 0.0 ) * lightWeighting  * 2.0;" +
+		"	gl_FragColor = vec4( myColor, 1.0);" +
+		"}";
+	
 	
 	// instantiate a loader
 	var loader = new THREE.TextureLoader();
@@ -44,6 +62,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var axialMat;
 	var coronalMat;
 	var sagittalMat;
+	var lineMat;
 	
 	var axial;
 	var coronal;
@@ -102,6 +121,15 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				side: THREE.DoubleSide
 				}
 			);
+				
+    		lineMat = new THREE.ShaderMaterial({
+    			uniforms: {
+    			},
+    			vertexShader: vLineShader,
+    			fragmentShader: fLineShader,
+    			side: THREE.DoubleSide
+    			});
+				
 
 			// setup slices
 			var geometry3 = new THREE.PlaneGeometry( sliceDim, sliceDim );
@@ -434,6 +462,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		
 		
 		var vertices = json.vertices;
+		var normals = json.normals;
 		var indices = json.indices; 
 		
 		
@@ -441,14 +470,20 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		var index = 0;
 		for( var k = 0; k < indices.length; ++k )
 		{
-			var geometry = new THREE.Geometry();
-			var numVerts = indices[k];
-			console.log( "numverts" + numVerts );
+			var geometry = new THREE.BufferGeometry();
+			var numVerts = indices[k] * 3;
+			var verts = new Float32Array( numVerts );
+			var norms = new Float32Array( numVerts );
 			for ( var i = 0; i < numVerts; ++i ) {
-				geometry.vertices.push(	new THREE.Vector3( vertices[index], vertices[index+1], vertices[index+2] ) );
-				index += 3;
+				verts[i] = vertices[index];
+				norms[i] = normals[index];
+				++index;
+				//geometry.vertices.push(	new THREE.Vector3( vertices[index], vertices[index+1], vertices[index+2] ) );
+				//index += 3;
 			}
-			var line = new THREE.Line( geometry, material );
+			geometry.setAttribute( 'position', new THREE.BufferAttribute( verts, 3 ) );
+			geometry.setAttribute( 'aNormal', new THREE.BufferAttribute( norms, 3 ) );
+			var line = new THREE.Line( geometry, lineMat );
 			fib.add( line );
 		}
 		
