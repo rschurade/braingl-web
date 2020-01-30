@@ -22,7 +22,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize( width, height );
 	arcball.setViewportDims( width, height );
-	renderer.setClearColor( 0xffffff, 1 );
+	renderer.setClearColor( 0x000000, 1 );
 	
 	var t1data;
 	var vshader = "varying vec2 vUv;void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
@@ -37,10 +37,21 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		"	gl_FragColor = col;" +
 		"}";
 	
-	var vLineShader = "attribute vec3 aNormal;varying vec3 vNormal;void main() { vNormal = aNormal; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
+	var vLineShader = 
+		"attribute vec3 aNormal;" +
+		"attribute vec3 aGlobalColor;" +
+		"varying vec3 vNormal;" +
+		"varying vec3 vGlobalColor;" +
+		"void main() { "+
+		"   vNormal = aNormal;"+
+		"   vGlobalColor = aGlobalColor;"+
+		"   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );" +
+		"}";
 	var fLineShader = 
 		"varying vec3 vNormal;" +
-		"uniform float color;" +
+		"varying vec3 vGlobalColor;" +
+		"uniform vec3 color;" +
+		"uniform int renderMode;" +
 		"void main(void){" +
     		"vec3 uAmbientColor = vec3(0.4);" +
     		"vec3 uPointLightingDiffuseColor= vec3(0.6);" +
@@ -50,8 +61,15 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
     		"float diffuseLightWeighting = max(dot(vNormal, lightDirection), 0.0);" +
     			
     		"lightWeighting = uAmbientColor + uPointLightingDiffuseColor * diffuseLightWeighting;" +
-    
-    		"vec3 myColor = vec3( 1.0, 0.0, 0.0 ) * lightWeighting  * 2.0;" +
+    		
+    		"vec3 myColor = color;" +
+    		"if( renderMode == 1 ) {" +
+    		"    myColor = vec3( abs( vNormal.x ), abs( vNormal.y ), abs( vNormal.z ) );" +
+    		"}"+
+    		"else if( renderMode == 2 ) {" +
+    		"    myColor = vec3( abs( vGlobalColor.x ), abs( vGlobalColor.y ), abs( vGlobalColor.z ) );" +
+    		"}"+
+    		"myColor = myColor * lightWeighting  * 2.0;" +
 		"	gl_FragColor = vec4( myColor, 1.0);" +
 		"}";
 	
@@ -63,6 +81,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var coronalMat;
 	var sagittalMat;
 	var lineMat;
+	
+	var fiberRenderMode = 0; // 0 fiber color set in elements.json, 1 local color ie. vertex tangent 2 global color
 	
 	var axial;
 	var coronal;
@@ -124,6 +144,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				
     		lineMat = new THREE.ShaderMaterial({
     			uniforms: {
+    				renderMode: { value: 1 },
+    				color: new THREE.Uniform(new THREE.Vector3() )
     			},
     			vertexShader: vLineShader,
     			fragmentShader: fLineShader,
@@ -187,6 +209,17 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		
 		translationX = arcball.translation().x;
 		translationY = arcball.translation().y;
+		
+		if( lineMat )
+		{
+			fibres.traverse( function ( fib ) {
+				if( fib.material )
+				{
+					fib.material.uniforms.renderMode.value = fiberRenderMode;
+				}
+			}); 
+			
+		}
 		
 		renderer.render( scene, camera );
 	}
@@ -455,25 +488,42 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	}
 	
 	function addFibs( id, json ) {
-		var material = new THREE.LineBasicMaterial({
-			color: 0xff0000
-		});
-
-		
-		
 		var vertices = json.vertices;
 		var normals = json.normals;
 		var indices = json.indices; 
 		
 		
 		var fib = new THREE.Group();
+		fib.name = id;
 		var index = 0;
+		
+		var fibMaterial = lineMat.clone();
+		fibMaterial.uniforms.color.value = new THREE.Vector3( json.color.r, json.color.g, json.color.b );
+		
+		var r, g, b;
+		
 		for( var k = 0; k < indices.length; ++k )
 		{
 			var geometry = new THREE.BufferGeometry();
 			var numVerts = indices[k] * 3;
 			var verts = new Float32Array( numVerts );
 			var norms = new Float32Array( numVerts );
+			var colors = new Float32Array( numVerts );
+			
+			r = vertices[index] - vertices[index + (numVerts - 1 )*3];
+			g = vertices[index+1] - vertices[index + 1 + (numVerts - 1 )*3];
+			b = vertices[index+2] - vertices[index + 2 + (numVerts - 1 )*3];
+			
+			var rgb = new THREE.Vector3( r, g, b );
+			rgb.normalize();
+			
+			
+			for ( var i = 0; i < numVerts; i += 3 ) {
+				colors[i] = rgb.x;
+				colors[i+1] = rgb.y;
+				colors[i+2] = rgb.z;
+			}
+			
 			for ( var i = 0; i < numVerts; ++i ) {
 				verts[i] = vertices[index];
 				norms[i] = normals[index];
@@ -481,9 +531,12 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				//geometry.vertices.push(	new THREE.Vector3( vertices[index], vertices[index+1], vertices[index+2] ) );
 				//index += 3;
 			}
+			
 			geometry.setAttribute( 'position', new THREE.BufferAttribute( verts, 3 ) );
 			geometry.setAttribute( 'aNormal', new THREE.BufferAttribute( norms, 3 ) );
-			var line = new THREE.Line( geometry, lineMat );
+			geometry.setAttribute( 'aGlobalColor', new THREE.BufferAttribute( colors, 3 ) );
+			var line = new THREE.Line( geometry, fibMaterial );
+			
 			fib.add( line );
 		}
 		
@@ -494,6 +547,15 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	function removeFibs( id ) {
 		
+	}
+	
+	function setFiberMode( mode ) {
+		fiberRenderMode = mode;
+	}
+	
+	function setFibVisible( fibID, visible ) {
+			var fib = fibres.getObjectByName( fibID );
+			fib.visible = visible;
 	}
 	
 	return {
@@ -510,7 +572,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		setSlice : setSlice,
 		setAnatomy : setAnatomy,
 		addFibs : addFibs,
-		removeFibs : removeFibs
+		removeFibs : removeFibs,
+		setFiberMode : setFiberMode,
+		setFibVisible : setFibVisible
 	}
 }
 

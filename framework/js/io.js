@@ -58,7 +58,7 @@ function loadElements( url, texCallback, fibreCallback ) {
 				else if( o.type == "fibre" )
 				{
 					console.log( o.id + " " + o.url );
-					loadFibre( o.id, o.url, fibreCallback );
+					loadFibre( o, fibreCallback );
 				}
 				
 		    });
@@ -77,11 +77,12 @@ function loadTexture( id, url, callback ) {
 	_niftis[id].download( settings.DATA_URL + url, callback );
 }
 
-function loadFibre( id, url, callback ) {
-	d3.json( settings.DATA_URL + url, function(error, obj) {
+function loadFibre( def, callback ) {
+	d3.json( settings.DATA_URL + def.url, function(error, obj) {
 		if ( !error ) {
-			_fibres[id] = obj;
-			callback( id );
+			obj.color = def.color;
+			_fibres[def.id] = obj;
+			callback( def.id );
 		} else {
 			console.log( error );
 		}
