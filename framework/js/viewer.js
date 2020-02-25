@@ -82,7 +82,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var sagittalMat;
 	var lineMat;
 	
-	var fiberRenderMode = 0; // 0 fiber color set in elements.json, 1 local color ie. vertex tangent 2 global color
+	var fiberRenderMode = 2; // 0 fiber color set in elements.json, 1 local color ie. vertex tangent 2 global color
 	
 	var axial;
 	var coronal;
@@ -349,7 +349,13 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		
 		dispatch.dimsChanged( dims );
 		
-		arcball.interpolateTo( [-1.2, -0.111, 2.5] );
+		//arcball.interpolateTo( [-1.2, -0.111, 2.5] );
+		arcball.setRotation( [-1.2, -0.111, 2.5] );
+		
+		fibres.traverse( function ( fib ) {
+			fib.visible = true;
+		}); 
+		
 	}
 	
 	function setSlice( id, value ) {
@@ -510,9 +516,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			var norms = new Float32Array( numVerts );
 			var colors = new Float32Array( numVerts );
 			
-			r = vertices[index] - vertices[index + (numVerts - 1 )*3];
-			g = vertices[index+1] - vertices[index + 1 + (numVerts - 1 )*3];
-			b = vertices[index+2] - vertices[index + 2 + (numVerts - 1 )*3];
+			r = vertices[index] -   vertices[index +     (numVerts - 3 )];
+			g = vertices[index+1] - vertices[index + 1 + (numVerts - 3 )];
+			b = vertices[index+2] - vertices[index + 2 + (numVerts - 3 )];
 			
 			var rgb = new THREE.Vector3( r, g, b );
 			rgb.normalize();
@@ -541,6 +547,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		}
 		
 		fib.name = id;
+		fib.visible = false;
 		fibres.add( fib );
 		
 	}
