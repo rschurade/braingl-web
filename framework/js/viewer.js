@@ -69,7 +69,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
     		"else if( renderMode == 2 ) {" +
     		"    myColor = vec3( abs( vGlobalColor.x ), abs( vGlobalColor.y ), abs( vGlobalColor.z ) );" +
     		"}"+
-    		"myColor = myColor * lightWeighting  * 2.0;" +
+    		"myColor = myColor * lightWeighting * 1.5 ;" +
+    		"myColor.x = clamp( myColor.x, 0.0, 1.0 );" +
+    		"myColor.y = clamp( myColor.y, 0.0, 1.0 );" +
+    		"myColor.z = clamp( myColor.z, 0.0, 1.0 );" +
 		"	gl_FragColor = vec4( myColor, 1.0);" +
 		"}";
 	
@@ -292,6 +295,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		);
 		
 		coronal = new THREE.Mesh( geometry, coronalMat );
+		coronal.translateX( brainZero.x );
+		coronal.translateY( brainZero.y );
+		coronal.translateZ( brainZero.z );
 		coronal.material.uniforms.tex.value = tex;
 		coronal.material.needsUpdate = true;
 		coronal.needsUpdate = true;
@@ -314,6 +320,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			new THREE.Vector3( dims.nx * dims.dx, dims.ny * dims.dy, z )
 		);
 		axial = new THREE.Mesh( geometry, axialMat );
+		axial.translateX( brainZero.x );
+		axial.translateY( brainZero.y );
+		axial.translateZ( brainZero.z );
 		axial.material.uniforms.tex.value = tex2;
 		axial.material.needsUpdate = true;
 		axial.needsUpdate = true;
@@ -335,17 +344,19 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			new THREE.Vector3( x, dims.ny * dims.dy, dims.nz * dims.dz )
 		);
 		sagittal = new THREE.Mesh( geometry, sagittalMat );
+		sagittal.translateX( brainZero.x );
+		sagittal.translateY( brainZero.y );
+		sagittal.translateZ( brainZero.z );
 		sagittal.material.uniforms.tex.value = tex3;
 		sagittal.material.needsUpdate = true;
 		sagittal.needsUpdate = true;
 		sagittal.name = "sagittal";
 		slices.add( sagittal );
 
-		zero = new THREE.Vector3( dims.nx * dims.dx / 2, dims.ny * dims.dy / 2, dims.nz * dims.dz / 2 );
-		
-		pivot.translateX( -zero.x );
-		pivot.translateY( -zero.y );
-		pivot.translateZ( -zero.z );
+		//zero = new THREE.Vector3( dims.nx * dims.dx / 2, dims.ny * dims.dy / 2, dims.nz * dims.dz / 2 );
+		//pivot.translateX( -zero.x - brainZero.x );
+		//pivot.translateY( -zero.y - brainZero.y );
+		//pivot.translateZ( -zero.z - brainZero.z );
 		
 		dispatch.dimsChanged( dims );
 		
@@ -380,6 +391,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 					new THREE.Vector3( x, dims.ny * dims.dy, dims.nz * dims.dz )
 				);
 				sagittal = new THREE.Mesh( geometry, sagittalMat );
+				sagittal.translateX( brainZero.x );
+				sagittal.translateY( brainZero.y );
+				sagittal.translateZ( brainZero.z );
 				sagittal.material.uniforms.tex.value = tex3;
 				sagittal.material.needsUpdate = true;
 				sagittal.needsUpdate = true;
@@ -407,6 +421,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				);
 				
 				coronal = new THREE.Mesh( geometry, coronalMat );
+				coronal.translateX( brainZero.x );
+				coronal.translateY( brainZero.y );
+				coronal.translateZ( brainZero.z );
 				coronal.material.uniforms.tex.value = tex;
 				coronal.material.needsUpdate = true;
 				coronal.needsUpdate = true;
@@ -433,6 +450,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 					new THREE.Vector3( dims.nx * dims.dx, dims.ny * dims.dy, z )
 				);
 				axial = new THREE.Mesh( geometry, axialMat );
+				axial.translateX( brainZero.x );
+				axial.translateY( brainZero.y );
+				axial.translateZ( brainZero.z );
 				axial.material.uniforms.tex.value = tex2;
 				axial.material.needsUpdate = true;
 				axial.needsUpdate = true;
