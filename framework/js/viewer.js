@@ -25,15 +25,53 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	renderer.setClearColor( 0x000000, 1 );
 	
 	var t1data;
+	var ovdata;
+	var hasOverlay = false;
+	
 	var vshader = "varying vec2 vUv;void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
 	var fshader = 
 		"precision highp float;" +
 		"varying vec2 vUv;" +
 		"uniform float color;" +
+		"uniform bool hasOverlay;" +
 		"uniform sampler2D tex;" +
+		"uniform sampler2D overlay;" +
+		"vec4 colormap( float val ) {"+
+		"    vec4 col = vec4( 0.0 );" +
+		"    col.a = 1.0;" +
+		"    float cv = val * 5.;" +
+		
+		"    if( cv > 4. ) {" +
+		"        col.r = 1.;" +
+		"        col.b = cv - 4.;" +
+		"    }" +
+		"    else if( cv > 3. ) {" +
+		"        col.r = 1.;" +
+		"        col.g = 1. - ( cv - 3. );" +
+		"    }" +
+		"    else if( cv > 2. ) {" +
+		"        col.r = cv - 2.;" +
+		"        col.g = 1.0;" +
+		"    }" +
+		"    else if( cv > 1. ) {" +
+		"        col.g = 1.;" +
+		"        col.b = 1.0 - ( cv - 1. );" +
+		"    }" +
+		"    else {" +
+		"        col.g = cv;" +
+		"        col.b = 1.0;" +
+		"    }" +
+		"    return col;" +
+		"}"+
 		"void main(void){" +
-		"	vec4 col = texture2D(tex, vUv);" +
-		"   if( ( col.r + col.g + col.b ) < 0.01 ) discard;" +
+		"    vec4 col = texture2D(tex, vUv);" +
+		"    if( length( col.rgb ) < 0.02 ) discard;" +
+		
+		"    if( hasOverlay ) {" +
+		"        vec4 ovcol = texture2D(overlay, vUv);" +
+		"        if( length( ovcol.rgb ) > 0.001 )" +
+		"            col = mix( col, colormap( ovcol.r ), 0.5 );" +
+		"    }" +
 		"	gl_FragColor = col;" +
 		"}";
 	
@@ -121,7 +159,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			function ( texture ) {
 				axialMat = new THREE.ShaderMaterial({
 				uniforms: {
-					tex: {type: 't', value: texture }
+					tex: {type: 't', value: texture },
+					overlay: {type: 't', value: 0 },
+					hasOverlay: { value: 1}
 				},
 				vertexShader: vshader,
 				fragmentShader: fshader,
@@ -129,7 +169,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				});
 				coronalMat = new THREE.ShaderMaterial({
 				uniforms: {
-					tex: {type: 't', value: texture }
+					tex: {type: 't', value: texture },
+					overlay: {type: 't', value: 0 },
+					hasOverlay: { value: 1}
 				},
 				vertexShader: vshader,
 				fragmentShader: fshader,
@@ -137,7 +179,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				});
 				sagittalMat = new THREE.ShaderMaterial({
 				uniforms: {
-					tex: {type: 't', value: texture }
+					tex: {type: 't', value: texture },
+					overlay: {type: 't', value: 0 },
+					hasOverlay: { value: 1}
 				},
 				vertexShader: vshader,
 				fragmentShader: fshader,
@@ -213,6 +257,13 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		translationX = arcball.translation().x;
 		translationY = arcball.translation().y;
 		
+		if( axialMat )
+		{
+    		axial.material.uniforms.hasOverlay.value = hasOverlay;
+    		coronal.material.uniforms.hasOverlay.value = hasOverlay;
+    		sagittal.material.uniforms.hasOverlay.value = hasOverlay;
+		}
+		
 		if( lineMat )
 		{
 			fibres.traverse( function ( fib ) {
@@ -242,6 +293,18 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		arcball.setViewportDims( width, height );
 	}
 	
+	function resize(w, h) {
+		// resize the canvas but preserve the aspect ratio
+		camera.left = (w / - originalZoom);
+		camera.right = w / originalZoom;
+		camera.top =  h / originalZoom;
+		camera.bottom =  h / -originalZoom;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( w, h );
+		renderer.render( scene, camera );
+	}
+	
 	function loadTexture( url, callback ) {
 		t1data = new Nifti();
 		t1data.download( settings.DATA_URL + url, callback );
@@ -257,111 +320,31 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		camera.updateProjectionMatrix();
 	}
 	
+	function setOverlay( nifti ) {
+		ovdata = nifti;
+		hasOverlay = true;
+		
+		var dims = t1data.getDims();
+		
+		setSlice( "sliceX", dims.nx / 2 );
+		setSlice( "sliceY", dims.ny / 2 );
+		setSlice( "sliceZ", dims.nz / 2 );
+	}
+	
 	function setAnatomy( nifti ) {
 		t1data = nifti;
 		
-		console.log( "tex loaded" );
-		var object = slices.getObjectByName( "coronal" );
-	    slices.remove( object );
-	    object = slices.getObjectByName( "axial" );
-	    slices.remove( object );
-	    object = slices.getObjectByName( "sagittal" );
-	    slices.remove( object );
-				
 		var dims = t1data.getDims();
-		console.log( dims );
-		
-		var x = dims.nx * dims.dx / 2;
-		var y = dims.ny * dims.dy / 2;
-		var z = dims.nz * dims.dz / 2;
 		
 		var sform = t1data.getSForm();
 		brainZero = new THREE.Vector3( Math.sign( sform.rowX[0] ) * sform.rowX[3], Math.sign( sform.rowY[1] ) * sform.rowY[3], Math.sign( sform.rowZ[2] ) * sform.rowZ[3] );
-		//brainZero = new THREE.Vector3( sform.rowX[3], sform.rowY[3], sform.rowZ[3] );
-		console.log( brainZero );
 		
-		var image = t1data.getImage( "coronal", Math.floor( dims.ny / 2 ) );
-		var tex = new THREE.Texture( image );
-		tex.magFilter = THREE.NearestFilter;
-		tex.minFilter = THREE.NearestFilter;
-		tex.needsUpdate = true;
-		
-		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
-		geometry.vertices = [];
-		geometry.vertices.push(
-			new THREE.Vector3( 0 , y, 0 ),
-			new THREE.Vector3( dims.nx * dims.dx, y, 0 ),
-			new THREE.Vector3( 0 , y, dims.nz * dims.dz ),
-			new THREE.Vector3( dims.nx * dims.dx, y, dims.nz * dims.dz )
-		);
-		
-		coronal = new THREE.Mesh( geometry, coronalMat );
-		coronal.translateX( brainZero.x );
-		coronal.translateY( brainZero.y );
-		coronal.translateZ( brainZero.z );
-		coronal.material.uniforms.tex.value = tex;
-		coronal.material.needsUpdate = true;
-		coronal.needsUpdate = true;
-		coronal.name = "coronal";
-		slices.add( coronal );
-		
-		
-		var image2 = t1data.getImage( "axial", Math.floor( dims.nz / 2 ) );
-		var tex2 = new THREE.Texture( image2 );
-		tex2.magFilter = THREE.NearestFilter;
-		tex2.minFilter = THREE.NearestFilter;
-		tex2.needsUpdate = true;
-		
-		var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
-		geometry.vertices = [];
-		geometry.vertices.push(
-			new THREE.Vector3( 0, 0, z ),
-			new THREE.Vector3( dims.nx * dims.dx, 0, z ),
-			new THREE.Vector3( 0, dims.ny * dims.dy, z ),
-			new THREE.Vector3( dims.nx * dims.dx, dims.ny * dims.dy, z )
-		);
-		axial = new THREE.Mesh( geometry, axialMat );
-		axial.translateX( brainZero.x );
-		axial.translateY( brainZero.y );
-		axial.translateZ( brainZero.z );
-		axial.material.uniforms.tex.value = tex2;
-		axial.material.needsUpdate = true;
-		axial.needsUpdate = true;
-		axial.name = "axial";
-		slices.add( axial );
-
-		var image3 = t1data.getImage( "sagittal", Math.floor( dims.nx / 2 ) );
-		var tex3 = new THREE.Texture( image3 );
-		tex3.magFilter = THREE.NearestFilter;
-		tex3.minFilter = THREE.NearestFilter;
-		tex3.needsUpdate = true;
-		
-		var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
-		geometry.vertices = [];
-		geometry.vertices.push(
-			new THREE.Vector3( x, 0, 0 ),
-			new THREE.Vector3( x, dims.ny * dims.dy, 0 ),
-			new THREE.Vector3( x, 0, dims.nz * dims.dz ),
-			new THREE.Vector3( x, dims.ny * dims.dy, dims.nz * dims.dz )
-		);
-		sagittal = new THREE.Mesh( geometry, sagittalMat );
-		sagittal.translateX( brainZero.x );
-		sagittal.translateY( brainZero.y );
-		sagittal.translateZ( brainZero.z );
-		sagittal.material.uniforms.tex.value = tex3;
-		sagittal.material.needsUpdate = true;
-		sagittal.needsUpdate = true;
-		sagittal.name = "sagittal";
-		slices.add( sagittal );
-
-		//zero = new THREE.Vector3( dims.nx * dims.dx / 2, dims.ny * dims.dy / 2, dims.nz * dims.dz / 2 );
-		//pivot.translateX( -zero.x - brainZero.x );
-		//pivot.translateY( -zero.y - brainZero.y );
-		//pivot.translateZ( -zero.z - brainZero.z );
+		setSlice( "sliceX", dims.nx / 2 );
+		setSlice( "sliceY", dims.ny / 2 );
+		setSlice( "sliceZ", dims.nz / 2 );
 		
 		dispatch.dimsChanged( dims );
 		
-		//arcball.interpolateTo( [-1.2, -0.111, 2.5] );
 		arcball.setRotation( [-1.2, -0.111, 2.5] );
 		
 		fibres.traverse( function ( fib ) {
@@ -377,11 +360,22 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			{
 				object = slices.getObjectByName( "sagittal" );
 				slices.remove( object );
-				var image3 = t1data.getImage( "sagittal", Math.floor( value ) );
-				var tex3 = new THREE.Texture( image3 );
-				tex3.magFilter = THREE.NearestFilter;
-				tex3.minFilter = THREE.NearestFilter;
-				tex3.needsUpdate = true;
+				var image = t1data.getImage( "sagittal", Math.floor( value ) );
+				var tex = new THREE.Texture( image );
+				tex.magFilter = THREE.NearestFilter;
+				tex.minFilter = THREE.NearestFilter;
+				tex.needsUpdate = true;
+				
+				if( hasOverlay )
+				{
+					var ovVal = ( value * dims.dx ) / ovdata.getDims().dx;
+					var ovImg = ovdata.getImage( "sagittal", Math.floor( ovVal ) );
+					var ovtex = new THREE.Texture( ovImg );
+					ovtex.magFilter = THREE.NearestFilter;
+					ovtex.minFilter = THREE.NearestFilter;
+					ovtex.needsUpdate = true;
+				}
+				
 				var geometry = new THREE.PlaneGeometry( dims.ny * dims.dy, dims.nz * dims.dz );
 				geometry.vertices = [];
 				var x = value * dims.dx;
@@ -391,11 +385,16 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 					new THREE.Vector3( x, 0, dims.nz * dims.dz ),
 					new THREE.Vector3( x, dims.ny * dims.dy, dims.nz * dims.dz )
 				);
+				
 				sagittal = new THREE.Mesh( geometry, sagittalMat );
 				sagittal.translateX( brainZero.x );
 				sagittal.translateY( brainZero.y );
 				sagittal.translateZ( brainZero.z );
-				sagittal.material.uniforms.tex.value = tex3;
+				sagittal.material.uniforms.tex.value = tex;
+				if( hasOverlay )
+				{
+					sagittal.material.uniforms.overlay.value = ovtex;
+				}
 				sagittal.material.needsUpdate = true;
 				sagittal.needsUpdate = true;
 				sagittal.name = "sagittal";
@@ -406,11 +405,24 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			{
 				object = slices.getObjectByName( "coronal" );
 				slices.remove( object );
+				
 				var image = t1data.getImage( "coronal", Math.floor( value ) );
 				var tex = new THREE.Texture( image );
 				tex.magFilter = THREE.NearestFilter;
 				tex.minFilter = THREE.NearestFilter;
 				tex.needsUpdate = true;
+				
+				if( hasOverlay )
+				{
+					var ovVal = ( value * dims.dy ) / ovdata.getDims().dy;
+					var ovImg = ovdata.getImage( "coronal", Math.floor( ovVal ) );
+					var ovtex = new THREE.Texture( ovImg );
+					ovtex.magFilter = THREE.NearestFilter;
+					ovtex.minFilter = THREE.NearestFilter;
+					ovtex.needsUpdate = true;
+				}
+				
+				
 				var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.nz * dims.dz );
 				geometry.vertices = [];
 				var y = value * dims.dy;
@@ -426,6 +438,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				coronal.translateY( brainZero.y );
 				coronal.translateZ( brainZero.z );
 				coronal.material.uniforms.tex.value = tex;
+				if( hasOverlay )
+				{
+					coronal.material.uniforms.overlay.value = ovtex;
+				}
 				coronal.material.needsUpdate = true;
 				coronal.needsUpdate = true;
 				coronal.name = "coronal";
@@ -436,11 +452,22 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			{
 				object = slices.getObjectByName( "axial" );
 				slices.remove( object );
-				var image2 = t1data.getImage( "axial", Math.floor( value ) );
-				var tex2 = new THREE.Texture( image2 );
-				tex2.magFilter = THREE.NearestFilter;
-				tex2.minFilter = THREE.NearestFilter;
-				tex2.needsUpdate = true;
+				var image = t1data.getImage( "axial", Math.floor( value ) );
+				var tex = new THREE.Texture( image );
+				tex.magFilter = THREE.NearestFilter;
+				tex.minFilter = THREE.NearestFilter;
+				tex.needsUpdate = true;
+				
+				if( hasOverlay )
+				{
+					var ovVal = ( value * dims.dz ) / ovdata.getDims().dz;
+					var ovImg = ovdata.getImage( "axial", Math.floor( ovVal ) );
+					var ovtex = new THREE.Texture( ovImg );
+					ovtex.magFilter = THREE.NearestFilter;
+					ovtex.minFilter = THREE.NearestFilter;
+					ovtex.needsUpdate = true;
+				}
+				
 				var geometry = new THREE.PlaneGeometry( dims.nx * dims.dx, dims.ny * dims.dy );
 				geometry.vertices = [];
 				var z = value * dims.dz;
@@ -450,11 +477,16 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 					new THREE.Vector3( 0, dims.ny * dims.dy, z ),
 					new THREE.Vector3( dims.nx * dims.dx, dims.ny * dims.dy, z )
 				);
+				
 				axial = new THREE.Mesh( geometry, axialMat );
 				axial.translateX( brainZero.x );
 				axial.translateY( brainZero.y );
 				axial.translateZ( brainZero.z );
-				axial.material.uniforms.tex.value = tex2;
+				axial.material.uniforms.tex.value = tex;
+				if( hasOverlay )
+				{
+					axial.material.uniforms.overlay.value = ovtex;
+				}
 				axial.material.needsUpdate = true;
 				axial.needsUpdate = true;
 				axial.name = "axial";
@@ -591,6 +623,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		init : init,
 		render : render,
 		html : html,
+		resize : resize,
 		size : size,
 		setSize : setSize,
 		zoom : zoom,
@@ -598,6 +631,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		addConnections : addConnections,
 		removeConnections : removeConnections,
 		setSlice : setSlice,
+		setOverlay : setOverlay,
 		setAnatomy : setAnatomy,
 		addFibs : addFibs,
 		removeFibs : removeFibs,

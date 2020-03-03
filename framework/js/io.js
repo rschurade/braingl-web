@@ -37,7 +37,7 @@ function loadContent( url, callback ) {
 	});
 };
 
-function loadElements( url, texCallback, fibreCallback ) {
+function loadElements( url, texCallback, overlayCallback, fibreCallback ) {
 	// load content.json 
 	d3.json( settings.CONFIG_URL + "elements.json", function(error, obj) {
 		// if there is no error: loop over all entries so that they will be assigned to the content object with their id to access them via their id later
@@ -55,6 +55,12 @@ function loadElements( url, texCallback, fibreCallback ) {
 					console.log( o.id + " " + o.url );
 					loadTexture( o.id, o.url, texCallback );
 				}
+				if( o.type == "overlay" )
+				{
+					console.log( o.id + " " + o.url );
+					loadTexture( o.id, o.url, overlayCallback );
+				}
+				
 				else if( o.type == "fibre" )
 				{
 					console.log( o.id + " " + o.url );

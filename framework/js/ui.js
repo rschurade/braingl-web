@@ -69,7 +69,7 @@ function loadConfig( error, configObject ) {
 	}
 	
 	if ( config && config.hasElements ) {
-		io.loadElements( settings.CONFIG_URL + "elements.json", onTexLoaded, onFibreLoaded );
+		io.loadElements( settings.CONFIG_URL + "elements.json", onTexLoaded, onOverlayLoaded, onFibreLoaded );
 	}
 }
 
@@ -96,10 +96,16 @@ function onContentLoaded() {
 };
 
 function onTexLoaded() {
-	console.log( "ui.js onElementsLoaded()" );
+	console.log( "ui.js onTexLoaded()" );
 	view.setAnatomy( io.niftis()["tex1"] );
 	
 };
+
+function onOverlayLoaded() {
+	console.log( "ui.js onOverlayLoaded()" );
+	view.setOverlay( io.niftis()["tex2"] );
+};
+
 
 function onFibreLoaded( id ) {
 	console.log( "ui.js onFibreLoaded()" + " " + id );
