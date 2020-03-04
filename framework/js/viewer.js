@@ -27,6 +27,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var t1data;
 	var ovdata;
 	var hasOverlay = false;
+	var showOverlay = false;
 	
 	var vshader = "varying vec2 vUv;void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
 	var fshader = 
@@ -34,6 +35,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		"varying vec2 vUv;" +
 		"uniform float color;" +
 		"uniform bool hasOverlay;" +
+		"uniform bool showOverlay;" +
 		"uniform sampler2D tex;" +
 		"uniform sampler2D overlay;" +
 		"vec4 colormap( float val ) {"+
@@ -67,7 +69,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		"    vec4 col = texture2D(tex, vUv);" +
 		"    if( length( col.rgb ) < 0.02 ) discard;" +
 		
-		"    if( hasOverlay ) {" +
+		"    if( hasOverlay && showOverlay ) {" +
 		"        vec4 ovcol = texture2D(overlay, vUv);" +
 		"        if( length( ovcol.rgb ) > 0.001 )" +
 		"            col = mix( col, colormap( ovcol.r ), 0.5 );" +
@@ -161,7 +163,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				uniforms: {
 					tex: {type: 't', value: texture },
 					overlay: {type: 't', value: 0 },
-					hasOverlay: { value: 1}
+					hasOverlay: { value: 1},
+					showOverlay: { value: 1}
 				},
 				vertexShader: vshader,
 				fragmentShader: fshader,
@@ -171,7 +174,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				uniforms: {
 					tex: {type: 't', value: texture },
 					overlay: {type: 't', value: 0 },
-					hasOverlay: { value: 1}
+					hasOverlay: { value: 1},
+					showOverlay: { value: 1}
 				},
 				vertexShader: vshader,
 				fragmentShader: fshader,
@@ -181,7 +185,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 				uniforms: {
 					tex: {type: 't', value: texture },
 					overlay: {type: 't', value: 0 },
-					hasOverlay: { value: 1}
+					hasOverlay: { value: 1},
+					showOverlay: { value: 1}
 				},
 				vertexShader: vshader,
 				fragmentShader: fshader,
@@ -262,6 +267,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
     		axial.material.uniforms.hasOverlay.value = hasOverlay;
     		coronal.material.uniforms.hasOverlay.value = hasOverlay;
     		sagittal.material.uniforms.hasOverlay.value = hasOverlay;
+    		
+    		axial.material.uniforms.showOverlay.value = showOverlay;
+    		coronal.material.uniforms.showOverlay.value = showOverlay;
+    		sagittal.material.uniforms.showOverlay.value = showOverlay;
 		}
 		
 		if( lineMat )
@@ -599,8 +608,12 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			fib.add( line );
 		}
 		
+		if (typeof json.visible === 'boolean' && json.visible === false) {
+            // initialize hidden
+            fib.visible = false;
+		}
+		
 		fib.name = id;
-		fib.visible = false;
 		fibres.add( fib );
 		
 	}
@@ -616,6 +629,14 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	function setFibVisible( fibID, visible ) {
 			var fib = fibres.getObjectByName( fibID );
 			fib.visible = visible;
+	}
+	
+	function setShowOverlay( show ) {
+		showOverlay = show;
+	}
+	
+	function toggleShowOverlay() {
+		showOverlay = !showOverlay;
 	}
 	
 	return {
@@ -636,7 +657,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		addFibs : addFibs,
 		removeFibs : removeFibs,
 		setFiberMode : setFiberMode,
-		setFibVisible : setFibVisible
+		setFibVisible : setFibVisible,
+		setShowOverlay : setShowOverlay,
+		toggleShowOverlay : toggleShowOverlay
 	}
 }
 
