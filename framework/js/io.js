@@ -6,6 +6,7 @@ var interpolate = true;
 
 var meshes = {};
 var _fibres = {};
+var meshes = {};
 var scenes = {};
 var content = {};	
 	
@@ -37,7 +38,7 @@ function loadContent( url, callback ) {
 	});
 };
 
-function loadElements( url, texCallback, overlayCallback, fibreCallback ) {
+function loadElements( url, texCallback, overlayCallback, fibreCallback, meshCallback ) {
 	// load content.json 
 	d3.json( settings.CONFIG_URL + "elements.json", function(error, obj) {
 		// if there is no error: loop over all entries so that they will be assigned to the content object with their id to access them via their id later
@@ -65,6 +66,12 @@ function loadElements( url, texCallback, overlayCallback, fibreCallback ) {
 				{
 					console.log( o.id + " " + o.url );
 					loadFibre( o, fibreCallback );
+				}
+				
+				else if( o.type == "mesh" )
+				{
+					console.log( o.id + " " + o.url );
+					loadMesh( o, meshCallback );
 				}
 				
 		    });
@@ -95,6 +102,17 @@ function loadFibre( def, callback ) {
 	});
 }
 
+function loadMesh( def, callback ) {
+	d3.json( settings.DATA_URL + def.url, function(error, obj) {
+		if ( !error ) {
+			obj.color = def.color;
+			meshes[def.id] = obj;
+			callback( def.id );
+		} else {
+			console.log( error );
+		}
+	});
+}
 
 
 return {

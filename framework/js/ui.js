@@ -69,7 +69,7 @@ function loadConfig( error, configObject ) {
 	}
 	
 	if ( config && config.hasElements ) {
-		io.loadElements( settings.CONFIG_URL + "elements.json", onTexLoaded, onOverlayLoaded, onFibreLoaded );
+		io.loadElements( settings.CONFIG_URL + "elements.json", onTexLoaded, onOverlayLoaded, onFibreLoaded, onMeshLoaded );
 	}
 }
 
@@ -110,6 +110,12 @@ function onOverlayLoaded() {
 function onFibreLoaded( id ) {
 	console.log( "ui.js onFibreLoaded()" + " " + id );
 	view.addFibs( id, io.fibres()[id] );
+	
+};
+
+function onMeshLoaded( id ) {
+	console.log( "ui.js onMeshLoaded()" + " " + id );
+	view.addMesh( id, io.meshes()[id] );
 	
 };
 

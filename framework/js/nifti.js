@@ -17,6 +17,7 @@
 		var min = 100000;
 		var zero = 0;
 		var loaded = false;
+		var isRadiological = false;
 				
 		this.download = function(url, callback) {
 			var xhr = new XMLHttpRequest();
@@ -27,7 +28,8 @@
 				rawData = this.response;
 				data = new DataView( rawData ); // this.response == uInt8Array.buffer
 				parseHeader();
-				calcMinMax();				
+				calcMinMax();		
+				checkRadiological();
 				
 				loaded = true;
 				if ( callback ) callback();		
@@ -117,8 +119,6 @@
 			}
 		}
 		
-		
-		
 		function parseHeader() {
 			hdr.sizeof_hdr = data.getInt32( 0, true ); // 0
 			hdr.data_type = []; // 4
@@ -163,7 +163,15 @@
 			hdr.quatern_d  = data.getFloat32( 264, true );   
 			hdr.qoffset_x  = data.getFloat32( 268, true );   
 			hdr.qoffset_y  = data.getFloat32( 272, true );   
-			hdr.qoffset_z  = data.getFloat32( 276, true );   
+			hdr.qoffset_z  = data.getFloat32( 276, true );
+			/*
+			hdr.sForm = new THREE.Matrix4();
+			hdr.sForm.set( data.getFloat32( 280, true ), data.getFloat32( 284, true ), data.getFloat32( 288, true ),data.getFloat32( 292, true ),
+					data.getFloat32( 296, true ), data.getFloat32( 300, true ), data.getFloat32( 304, true ),data.getFloat32( 308, true ),
+					data.getFloat32( 312, true ), data.getFloat32( 316, true ), data.getFloat32( 320, true ),data.getFloat32( 324, true ),
+					data.getFloat32( 328, true ), data.getFloat32( 332, true ), data.getFloat32( 336, true ),data.getFloat32( 340, true ) );
+			*/
+			
 			hdr.srow_x = []; // 280
 			for ( var i = 0; i < 4; ++i ) hdr.srow_x.push( data.getFloat32(  280 + i * 4, true ) );
 			hdr.srow_y = []; // 296
@@ -214,6 +222,14 @@
 			}
 		}
 		
+		function checkRadiological() {
+			if( hdr.srow_x[0] < 0.0 )
+			{
+				isRadiological = true;
+				console.log( "Radiological orientation detected" );
+			}
+		};
+		
 		this.loadFinished = function() {
 			return loaded;
 		}
@@ -251,27 +267,50 @@
 				for( var x = 0; x < dimX; ++x )
 		            for( var y = 0; y < dimY; ++y )
 		            {
-		            	var col = data.getUint8( this.getId(x,y,pos) );
-		            	var index = 4 * (y * imageData.width + x);
-		            	setImgData( index, col );
+		            	var col = data.getUint8( this.getId( x, y, pos ) );
+		            	if( isRadiological )
+		            	{
+		            		var index = 4 * ( y * imageData.width + ( ( dimX - 1 ) - x ) );
+    		            	setImgData( index, col );
+		            	}
+		            	else
+		            	{
+    		            	var index = 4 * ( y * imageData.width + x );
+    		            	setImgData( index, col );
+		            	}
 		            }
 			}
 			
-			if ( orient === 'coronal' ) {
+			else if ( orient === 'coronal' ) {
 				for( var x = 0; x < dimX; ++x )
 		            for( var z = 0; z < dimZ; ++z )
 		            {
 		            	var col = data.getUint8( this.getId( x, pos,z) );
-		            	var index = 4 * (z * imageData.width + x);
-		            	setImgData( index, col );
+		            	if( isRadiological )
+		            	{
+		            		var index = 4 * (z * imageData.width + ( ( dimX - 1 ) - x ) );
+			            	setImgData( index, col );
+		            	}
+		            	else
+		            	{
+		            		var index = 4 * (z * imageData.width + x);
+			            	setImgData( index, col );
+		            	}
+		            	
 		            }
 			}
 			
-			if ( orient === 'sagittal' ) {
+			else if ( orient === 'sagittal' ) {
+				var x = parseInt(pos);
+				if( isRadiological )
+				{
+					x = ( dimX - 1 ) - x;
+				}
+				
 				for( var y = 0; y < dimY; ++y )
 		            for( var z = 0; z < dimZ; ++z )
 		            {
-		            	var col = data.getUint8( this.getId(parseInt(pos),y,z) );
+		            	var col = data.getUint8( this.getId( x, y, z ) );
 		            	var index = 4 * (z * imageData.width + y);
 		            	setImgData( index, col );
 		            }
@@ -419,32 +458,60 @@
 			
 			if ( orient === 'axial' ) {
 				for( var x = 0; x < dimX; ++x )
+				{
 		            for( var y = 0; y < dimY; ++y )
 		            {
 		            	var col = data.getFloat32( this.getIdFloat(x,y,pos), true );
-		            	var index = 4 * (y * imageData.width + x);
-		            	setImgData( index, col );
+		            	if( isRadiological )
+		            	{
+		            		var index = 4 * ( y * imageData.width + ( ( dimX - 1 ) - x ) );
+    		            	setImgData( index, col );
+		            	}
+		            	else
+		            	{
+    		            	var index = 4 * ( y * imageData.width + x );
+    		            	setImgData( index, col );
+		            	}
 		            }
+				}
 			}
 			
 			if ( orient === 'coronal' ) {
 				for( var x = 0; x < dimX; ++x )
+				{
 		            for( var z = 0; z < dimZ; ++z )
 		            {
 		            	var col = data.getFloat32( this.getIdFloat(x,pos,z), true );
-		            	var index = 4 * (z * imageData.width + x);
-		            	setImgData( index, col );
+		            	if( isRadiological )
+		            	{
+		            		var index = 4 * (z * imageData.width + ( ( dimX - 1 ) - x ) );
+			            	setImgData( index, col );
+		            	}
+		            	else
+		            	{
+		            		var index = 4 * (z * imageData.width + x);
+			            	setImgData( index, col );
+		            	}
 		            }
+				}
 			}
 			
 			if ( orient === 'sagittal' ) {
+				var x = parseInt(pos);
+				if( isRadiological )
+				{
+					x = ( dimX - 1 ) - x;
+				}
+				
 				for( var y = 0; y < dimY; ++y )
+				{
 		            for( var z = 0; z < dimZ; ++z )
 		            {
-		            	var col = data.getFloat32( this.getIdFloat(pos,y,z), true );
+		            	var col = data.getFloat32( this.getIdFloat( x, y, z ), true );
 		            	var index = 4 * (z * imageData.width + y);
 		            	setImgData( index, col );
 		            }
+				}
 			}
 			
 			return imageData;

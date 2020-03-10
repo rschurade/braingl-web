@@ -17,6 +17,10 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var width = width;
 	var height = height;
 	var scene = new THREE.Scene();
+	
+	var light = new THREE.HemisphereLight();
+	scene.add( light );
+	
 	var zoom = 6.0;
 	var camera = new THREE.OrthographicCamera( width / - zoom, width / zoom, height / zoom, height / - zoom, -1000, 1000 );
 	var renderer = new THREE.WebGLRenderer();
@@ -27,7 +31,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var t1data;
 	var ovdata;
 	var hasOverlay = false;
-	var showOverlay = false;
+	var showOverlay = true;
 	
 	var vshader = "varying vec2 vUv;void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
 	var fshader = 
@@ -134,6 +138,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var pivot = new THREE.Group();
 	var slices = new THREE.Group();
 	var connections = new THREE.Group();
+	var meshes = new THREE.Group();
 	var fibres = new THREE.Group();
 	
 	
@@ -142,6 +147,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	pivot.add( slices );
 	pivot.add( connections );
+	pivot.add( meshes );
 	pivot.add( fibres );
 	
 	scene.add( pivot );
@@ -615,11 +621,40 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		
 		fib.name = id;
 		fibres.add( fib );
-		
 	}
 	
 	function removeFibs( id ) {
 		
+	}
+	
+	function addMesh( id, json ) {
+		var vertices = json.vertices;
+		var normals = json.normals;
+		var indices = json.indices; 
+		var colors = json.colors;
+		
+		var geometry = new THREE.BufferGeometry();
+		
+		geometry.setIndex( indices );
+		geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+		geometry.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
+		geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ) );
+
+		var material = new THREE.MeshPhongMaterial( {
+			side: THREE.DoubleSide,
+			vertexColors: true
+		} );
+
+		var mesh = new THREE.Mesh( geometry, material );
+		
+		if (typeof json.visible === 'boolean' && json.visible === false) {
+            // initialize hidden
+            mesh.visible = false;
+		}
+		
+		mesh.name = id;
+		meshes.add( mesh );
+	
 	}
 	
 	function setFiberMode( mode ) {
@@ -630,6 +665,11 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			var fib = fibres.getObjectByName( fibID );
 			fib.visible = visible;
 	}
+	
+	function setMeshVisible( meshID, visible ) {
+		var mesh = meshes.getObjectByName( meshID );
+		mesh.visible = visible;
+}
 	
 	function setShowOverlay( show ) {
 		showOverlay = show;
@@ -655,9 +695,11 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		setOverlay : setOverlay,
 		setAnatomy : setAnatomy,
 		addFibs : addFibs,
+		addMesh : addMesh,
 		removeFibs : removeFibs,
 		setFiberMode : setFiberMode,
 		setFibVisible : setFibVisible,
+		setMeshVisible : setMeshVisible,
 		setShowOverlay : setShowOverlay,
 		toggleShowOverlay : toggleShowOverlay
 	}
