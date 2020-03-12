@@ -18,8 +18,22 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var height = height;
 	var scene = new THREE.Scene();
 	
-	var light = new THREE.HemisphereLight();
+	const lightColor = 0xFFFFFF;
+	const lightIntensity = 0.6;
+	const light = new THREE.AmbientLight( lightColor, lightIntensity);
 	scene.add( light );
+	
+	const lightColor2 = 0xFFFFFF;
+	const lightIntensity2 = 0.5;
+	const light2 = new THREE.PointLight( lightColor2, lightIntensity2 );
+	light2.position.set( 500, 0, 0 );
+	scene.add( light2 );
+	
+	const lightColor3 = 0xFFFFFF;
+	const lightIntensity3 = 0.5;
+	const light3 = new THREE.PointLight( lightColor3, lightIntensity3 );
+	light3.position.set( -500, 0, 0 );
+	scene.add( light3 );
 	
 	var zoom = 6.0;
 	var camera = new THREE.OrthographicCamera( width / - zoom, width / zoom, height / zoom, height / - zoom, -1000, 1000 );
