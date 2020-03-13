@@ -161,8 +161,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	pivot.add( slices );
 	pivot.add( connections );
-	pivot.add( meshes );
 	pivot.add( fibres );
+	pivot.add( meshes );
 	
 	scene.add( pivot );
 	
@@ -654,9 +654,11 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		geometry.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
 		geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ) );
 
-		var material = new THREE.MeshPhongMaterial( {
+		var material = new THREE.MeshLambertMaterial( {
 			side: THREE.DoubleSide,
-			vertexColors: true
+			vertexColors: true,
+			transparent: true, 
+			opacity: 0.5
 		} );
 
 		var mesh = new THREE.Mesh( geometry, material );

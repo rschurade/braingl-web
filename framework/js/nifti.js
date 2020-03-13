@@ -19,7 +19,7 @@
 		var loaded = false;
 		var isRadiological = false;
 				
-		this.download = function(url, callback) {
+		this.download = function(id, url, callback) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('GET', url, true);
 			xhr.responseType = 'arraybuffer';
@@ -32,7 +32,7 @@
 				checkRadiological();
 				
 				loaded = true;
-				if ( callback ) callback();		
+				if ( callback ) callback( id );		
 			};
 			xhr.send();
 		};

@@ -101,9 +101,9 @@ function onTexLoaded() {
 	
 };
 
-function onOverlayLoaded() {
+function onOverlayLoaded( id ) {
 	console.log( "ui.js onOverlayLoaded()" );
-	view.setOverlay( io.niftis()["tex2"] );
+	view.setOverlay( io.niftis()[id] );
 };
 
 
@@ -391,6 +391,11 @@ d3.select('#controlsLink').on( 'click', function() {
 	    d3.select('#controls').style('opacity', 0 );
 	    d3.select('#controls').transition().style('opacity', 100 ).duration( 3000 );
 	}
+});
+
+d3.select('#resetLink').on( 'click', function() {
+	d3.event.preventDefault();
+	view.setOverlay( io.niftis()["tex3"] );
 });
 
 

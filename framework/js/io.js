@@ -87,7 +87,7 @@ function loadElements( url, texCallback, overlayCallback, fibreCallback, meshCal
 
 function loadTexture( id, url, callback ) {
 	_niftis[id] = new Nifti();
-	_niftis[id].download( settings.DATA_URL + url, callback );
+	_niftis[id].download( id, settings.DATA_URL + url, callback );
 }
 
 function loadFibre( def, callback ) {
