@@ -395,7 +395,8 @@ d3.select('#controlsLink').on( 'click', function() {
 
 d3.select('#resetLink').on( 'click', function() {
 	d3.event.preventDefault();
-	view.setOverlay( io.niftis()["tex3"] );
+	//view.setStandardView( "sagittal2" );
+	view.resetView();
 });
 
 

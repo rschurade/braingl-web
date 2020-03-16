@@ -81,7 +81,7 @@ function drag(x, y)
 		q_current_rotation.set( 0, 0, 0, 0 );
 	}
 		
-	m_rot.makeRotationFromQuaternion( q_current_rotation);
+	m_rot.makeRotationFromQuaternion( q_current_rotation );
 	m_rot.multiply( lastRot );
 }
 
@@ -92,7 +92,7 @@ function click(x,y)
 	v_mouse_down.setX( x );
 	v_mouse_down.setY( y );
 	v_mouse_down.setZ( 0.0 );
-	v_from = map_sphere(v_mouse_down);
+	v_from = map_sphere( v_mouse_down );
 }
 
 /// returns the rotation matrix to be used directly
@@ -252,6 +252,57 @@ function setRotation( rot ) {
 	m_rot = rot;
 }
 
+function setView( view )
+{
+    m_zoom = 1.0;
+    moveX = 0;
+    moveY = 0;
+    oldMoveX = 0;
+    oldMoveY = 0;
+    m_rot = new THREE.Matrix4();
+    lastRot = new THREE.Matrix4();
+
+    var rotx = new THREE.Quaternion( Math.sqrt(0.5), 0, 0, Math.sqrt(0.5) );
+    var rot_x = new THREE.Quaternion( -Math.sqrt(0.5), 0, 0, Math.sqrt(0.5) );
+    var roty = new THREE.Quaternion( 0, Math.sqrt(0.5), 0, Math.sqrt(0.5) );
+    var rot_y = new THREE.Quaternion( 0, -Math.sqrt(0.5), 0, Math.sqrt(0.5) );
+    var rotz = new THREE.Quaternion( 0, 0, Math.sqrt(0.5), Math.sqrt(0.5) );
+    var rot_z = new THREE.Quaternion( 0, 0, -Math.sqrt(0.5), Math.sqrt(0.5) );
+
+    q_current_rotation.setFromRotationMatrix( m_rot );
+    
+    switch( view )
+    {
+        case "none":
+            break;
+        case "axial":
+            break;
+        case "coronal":
+            q_current_rotation.multiply( rot_x );
+            break;
+        case "sagittal":
+            q_current_rotation.multiply( rotz );
+            q_current_rotation.multiply( roty );
+            break;
+        case "axial2":
+            q_current_rotation.multiply( roty );
+            q_current_rotation.multiply( roty );
+            break;
+        case "coronal2":
+        	q_current_rotation.multiply( rotx );
+        	q_current_rotation.multiply( roty );
+        	q_current_rotation.multiply( roty );
+            break;
+        case "sagittal2":
+            q_current_rotation.multiply( rot_z );
+            q_current_rotation.multiply( rot_y );
+            break;
+    }
+    
+    m_rot.makeRotationFromQuaternion( q_current_rotation );
+}
+
+
 function interpolateTo( rot ) {
 	nextRot = new THREE.Matrix4();	
 	var m1 = new THREE.Matrix4();
@@ -297,6 +348,7 @@ return {
 	setTranslation : setTranslation,
 	translation : translation,
 	setRotation : setRotation,
-	interpolateTo : interpolateTo
+	interpolateTo : interpolateTo,
+	setView : setView
 };
 }));

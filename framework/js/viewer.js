@@ -170,7 +170,6 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var zero;
 	var brainZero;
 	
-	
 //then init viewer --> creates slices, rotate them!! Three.js wants it like that: create plane geometry of target size --> rotate it, texturise it
 	init = function() {
 		// load a resource
@@ -268,10 +267,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 
 	render = function() {
 		requestAnimationFrame( this.render );
-		
 
 		scene.quaternion.setFromRotationMatrix( arcball.get() );
-		
 		
 		camera.translateX( -translationX );
 		camera.translateY( translationY );
@@ -695,6 +692,30 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		showOverlay = !showOverlay;
 	}
 	
+	function setStandardView( view )
+	{
+		arcball.setView( view );
+		camera.zoom = 1.0;
+		camera.updateProjectionMatrix();
+	}
+	
+	function resetView()
+	{
+		var dims = t1data.getDims();
+		
+		setSlice( "sliceX", dims.nx / 2 );
+		setSlice( "sliceY", dims.ny / 2 );
+		setSlice( "sliceZ", dims.nz / 2 );
+		
+		/*
+		var sform = t1data.getSForm();
+		brainZero = new THREE.Vector3( Math.sign( sform.rowX[0] ) * sform.rowX[3], Math.sign( sform.rowY[1] ) * sform.rowY[3], Math.sign( sform.rowZ[2] ) * sform.rowZ[3] );
+		arcball.setRotation( [-1.2, -0.111, 2.5] );
+		*/
+		dispatch.dimsChanged( dims );
+	}
+	
+	
 	return {
 		dispatch : dispatch,
 		init : init,
@@ -717,7 +738,9 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		setFibVisible : setFibVisible,
 		setMeshVisible : setMeshVisible,
 		setShowOverlay : setShowOverlay,
-		toggleShowOverlay : toggleShowOverlay
+		toggleShowOverlay : toggleShowOverlay,
+		setStandardView : setStandardView,
+		resetView : resetView
 	}
 }
 
