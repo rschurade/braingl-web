@@ -42,10 +42,35 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	arcball.setViewportDims( width, height );
 	renderer.setClearColor( 0x000000, 1 );
 	
+	
+	
+	var scene2 = new THREE.Scene();
+	var camera2 = new THREE.OrthographicCamera( width / - zoom, width / zoom, height / zoom, height / - zoom, -1000, 1000 );
+	//scene2.add( light );
+	scene2.add( light2 );
+	scene2.add( light3 );
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	var t1data;
 	var ovdata;
 	var hasOverlay = false;
 	var showOverlay = true;
+	
+	
+	var orientationCubeSize = 20;
+	
+	var geometry = new THREE.BoxGeometry( orientationCubeSize, orientationCubeSize, orientationCubeSize );
+	var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+	var orientCube = new THREE.AxesHelper( 20 ); //new THREE.Mesh( geometry, material );
+	
+	scene2.add( orientCube );
+	
+	scene2.translateX( 100 );
+	scene2.translateY( -80 );
+	scene2.translateZ( 100 );
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	var vshader = "varying vec2 vUv;void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0 );}";
 	var fshader = 
@@ -252,6 +277,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			slices.add( sagittal );
 			slices.add( coronal );
 			
+			
 			},
 			// Function called when download progresses
 			function ( xhr ) {
@@ -301,7 +327,17 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 			
 		}
 		
+		renderer.autoClear = true;
 		renderer.render( scene, camera );
+		renderer.autoClear = false;
+		
+		
+		
+		scene2.quaternion.setFromRotationMatrix( arcball.get() );
+		
+
+		
+		renderer.render( scene2, camera2 );
 	}
 	
 	
