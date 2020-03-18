@@ -761,6 +761,22 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	
 	function setStandardView( view )
 	{
+		if( view == "default" )
+		{
+			var dims = t1data.getDims();
+			
+			setSlice( "sliceX", dims.nx / 2 );
+			setSlice( "sliceY", dims.ny / 2 );
+			setSlice( "sliceZ", dims.nz / 2 );
+			
+			dispatch.dimsChanged( dims );
+			
+			arcball.setTranslation( 0, 0 );
+			arcball.setRotation( [-1.2, -0.111, 2.5] );
+			
+			return;
+		}
+		
 		arcball.setView( view );
 		camera.zoom = 1.0;
 		camera.updateProjectionMatrix();
