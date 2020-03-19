@@ -719,7 +719,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ) );
 
 		var material = new THREE.MeshLambertMaterial( {
-			side: THREE.DoubleSide,
+			side: THREE.FrontSide,
 			vertexColors: true,
 			transparent: true, 
 			opacity: 0.5
