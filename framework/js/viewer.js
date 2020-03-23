@@ -58,37 +58,37 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 	var showOverlay = true;
 	
 	
-	var orientationCubeSize = 20;
+	var orientationCubeSize = 15;
 	
 	
 	var axesHelperType = "Cube";
 	
 	if( axesHelperType == "Cube" )
 	{
+		var mats = [
+             new THREE.MeshBasicMaterial({
+                 map: THREE.ImageUtils.loadTexture('./images/cube_texture_R.png' )
+             }),
+             new THREE.MeshBasicMaterial({
+                 map: THREE.ImageUtils.loadTexture('./images/cube_texture_L.png')
+             }),
+             new THREE.MeshBasicMaterial({
+                 map: THREE.ImageUtils.loadTexture('./images/cube_texture_A.png')
+             }),
+             new THREE.MeshBasicMaterial({
+                 map: THREE.ImageUtils.loadTexture('./images/cube_texture_P.png')
+             }),
+             new THREE.MeshBasicMaterial({
+                 map: THREE.ImageUtils.loadTexture('./images/cube_texture_S.png')
+             }),
+             new THREE.MeshBasicMaterial({
+                 map: THREE.ImageUtils.loadTexture('./images/cube_texture_I.png')
+             })
+          ];
+		
+		
 		var geo = new THREE.BoxGeometry( orientationCubeSize, orientationCubeSize, orientationCubeSize );
-    	var mat = new THREE.MeshBasicMaterial( { color:0xffffff, vertexColors: THREE.FaceColors } );
-    	var orientCube = new THREE.Mesh( geo, mat );
-    
-    	
-    	orientCube.geometry.faces[ 0 ].color.setHex( 0xff0000 );
-    	orientCube.geometry.faces[ 1 ].color.setHex( 0xff0000 );
-    	
-    	orientCube.geometry.faces[ 2 ].color.setHex( 0xff0000 );
-    	orientCube.geometry.faces[ 3 ].color.setHex( 0xff0000 );
-    	
-    	orientCube.geometry.faces[ 4 ].color.setHex( 0x00ff00 );
-    	orientCube.geometry.faces[ 5 ].color.setHex( 0x00ff00 );
-    	
-    	orientCube.geometry.faces[ 6 ].color.setHex( 0x00ff00 );
-    	orientCube.geometry.faces[ 7 ].color.setHex( 0x00ff00 );
-    	
-    	orientCube.geometry.faces[ 8 ].color.setHex( 0x0000ff );
-    	orientCube.geometry.faces[ 9 ].color.setHex( 0x0000ff );
-    	
-    	orientCube.geometry.faces[ 10 ].color.setHex( 0x0000ff );
-    	orientCube.geometry.faces[ 11 ].color.setHex( 0x0000ff );
-    	
-    	orientCube.geometry.colorsNeedUpdate = true;
+    	var orientCube = new THREE.Mesh( geo, mats );
     	
     	scene2.add( orientCube );
 	}
@@ -97,8 +97,8 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
 		var orientCube = new THREE.AxesHelper( orientationCubeSize );
 	}
 	
-	scene2.translateX( 100 );
-	scene2.translateY( -80 );
+	scene2.translateX( 120 );
+	scene2.translateY( -120 );
 	scene2.translateZ( 100 );
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
