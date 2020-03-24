@@ -194,6 +194,7 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
     		"	else {" +
     		"		myColor.b = 0.;" +
     		"	}" +
+    		"myColor = normalize( myColor );" +
     		"}" +
     		
     		
