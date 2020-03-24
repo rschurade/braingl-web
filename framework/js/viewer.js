@@ -187,12 +187,27 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
     		"if( renderMode > 0 ) {" +
     		"	if( myColor.r <= myColor.g && myColor.r <= myColor.b ) {" +
     		"		myColor.r = 0.;" +
+    		"		if( myColor.g  <= myColor.b ) {" +
+    		"			myColor.g = myColor.g / 2.;" +
+    		"		} else {" +
+    		"			myColor.b = myColor.b / 2.;" +
+    		"		}" +
     		"	}" +
     		"	else if( myColor.g <= myColor.r && myColor.g <= myColor.b ) {" +
     		"		myColor.g = 0.;" +
+    		"		if( myColor.r  <= myColor.b ) {" +
+    		"			myColor.r = myColor.g / 2.;" +
+    		"		} else {" +
+    		"			myColor.b = myColor.b / 2.;" +
+    		"		}" +
     		"	}" +
     		"	else {" +
     		"		myColor.b = 0.;" +
+    		"		if( myColor.g  <= myColor.r ) {" +
+    		"			myColor.g = myColor.g / 2.;" +
+    		"		} else {" +
+    		"			myColor.r = myColor.r / 2.;" +
+    		"		}" +
     		"	}" +
     		"myColor = normalize( myColor );" +
     		"}" +
