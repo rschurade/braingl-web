@@ -183,6 +183,20 @@ define(["d3", "three", "arcball", "nifti"], function( d3, THREE, arcball, nifti 
     		"else if( renderMode == 2 ) {" +
     		"    myColor = vec3( abs( vGlobalColor.x ), abs( vGlobalColor.y ), abs( vGlobalColor.z ) );" +
     		"}"+
+    		
+    		"if( renderMode > 0 ) {" +
+    		"	if( myColor.r <= myColor.g && myColor.r <= myColor.b ) {" +
+    		"		myColor.r = 0.;" +
+    		"	}" +
+    		"	else if( myColor.g <= myColor.r && myColor.g <= myColor.b ) {" +
+    		"		myColor.g = 0.;" +
+    		"	}" +
+    		"	else {" +
+    		"		myColor.b = 0.;" +
+    		"	}" +
+    		"}" +
+    		
+    		
     		"myColor = myColor * lightWeighting * 1.5 ;" +
     		"myColor.x = clamp( myColor.x, 0.0, 1.0 );" +
     		"myColor.y = clamp( myColor.y, 0.0, 1.0 );" +
